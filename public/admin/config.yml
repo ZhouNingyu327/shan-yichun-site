@@ -1,5 +1,5 @@
 # Decap CMS 配置 — PKCE 认证
-# 访问 https://shan-yichun-site.vercel.app/admin/ 进入后台
+# 访问 /admin/ 进入后台
 
 backend:
   name: github
