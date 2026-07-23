@@ -12,5 +12,121 @@
 </head>
 <body>
   <script src="https://unpkg.com/decap-cms@3/dist/decap-cms.js"></script>
+  <script>
+    // 内嵌 CMS 配置（解决外部加载 config.yml 的 404 问题）
+    window.CMS_MANUAL_INIT = true;
+    window.initCMS = function() {
+      CMS.init({
+        config: {
+          backend: {
+            name: 'github',
+            repo: 'ZhouNingyu327/shan-yichun-site',
+            branch: 'master',
+            auth_type: 'pkce',
+            app_id: 'Ov23liHZzFkwpUzUj1Tc',
+          },
+          media_folder: 'src/assets/images',
+          public_folder: '/images',
+          locale: 'zh-Hans',
+          slug: {
+            encoding: 'ascii',
+            clean_accents: true,
+          },
+          collections: [
+            {
+              name: 'news',
+              label: '最新动态',
+              label_singular: '新闻',
+              folder: 'src/content/news',
+              create: true,
+              format: 'frontmatter',
+              extension: 'mdx',
+              slug: '{{year}}-{{month}}-{{day}}-{{slug}}',
+              fields: [
+                { label: '标题', name: 'title', widget: 'string', required: true },
+                { label: '发布日期', name: 'publishDate', widget: 'datetime', required: true, date_format: 'YYYY-MM-DD', time_format: false, format: 'YYYY-MM-DD' },
+                { label: '来源', name: 'source', widget: 'string', required: true },
+                { label: '来源链接', name: 'sourceUrl', widget: 'string', required: false },
+                { label: '摘要', name: 'summary', widget: 'text', required: true },
+                { label: '标签', name: 'tags', widget: 'list', required: false },
+                { label: '正文', name: 'body', widget: 'markdown', required: false },
+              ],
+            },
+            {
+              name: 'discography',
+              label: '音乐作品',
+              label_singular: '作品',
+              folder: 'src/content/discography',
+              create: true,
+              format: 'frontmatter',
+              extension: 'mdx',
+              slug: '{{slug}}',
+              fields: [
+                { label: '标题', name: 'title', widget: 'string', required: true },
+                { label: '标题(英文)', name: 'titleEn', widget: 'string', required: false },
+                { label: '类型', name: 'type', widget: 'select', options: [{ label: '专辑', value: 'album' }, { label: '单曲', value: 'single' }, { label: 'OST', value: 'ost' }], required: true },
+                { label: '发行日期', name: 'releaseDate', widget: 'datetime', required: true, date_format: 'YYYY-MM-DD', time_format: false, format: 'YYYY-MM-DD' },
+                { label: '唱片公司', name: 'label', widget: 'string', required: false },
+                { label: '正文', name: 'body', widget: 'markdown', required: false },
+              ],
+            },
+            {
+              name: 'events',
+              label: '演出经历',
+              label_singular: '活动',
+              folder: 'src/content/events',
+              create: true,
+              format: 'frontmatter',
+              extension: 'mdx',
+              slug: '{{year}}-{{slug}}',
+              fields: [
+                { label: '标题', name: 'title', widget: 'string', required: true },
+                { label: '日期', name: 'date', widget: 'datetime', required: true, date_format: 'YYYY-MM-DD', time_format: false, format: 'YYYY-MM-DD' },
+                { label: '结束日期', name: 'endDate', widget: 'datetime', required: false, date_format: 'YYYY-MM-DD', time_format: false, format: 'YYYY-MM-DD' },
+                { label: '类型', name: 'type', widget: 'select', options: [{ label: '演唱会', value: 'concert' }, { label: '综艺', value: 'variety' }, { label: '颁奖礼', value: 'award' }, { label: '采访', value: 'interview' }, { label: '粉丝见面会', value: 'fanmeeting' }, { label: '其他', value: 'other' }], required: true },
+                { label: '地点', name: 'location', widget: 'string', required: true },
+                { label: '精选', name: 'featured', widget: 'boolean', default: false, required: false },
+                { label: '正文', name: 'body', widget: 'markdown', required: false },
+              ],
+            },
+            {
+              name: 'awards',
+              label: '荣誉奖项',
+              label_singular: '奖项',
+              folder: 'src/content/awards',
+              create: true,
+              format: 'frontmatter',
+              extension: 'mdx',
+              slug: '{{year}}-{{slug}}',
+              fields: [
+                { label: '奖项名称', name: 'awardName', widget: 'string', required: true },
+                { label: '颁奖典礼', name: 'ceremony', widget: 'string', required: true },
+                { label: '年份', name: 'year', widget: 'number', required: true },
+                { label: '类别', name: 'category', widget: 'string', required: true },
+                { label: '结果', name: 'result', widget: 'select', options: [{ label: '获奖', value: 'won' }, { label: '提名', value: 'nominated' }], required: true },
+                { label: '作品', name: 'work', widget: 'string', required: false },
+              ],
+            },
+            {
+              name: 'biography',
+              label: '个人简介',
+              folder: 'src/content/biography',
+              create: false,
+              format: 'frontmatter',
+              extension: 'md',
+              fields: [
+                { label: '姓名', name: 'name', widget: 'string', required: true },
+                { label: '出生日期', name: 'birthDate', widget: 'datetime', required: true, date_format: 'YYYY-MM-DD', time_format: false, format: 'YYYY-MM-DD' },
+                { label: '出生地', name: 'birthPlace', widget: 'string', required: true },
+                { label: '出道年份', name: 'debutYear', widget: 'number', required: true },
+                { label: '简介', name: 'intro', widget: 'text', required: true },
+                { label: '正文', name: 'body', widget: 'markdown', required: false },
+              ],
+            },
+          ],
+        },
+      });
+    };
+  </script>
 </body>
 </html>
