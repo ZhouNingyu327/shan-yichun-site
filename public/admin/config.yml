@@ -1,18 +1,14 @@
-# Decap CMS 配置 — PKCE 认证
-# 访问 /admin/ 进入后台
-
+# Decap CMS 配置 — OAuth 代理认证
 backend:
   name: github
   repo: ZhouNingyu327/shan-yichun-site
   branch: master
-  auth_type: pkce
-  app_id: Ov23liHZzFkwpUzUj1Tc
+  base_url: https://shan-yichun-site.vercel.app
+  auth_endpoint: /api/auth
 
 media_folder: src/assets/images
 public_folder: /images
-
 locale: 'zh-Hans'
-
 slug:
   encoding: ascii
   clean_accents: true
@@ -70,6 +66,7 @@ collections:
 
   - name: awards
     label: 荣誉奖项
+    label_singular: 奖项
     folder: src/content/awards
     create: true
     format: frontmatter
