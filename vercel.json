@@ -3,7 +3,9 @@
   "outputDirectory": "dist",
   "framework": "astro",
   "rewrites": [
-    { "source": "/feed.xml", "destination": "/rss.xml" }
+    { "source": "/feed.xml", "destination": "/rss.xml" },
+    { "source": "/admin", "destination": "/admin/index.html" },
+    { "source": "/admin/", "destination": "/admin/index.html" }
   ],
   "headers": [
     {
