@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://shanyichun.fans/sitemap-index.xml

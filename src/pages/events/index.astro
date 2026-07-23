@@ -1,0 +1,59 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Container from '@/components/ui/Container.astro';
+import Tag from '@/components/ui/Tag.astro';
+import { getCollection } from 'astro:content';
+
+const allEvents = (await getCollection('events'))
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+
+const typeLabels: Record<string, string> = {
+  concert: '演唱会', variety: '综艺', award: '颁奖礼',
+  interview: '采访', fanmeeting: '粉丝见面会', other: '其他',
+};
+
+// Group by year
+const grouped: Record<number, typeof allEvents> = {};
+for (const event of allEvents) {
+  const year = new Date(event.data.date).getFullYear();
+  if (!grouped[year]) grouped[year] = [];
+  grouped[year].push(event);
+}
+---
+
+<BaseLayout title="演出经历" path="/events">
+  <Container class="py-16 sm:py-20">
+    <h1 class="text-3xl sm:text-4xl font-heading font-bold text-text-primary mb-10">演出经历</h1>
+
+    {Object.entries(grouped).reverse().map(([year, events]) => (
+      <section class="mb-12">
+        <h2 class="text-xl font-heading font-semibold text-text-primary mb-6">{year}年</h2>
+        <div class="space-y-3">
+          {events.map((event) => (
+            <a href={`/events/${event.id}`} class="block">
+              <div class="bg-white rounded-xl border border-primary-100/30 p-5 card-hover flex items-start gap-4">
+                <div class="text-center flex-shrink-0 w-14">
+                  <div class="text-lg font-bold text-primary-600">{new Date(event.data.date).getDate()}</div>
+                  <div class="text-xs text-text-secondary">{new Date(event.data.date).toLocaleDateString('zh-CN', { month: 'short' })}</div>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <h3 class="font-semibold text-text-primary">{event.data.title}</h3>
+                  <p class="text-sm text-text-secondary mt-1">{event.data.location}</p>
+                </div>
+                <Tag variant={event.data.type === 'concert' ? 'primary' : 'default'}>
+                  {typeLabels[event.data.type] || event.data.type}
+                </Tag>
+              </div>
+            </a>
+          ))}
+        </div>
+      </section>
+    ))}
+
+    {allEvents.length === 0 && (
+      <div class="text-center py-20 text-text-secondary">
+        <p>暂无演出信息，敬请期待。</p>
+      </div>
+    )}
+  </Container>
+</BaseLayout>

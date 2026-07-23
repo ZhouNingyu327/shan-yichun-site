@@ -1,0 +1,12 @@
+---
+export interface Props {
+  class?: string;
+  children?: any;
+}
+
+const { class: className } = Astro.props;
+---
+
+<article class="bg-white rounded-2xl shadow-sm border border-primary-100/30 overflow-hidden card-hover {className || ''}">
+  <slot />
+</article>

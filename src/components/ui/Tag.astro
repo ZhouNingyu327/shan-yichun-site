@@ -1,0 +1,19 @@
+---
+export interface Props {
+  variant?: 'default' | 'primary' | 'accent';
+  class?: string;
+}
+
+const { variant = 'default', class: className } = Astro.props;
+
+const baseStyles = 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium';
+const variantStyles = {
+  default: 'bg-primary-50 text-primary-700',
+  primary: 'bg-primary-100 text-primary-800',
+  accent: 'bg-accent-100 text-accent-700',
+};
+---
+
+<span class="{baseStyles} {variantStyles[variant]} {className || ''}">
+  <slot />
+</span>

@@ -1,0 +1,60 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Container from '@/components/ui/Container.astro';
+import Tag from '@/components/ui/Tag.astro';
+import { getCollection } from 'astro:content';
+
+const allAwards = (await getCollection('awards'))
+  .sort((a, b) => b.data.year - a.data.year);
+
+const won = allAwards.filter((a) => a.data.result === 'won');
+const nominated = allAwards.filter((a) => a.data.result === 'nominated');
+
+const grouped: Record<number, typeof allAwards> = {};
+for (const award of allAwards) {
+  if (!grouped[award.data.year]) grouped[award.data.year] = [];
+  grouped[award.data.year].push(award);
+}
+---
+
+<BaseLayout title="荣誉奖项" path="/awards">
+  <Container class="py-16 sm:py-20">
+    <h1 class="text-3xl sm:text-4xl font-heading font-bold text-text-primary mb-2">荣誉奖项</h1>
+    <p class="text-text-secondary mb-4">
+      共 {allAwards.length} 项 · 获奖 {won.length} 项 · 提名 {nominated.length} 项
+    </p>
+
+    {Object.entries(grouped).reverse().map(([year, awards]) => (
+      <section class="mb-10">
+        <h2 class="text-xl font-heading font-semibold text-text-primary mb-4">{year}年</h2>
+        <div class="space-y-3">
+          {awards.map((award) => (
+            <div class="bg-white rounded-xl border border-primary-100/30 p-5 flex items-start gap-4">
+              <div class={`mt-1 w-3 h-3 rounded-full flex-shrink-0 ${award.data.result === 'won' ? 'bg-accent-500' : 'bg-primary-200'}`} />
+              <div class="flex-1">
+                <div class="flex items-center gap-2 mb-1">
+                  <h3 class="font-semibold text-text-primary">{award.data.awardName}</h3>
+                  {award.data.result === 'won' ? (
+                    <Tag variant="accent">获奖</Tag>
+                  ) : (
+                    <Tag variant="default">提名</Tag>
+                  )}
+                </div>
+                <p class="text-sm text-text-secondary">{award.data.ceremony} · {award.data.category}</p>
+                {award.data.work && (
+                  <p class="text-xs text-text-secondary/60 mt-1">作品：{award.data.work}</p>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    ))}
+
+    {allAwards.length === 0 && (
+      <div class="text-center py-20 text-text-secondary">
+        <p>暂无奖项信息。</p>
+      </div>
+    )}
+  </Container>
+</BaseLayout>

@@ -1,0 +1,54 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Container from '@/components/ui/Container.astro';
+import Tag from '@/components/ui/Tag.astro';
+import { getCollection } from 'astro:content';
+import { SITE } from '@/utils/constants';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('news');
+  return entries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { data } = entry;
+---
+
+<BaseLayout title={data.title} description={data.summary} path={`/news/${entry.id}`}>
+  <Container class="py-16 sm:py-20">
+    <article class="max-w-3xl mx-auto">
+      <div class="flex flex-wrap items-center gap-3 text-sm text-text-secondary mb-4">
+        <span>{new Date(data.publishDate).toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+        <span>·</span>
+        <span>{data.source}</span>
+      </div>
+
+      <h1 class="text-3xl font-heading font-bold text-text-primary mb-4">{data.title}</h1>
+      <p class="text-lg text-text-secondary leading-relaxed mb-6">{data.summary}</p>
+
+      <div class="flex flex-wrap gap-2 mb-8">
+        {data.tags.map((t) => <Tag>{t}</Tag>)}
+      </div>
+
+      <div class="prose prose-gray max-w-none">
+        <slot />
+      </div>
+
+      {data.sourceUrl && (
+        <div class="mt-8 pt-6 border-t border-primary-100/30">
+          <a
+            href={data.sourceUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-sm text-primary-600 hover:text-primary-700 font-medium"
+          >
+            查看原文 →
+          </a>
+        </div>
+      )}
+    </article>
+  </Container>
+</BaseLayout>

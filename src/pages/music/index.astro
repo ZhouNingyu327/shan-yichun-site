@@ -1,0 +1,104 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Container from '@/components/ui/Container.astro';
+import Card from '@/components/ui/Card.astro';
+import Tag from '@/components/ui/Tag.astro';
+import { getCollection } from 'astro:content';
+
+const allMusic = await getCollection('discography');
+const albums = allMusic.filter((m) => m.data.type === 'album').sort((a, b) => new Date(b.data.releaseDate).getTime() - new Date(a.data.releaseDate).getTime());
+const singles = allMusic.filter((m) => m.data.type === 'single').sort((a, b) => new Date(b.data.releaseDate).getTime() - new Date(a.data.releaseDate).getTime());
+const osts = allMusic.filter((m) => m.data.type === 'ost').sort((a, b) => new Date(b.data.releaseDate).getTime() - new Date(a.data.releaseDate).getTime());
+---
+
+<BaseLayout title="音乐作品" path="/music">
+  <Container class="py-16 sm:py-20">
+    <h1 class="text-3xl sm:text-4xl font-heading font-bold text-text-primary mb-10">音乐作品</h1>
+
+    {albums.length > 0 && (
+      <section class="mb-16">
+        <h2 class="text-xl font-heading font-semibold text-text-primary mb-6 flex items-center gap-2">
+          专辑 <span class="text-sm font-normal text-text-secondary">{albums.length}张</span>
+        </h2>
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {albums.map((item) => (
+            <a href={`/music/${item.id}`} class="group">
+              <Card class="p-0">
+                <div class="aspect-square img-placeholder flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" class="text-primary-300">
+                    <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                </div>
+                <div class="p-4">
+                  <h3 class="font-semibold text-text-primary group-hover:text-primary-600 transition-colors line-clamp-1">{item.data.title}</h3>
+                  <p class="text-xs text-text-secondary mt-1">{new Date(item.data.releaseDate).getFullYear()} · 专辑</p>
+                </div>
+              </Card>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+
+    {singles.length > 0 && (
+      <section class="mb-16">
+        <h2 class="text-xl font-heading font-semibold text-text-primary mb-6 flex items-center gap-2">
+          单曲 <span class="text-sm font-normal text-text-secondary">{singles.length}首</span>
+        </h2>
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {singles.map((item) => (
+            <a href={`/music/${item.id}`} class="group">
+              <Card class="p-0">
+                <div class="aspect-square img-placeholder flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" class="text-accent-300">
+                    <path d="M9 18V5l12-2v13" />
+                    <circle cx="6" cy="18" r="3" />
+                    <circle cx="18" cy="16" r="3" />
+                  </svg>
+                </div>
+                <div class="p-4">
+                  <h3 class="font-semibold text-text-primary group-hover:text-primary-600 transition-colors line-clamp-1">{item.data.title}</h3>
+                  <p class="text-xs text-text-secondary mt-1">{new Date(item.data.releaseDate).getFullYear()} · 单曲</p>
+                </div>
+              </Card>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+
+    {osts.length > 0 && (
+      <section>
+        <h2 class="text-xl font-heading font-semibold text-text-primary mb-6 flex items-center gap-2">
+          OST / 影视原声 <span class="text-sm font-normal text-text-secondary">{osts.length}首</span>
+        </h2>
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {osts.map((item) => (
+            <a href={`/music/${item.id}`} class="group">
+              <Card class="p-0">
+                <div class="aspect-square img-placeholder flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" class="text-accent-300">
+                    <path d="M9 18V5l12-2v13" />
+                    <circle cx="6" cy="18" r="3" />
+                    <circle cx="18" cy="16" r="3" />
+                  </svg>
+                </div>
+                <div class="p-4">
+                  <h3 class="font-semibold text-text-primary group-hover:text-primary-600 transition-colors line-clamp-1">{item.data.title}</h3>
+                  <p class="text-xs text-text-secondary mt-1">{new Date(item.data.releaseDate).getFullYear()} · OST</p>
+                </div>
+              </Card>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+
+    {allMusic.length === 0 && (
+      <div class="text-center py-20 text-text-secondary">
+        <p>暂无音乐作品信息，敬请期待。</p>
+      </div>
+    )}
+  </Container>
+</BaseLayout>

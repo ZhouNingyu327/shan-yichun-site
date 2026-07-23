@@ -1,0 +1,57 @@
+---
+import Container from '@/components/ui/Container.astro';
+import type { CollectionEntry } from 'astro:content';
+
+export interface Props {
+  events: CollectionEntry<'events'>[];
+}
+const { events } = Astro.props;
+
+const typeLabels: Record<string, string> = {
+  concert: '演唱会',
+  variety: '综艺',
+  award: '颁奖礼',
+  interview: '采访',
+  fanmeeting: '粉丝见面会',
+  other: '其他',
+};
+---
+
+<section class="py-16 sm:py-20">
+  <Container>
+    <div class="flex items-center justify-between mb-10">
+      <h2 class="text-2xl sm:text-3xl font-heading font-bold text-text-primary">演出经历</h2>
+      <a href="/events" class="text-sm text-primary-600 hover:text-primary-700 font-medium transition-colors">
+        查看全部 →
+      </a>
+    </div>
+
+    <div class="space-y-4">
+      {events.slice(0, 5).map((event) => (
+        <a href={`/events/${event.id}`} class="block">
+          <div class="bg-white rounded-xl border border-primary-100/30 p-5 card-hover flex items-start gap-4">
+            <div class="text-center flex-shrink-0 w-14">
+              <div class="text-lg font-bold text-primary-600">
+                {new Date(event.data.date).getDate()}
+              </div>
+              <div class="text-xs text-text-secondary">
+                {new Date(event.data.date).toLocaleDateString('zh-CN', { month: 'long' })}
+              </div>
+            </div>
+            <div class="flex-1 min-w-0">
+              <h3 class="font-semibold text-text-primary group-hover:text-primary-600 transition-colors">
+                {event.data.title}
+              </h3>
+              <p class="text-sm text-text-secondary mt-1">{event.data.location}</p>
+            </div>
+            <div>
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-50 text-primary-700">
+                {typeLabels[event.data.type] || event.data.type}
+              </span>
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
+  </Container>
+</section>

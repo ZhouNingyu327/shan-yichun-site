@@ -1,0 +1,59 @@
+---
+import { SITE, SOCIAL_LINKS } from '@/utils/constants';
+import Container from '@/components/ui/Container.astro';
+---
+
+<section class="relative min-h-[70vh] flex items-center bg-gradient-to-br from-primary-50 via-white to-accent-50 overflow-hidden">
+  <!-- Decorative circles -->
+  <div class="absolute top-20 left-10 w-72 h-72 bg-primary-200/30 rounded-full blur-3xl" />
+  <div class="absolute bottom-20 right-10 w-96 h-96 bg-accent-200/20 rounded-full blur-3xl" />
+
+  <Container class="relative z-10 py-20">
+    <div class="max-w-2xl">
+      <p class="text-sm font-medium text-primary-600 tracking-wider uppercase mb-4">
+        {SITE.nameEn}
+      </p>
+      <h1 class="text-5xl sm:text-6xl lg:text-7xl font-heading font-bold text-text-primary leading-tight mb-6">
+        {SITE.name}
+      </h1>
+      <p class="text-xl text-text-secondary font-light leading-relaxed mb-3">
+        {SITE.tagline}
+      </p>
+
+      <div class="flex flex-wrap gap-3 mt-8">
+        <a
+          href="/about"
+          class="inline-flex items-center px-6 py-3 bg-primary-600 text-white rounded-full font-medium hover:bg-primary-700 transition-colors shadow-sm"
+        >
+          了解单依纯
+        </a>
+        <a
+          href="/music"
+          class="inline-flex items-center px-6 py-3 bg-white text-text-primary border border-primary-200 rounded-full font-medium hover:bg-primary-50 transition-colors"
+        >
+          探索音乐作品
+        </a>
+      </div>
+
+      <div class="flex flex-wrap gap-4 mt-10">
+        {SOCIAL_LINKS.map((link) => (
+          <a
+            href={link.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-sm text-text-secondary hover:text-primary-600 transition-colors"
+          >
+            {link.name}
+          </a>
+        ))}
+      </div>
+    </div>
+  </Container>
+
+  <!-- Scroll indicator -->
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary-400">
+      <path d="M12 5v14M5 12l7 7 7-7" />
+    </svg>
+  </div>
+</section>

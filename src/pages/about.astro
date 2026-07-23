@@ -1,0 +1,62 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Container from '@/components/ui/Container.astro';
+import getCollection from 'astro:content';
+---
+
+<BaseLayout title="个人简介" path="/about">
+  <Container class="py-16 sm:py-20">
+    <h1 class="text-3xl sm:text-4xl font-heading font-bold text-text-primary mb-10">个人简介</h1>
+    <div class="grid md:grid-cols-2 gap-10">
+      <div>
+        <div class="aspect-[3/4] rounded-2xl img-placeholder flex items-center justify-center">
+          <span class="text-primary-300 font-heading text-lg">单依纯</span>
+        </div>
+      </div>
+      <div class="space-y-6">
+        <div class="prose prose-gray max-w-none">
+          <p class="text-text-secondary leading-relaxed">
+            单依纯，2001年12月23日出生于浙江省东阳市，中国内地流行乐女歌手。
+          </p>
+          <p class="text-text-secondary leading-relaxed">
+            2020年，参加浙江卫视音乐励志评论类节目《中国好声音2020》，最终获得全国总冠军，正式出道。同年获得第29届东方风云榜"最佳新锐歌手"奖。
+          </p>
+          <p class="text-text-secondary leading-relaxed">
+            2022年，发行首张个人专辑《女孩未满十八岁》。2023年，参加音乐竞演节目《声生不息·宝岛季》。2024年，发行首张个人专辑《……》。单依纯以其独特的嗓音和深情的演唱风格受到广泛关注。
+          </p>
+        </div>
+
+        <div class="border-t border-primary-100 pt-6">
+          <table class="text-sm">
+            <tbody>
+              <tr class="h-10">
+                <td class="text-text-secondary w-24">中文名</td>
+                <td class="text-text-primary font-medium">单依纯</td>
+              </tr>
+              <tr class="h-10">
+                <td class="text-text-secondary w-24">国籍</td>
+                <td class="text-text-primary font-medium">中国</td>
+              </tr>
+              <tr class="h-10">
+                <td class="text-text-secondary w-24">出生日期</td>
+                <td class="text-text-primary font-medium">2001年12月23日</td>
+              </tr>
+              <tr class="h-10">
+                <td class="text-text-secondary w-24">出生地</td>
+                <td class="text-text-primary font-medium">浙江省东阳市</td>
+              </tr>
+              <tr class="h-10">
+                <td class="text-text-secondary w-24">职业</td>
+                <td class="text-text-primary font-medium">歌手</td>
+              </tr>
+              <tr class="h-10">
+                <td class="text-text-secondary w-24">出道年份</td>
+                <td class="text-text-primary font-medium">2020年</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </Container>
+</BaseLayout>

@@ -1,0 +1,32 @@
+---
+import { SITE } from '@/utils/constants';
+
+export interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  path: string;
+}
+
+const { title, description, image, path } = Astro.props;
+const canonical = new URL(path, SITE.url).href;
+---
+
+<!-- Page Title -->
+<title>{title} | {SITE.name}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+
+<!-- Open Graph -->
+<meta property="og:title" content={`${title} | ${SITE.name}`} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={image || `${SITE.url}/og-image.png`} />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content={SITE.locale} />
+<meta property="og:site_name" content={SITE.name} />
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={`${title} | ${SITE.name}`} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={image || `${SITE.url}/og-image.png`} />

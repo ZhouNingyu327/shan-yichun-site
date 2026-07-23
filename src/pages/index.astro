@@ -1,0 +1,24 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import StructuredData from '@/components/seo/StructuredData.astro';
+import HeroSection from '@/components/sections/HeroSection.astro';
+import NewsList from '@/components/sections/NewsList.astro';
+import DiscographyGrid from '@/components/sections/DiscographyGrid.astro';
+import EventTimeline from '@/components/sections/EventTimeline.astro';
+import { getCollection } from 'astro:content';
+
+const newsPosts = (await getCollection('news'))
+  .sort((a, b) => new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime());
+const discographyItems = (await getCollection('discography'))
+  .sort((a, b) => new Date(b.data.releaseDate).getTime() - new Date(a.data.releaseDate).getTime());
+const events = (await getCollection('events'))
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+---
+
+<BaseLayout title="首页" path="/">
+  <StructuredData />
+  <HeroSection />
+  <DiscographyGrid items={discographyItems} />
+  <NewsList posts={newsPosts} />
+  <EventTimeline events={events} />
+</BaseLayout>

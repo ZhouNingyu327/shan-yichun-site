@@ -1,0 +1,68 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Container from '@/components/ui/Container.astro';
+import Tag from '@/components/ui/Tag.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('events');
+  return entries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { data } = entry;
+
+const typeLabels: Record<string, string> = {
+  concert: '演唱会', variety: '综艺', award: '颁奖礼',
+  interview: '采访', fanmeeting: '粉丝见面会', other: '其他',
+};
+---
+
+<BaseLayout title={data.title} path={`/events/${entry.id}`}>
+  <Container class="py-16 sm:py-20">
+    <div class="max-w-3xl mx-auto">
+      <div class="flex items-center gap-3 mb-4">
+        <Tag variant={data.type === 'concert' ? 'primary' : 'default'}>
+          {typeLabels[data.type] || data.type}
+        </Tag>
+        {data.featured && <Tag variant="accent">精选</Tag>}
+      </div>
+
+      <h1 class="text-3xl font-heading font-bold text-text-primary mb-4">{data.title}</h1>
+
+      <div class="flex flex-wrap gap-6 text-sm text-text-secondary mb-8 p-4 bg-white rounded-xl border border-primary-100/30">
+        <div>
+          <span class="font-medium text-text-primary">日期</span>
+          <p>{new Date(data.date).toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' })}
+          {data.endDate ? ` — ${new Date(data.endDate).toLocaleDateString('zh-CN', { month: 'long', day: 'numeric' })}` : ''}</p>
+        </div>
+        <div>
+          <span class="font-medium text-text-primary">地点</span>
+          <p>{data.location}</p>
+        </div>
+      </div>
+
+      <article class="prose prose-gray max-w-none">
+        <slot />
+      </article>
+
+      {data.links && data.links.length > 0 && (
+        <div class="mt-8 p-4 bg-white rounded-xl border border-primary-100/30">
+          <h2 class="text-sm font-semibold text-text-primary mb-3">相关链接</h2>
+          <ul class="space-y-2">
+            {data.links.map((link) => (
+              <li>
+                <a href={link.url} target="_blank" rel="noopener noreferrer" class="text-sm text-primary-600 hover:text-primary-700">
+                  {link.label} →
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  </Container>
+</BaseLayout>

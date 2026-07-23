@@ -1,0 +1,36 @@
+---
+import { NAV_ITEMS } from '@/utils/constants';
+---
+
+<div class="md:hidden">
+  <button id="menu-toggle" class="p-2 text-text-secondary hover:text-primary-600 transition-colors" aria-label="打开菜单">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M4 6h16M4 12h16M4 18h16" />
+    </svg>
+  </button>
+
+  <div id="mobile-menu" class="hidden absolute top-16 left-0 right-0 bg-white border-b border-primary-100/50 shadow-lg">
+    <div class="px-4 py-3 space-y-1">
+      {
+        NAV_ITEMS.map((item) => (
+          <a
+            href={item.href}
+            class="block px-3 py-2.5 text-base font-medium text-text-secondary hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors"
+          >
+            {item.label}
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</div>
+
+<script>
+  const toggle = document.getElementById('menu-toggle');
+  const menu = document.getElementById('mobile-menu');
+  if (toggle && menu) {
+    toggle.addEventListener('click', () => {
+      menu.classList.toggle('hidden');
+    });
+  }
+</script>
