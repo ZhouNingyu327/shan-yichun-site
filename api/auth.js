@@ -1,11 +1,13 @@
 // Vercel Serverless Function — Decap CMS GitHub OAuth
+const SITE_URL = 'https://shan-yichun-site.vercel.app';
+
 export default function handler(req, res) {
   const clientId = process.env.GITHUB_CLIENT_ID;
   if (!clientId) {
     return res.status(500).send('GITHUB_CLIENT_ID not configured');
   }
 
-  const redirectUri = `${process.env.VERCEL_URL || 'https://shan-yichun-site.vercel.app'}/api/callback`;
+  const redirectUri = `${SITE_URL}/api/callback`;
 
   const params = new URLSearchParams({
     client_id: clientId,
