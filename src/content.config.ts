@@ -28,6 +28,8 @@ const discography = defineCollection({
       type: z.enum(['album', 'single', 'ost']),
       releaseDate: z.date(),
       coverImage: image().optional(),
+      coverColor: z.string().optional(),
+      lyric: z.string().optional(),
       label: z.string().optional(),
       tracks: z
         .array(

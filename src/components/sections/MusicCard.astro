@@ -1,0 +1,37 @@
+---
+export interface Props {
+  item: any;
+}
+
+const { item } = Astro.props;
+const { data } = item;
+
+const typeLabels: Record<string, string> = { album: '专辑', single: '单曲', ost: 'OST' };
+const typeLetters: Record<string, string> = { album: 'A', single: 'S', ost: 'O' };
+
+let c1 = '#8b5cf6', c2 = '#7c3aed';
+if (data.coverColor) {
+  const parts = data.coverColor.split('-');
+  c1 = parts[0]; c2 = parts[1];
+}
+---
+
+<a href={`/music/${item.id}`} class="group block">
+  <article class="bg-white rounded-2xl shadow-sm border border-primary-100/30 overflow-hidden card-hover">
+    <div class="aspect-square flex items-center justify-center relative overflow-hidden rounded-t-2xl" style={`background: linear-gradient(135deg, ${c1}, ${c2})`}>
+      <div class="absolute inset-0 bg-white/5 backdrop-blur-[1px]" />
+      <span class="absolute top-2 right-2 text-[10px] px-2 py-0.5 rounded-full bg-white/15 text-white/70 font-medium z-10">
+        {typeLabels[data.type]}
+      </span>
+      <div class="relative z-10 text-center px-4">
+        <p class="text-white/20 text-5xl font-heading font-bold leading-none mb-1">{typeLetters[data.type]}</p>
+        <p class="text-white/90 text-sm font-heading font-semibold leading-tight line-clamp-2">{data.title}</p>
+        {data.lyric && <p class="text-white/40 text-[10px] mt-2 italic line-clamp-1 px-2">「{data.lyric}」</p>}
+      </div>
+    </div>
+    <div class="p-4">
+      <h3 class="font-semibold text-text-primary group-hover:text-primary-600 transition-colors line-clamp-1">{data.title}</h3>
+      <p class="text-xs text-text-secondary mt-1">{new Date(data.releaseDate).getFullYear()} · {typeLabels[data.type]}</p>
+    </div>
+  </article>
+</a>
