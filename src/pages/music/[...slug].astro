@@ -25,6 +25,13 @@ const coverGradients: Record<string, string> = {
   ost: 'from-indigo-500 via-purple-500 to-violet-500',
 };
 
+// Build a lookup from song title to slug for album track linking
+const allMusic = await getCollection('discography');
+const titleToSlug: Record<string, string> = {};
+for (const m of allMusic) {
+  titleToSlug[m.data.title] = m.id;
+}
+
 const musicSchema = {
   '@context': 'https://schema.org',
   '@type': data.type === 'album' ? 'MusicAlbum' : 'MusicRecording',
@@ -113,20 +120,40 @@ if (data.duration) infoItems.push({ label: '时长', value: data.duration });
           <slot />
         </div>
 
-        <!-- 专辑曲目 -->
+        <!-- 专辑曲目 — 可点击进入独立页面 -->
         {data.tracks && data.tracks.length > 0 && (
           <div class="mt-8">
             <h2 class="text-lg font-semibold text-text-primary mb-4 flex items-center gap-2">
               曲目列表 <span class="text-sm font-normal text-text-secondary">{data.tracks.length}首</span>
             </h2>
             <div class="bg-white rounded-xl border border-primary-100/30 overflow-hidden">
-              {data.tracks.map((track, index) => (
-                <div class={`flex items-center gap-4 px-5 py-3.5 transition-colors hover:bg-primary-50/50 ${index < data.tracks!.length - 1 ? 'border-b border-primary-100/30' : ''}`}>
-                  <span class="text-sm font-medium text-text-secondary/60 w-7 text-right">{track.number}</span>
-                  <span class="flex-1 text-sm text-text-primary font-medium">{track.name}</span>
-                  {track.duration && <span class="text-xs text-text-secondary">{track.duration}</span>}
-                </div>
-              ))}
+              {data.tracks.map((track, index) => {
+                const trackSlug = titleToSlug[track.name];
+                const trackContent = (
+                  <Fragment>
+                    <span class="text-sm font-medium text-text-secondary/60 w-7 text-right">{track.number}</span>
+                    <span class="flex-1 text-sm font-medium">{track.name}</span>
+                    {track.duration && <span class="text-xs text-text-secondary">{track.duration}</span>}
+                  </Fragment>
+                );
+                if (trackSlug) {
+                  return (
+                    <a href={`/music/${trackSlug}`} class={`flex items-center gap-4 px-5 py-3.5 transition-colors hover:bg-primary-100/70 group ${index < data.tracks!.length - 1 ? 'border-b border-primary-100/30' : ''}`}>
+                      <span class="text-sm font-medium text-text-secondary/60 w-7 text-right">{track.number}</span>
+                      <span class="flex-1 text-sm font-medium text-text-primary group-hover:text-primary-600 transition-colors">{track.name}</span>
+                      {track.duration && <span class="text-xs text-text-secondary">{track.duration}</span>}
+                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary-300 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0"><path d="M9 18l6-6-6-6"/></svg>
+                    </a>
+                  );
+                }
+                return (
+                  <div class={`flex items-center gap-4 px-5 py-3.5 ${index < data.tracks!.length - 1 ? 'border-b border-primary-100/30' : ''}`}>
+                    <span class="text-sm font-medium text-text-secondary/60 w-7 text-right">{track.number}</span>
+                    <span class="flex-1 text-sm text-text-primary font-medium">{track.name}</span>
+                    {track.duration && <span class="text-xs text-text-secondary">{track.duration}</span>}
+                  </div>
+                );
+              })}
             </div>
           </div>
         )}
