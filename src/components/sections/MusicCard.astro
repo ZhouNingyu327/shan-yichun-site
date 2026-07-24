@@ -19,7 +19,14 @@ if (data.coverColor) {
 <a href={`/music/${item.id}`} class="group block">
   <article class="bg-white rounded-2xl shadow-sm border border-primary-100/30 overflow-hidden card-hover">
     <div class="aspect-square flex items-center justify-center relative overflow-hidden rounded-t-2xl" style={`background: linear-gradient(135deg, ${c1}, ${c2})`}>
-      <div class="absolute inset-0 bg-white/5 backdrop-blur-[1px]" />
+      <img
+        src={`/images/covers/${item.id}.jpg`}
+        alt={data.title}
+        class="absolute inset-0 w-full h-full object-cover"
+        loading="lazy"
+        onerror="this.style.display='none'"
+      />
+      <div class="absolute inset-0 bg-gradient-to-br from-black/20 to-transparent" />
       <span class="absolute top-2 right-2 text-[10px] px-2 py-0.5 rounded-full bg-white/15 text-white/70 font-medium z-10">
         {typeLabels[data.type]}
       </span>

@@ -64,8 +64,16 @@ const musicSchema = {
     <div class="grid md:grid-cols-2 gap-10 lg:gap-16 items-start">
       <!-- 封面区域 -->
       <div class="relative">
-        <div class={`aspect-square rounded-3xl bg-gradient-to-br ${coverGradients[data.type] || coverGradients.single} flex items-center justify-center shadow-2xl shadow-purple-500/20 overflow-hidden`}>
-          <div class="absolute inset-0 bg-white/5 backdrop-blur-[1px]" />
+        <div class={`aspect-square rounded-3xl bg-gradient-to-br ${coverGradients[data.type] || coverGradients.single} flex items-center justify-center shadow-2xl shadow-purple-500/20 overflow-hidden relative`}>
+          <img
+            src={`/images/covers/${entry.id}.jpg`}
+            alt={data.title}
+            class="absolute inset-0 w-full h-full object-cover"
+            loading="eager"
+            onerror="this.style.display='none'"
+          />
+          <!-- 渐变叠加层（图片存在时变半透明，图片不存在时显示全部） -->
+          <div class="absolute inset-0 bg-gradient-to-br from-black/30 to-black/10" />
           <div class="relative z-10 text-center px-8">
             <p class="text-white/20 text-7xl sm:text-8xl font-heading font-bold leading-none mb-2">
               {(data.type === 'album' ? 'A' : data.type === 'ost' ? 'O' : 'S')}
