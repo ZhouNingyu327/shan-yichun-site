@@ -31,6 +31,13 @@ const discography = defineCollection({
       coverColor: z.string().optional(),
       lyric: z.string().optional(),
       label: z.string().optional(),
+      source: z.string().optional(),
+      lyricist: z.string().optional(),
+      composer: z.string().optional(),
+      arranger: z.string().optional(),
+      duration: z.string().optional(),
+      album: z.string().optional(),
+      description: z.string().optional(),
       tracks: z
         .array(
           z.object({

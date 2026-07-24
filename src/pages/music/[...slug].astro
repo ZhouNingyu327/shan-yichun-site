@@ -16,9 +16,7 @@ const { entry } = Astro.props;
 const { data } = entry;
 
 const typeLabels: Record<string, string> = {
-  album: '专辑',
-  single: '单曲',
-  ost: 'OST',
+  album: '专辑', single: '单曲', ost: 'OST',
 };
 
 const coverGradients: Record<string, string> = {
@@ -35,6 +33,17 @@ const musicSchema = {
   datePublished: data.releaseDate.toISOString(),
   ...(data.tracks ? { numTracks: data.tracks.length } : {}),
 };
+
+// Build info items array
+const infoItems: { label: string; value: string }[] = [];
+if (data.type !== 'album' && data.source) {
+  infoItems.push({ label: '出处', value: data.source });
+}
+if (data.lyricist) infoItems.push({ label: '作词', value: data.lyricist });
+if (data.composer) infoItems.push({ label: '作曲', value: data.composer });
+if (data.arranger) infoItems.push({ label: '编曲', value: data.arranger });
+if (data.label) infoItems.push({ label: '唱片公司', value: data.label });
+if (data.duration) infoItems.push({ label: '时长', value: data.duration });
 ---
 
 <BaseLayout title={data.title} path={`/music/${entry.id}`}>
@@ -49,10 +58,8 @@ const musicSchema = {
         </p>
         <p class="mt-6 text-sm text-white/40 tracking-widest">— 《{data.title}》</p>
         <div class="mt-10">
-          <button
-            id="enter-btn"
-            class="px-8 py-2.5 rounded-full bg-white/10 text-white/70 border border-white/20 text-sm tracking-widest hover:bg-white/20 hover:text-white transition-all"
-          >
+          <button id="enter-btn"
+            class="px-8 py-2.5 rounded-full bg-white/10 text-white/70 border border-white/20 text-sm tracking-widest hover:bg-white/20 hover:text-white transition-all">
             进入
           </button>
         </div>
@@ -62,61 +69,55 @@ const musicSchema = {
 
   <Container class="py-16 sm:py-20">
     <div class="grid md:grid-cols-2 gap-10 lg:gap-16 items-start">
-      <!-- 封面区域 -->
+      <!-- 封面 -->
       <div class="relative">
-        <div class={`aspect-square rounded-3xl bg-gradient-to-br ${coverGradients[data.type] || coverGradients.single} flex items-center justify-center shadow-2xl shadow-purple-500/20 overflow-hidden relative`}>
-          <img
-            src={`/images/covers/${entry.id}.jpg`}
-            alt={data.title}
-            class="absolute inset-0 w-full h-full object-cover"
-            loading="eager"
-            onerror="this.style.display='none'"
-          />
-          <!-- 渐变叠加层（图片存在时变半透明，图片不存在时显示全部） -->
+        <div class={`aspect-square rounded-3xl bg-gradient-to-br ${coverGradients[data.type] || coverGradients.single} flex items-center justify-center shadow-2xl shadow-purple-500/20 overflow-hidden`}>
+          <img src={`/images/covers/${entry.id}.jpg`} alt={data.title}
+            class="absolute inset-0 w-full h-full object-cover" loading="eager"
+            onerror="this.style.display='none'" />
           <div class="absolute inset-0 bg-gradient-to-br from-black/30 to-black/10" />
           <div class="relative z-10 text-center px-8">
             <p class="text-white/20 text-7xl sm:text-8xl font-heading font-bold leading-none mb-2">
-              {(data.type === 'album' ? 'A' : data.type === 'ost' ? 'O' : 'S')}
+              {data.type === 'album' ? 'A' : data.type === 'ost' ? 'O' : 'S'}
             </p>
-            <p class="text-white/90 text-xl sm:text-2xl font-heading font-bold leading-tight">
-              {data.title}
-            </p>
-            {data.titleEn && (
-              <p class="text-white/50 text-sm mt-2 tracking-wider">{data.titleEn}</p>
-            )}
-            {data.lyric && (
-              <p class="text-white/40 text-xs mt-4 italic border-t border-white/10 pt-4 max-w-xs mx-auto">
-                「{data.lyric}」
-              </p>
-            )}
+            <p class="text-white/90 text-xl sm:text-2xl font-heading font-bold leading-tight">{data.title}</p>
+            {data.titleEn && <p class="text-white/50 text-sm mt-2 tracking-wider">{data.titleEn}</p>}
           </div>
         </div>
       </div>
 
-      <!-- 信息区域 -->
+      <!-- 信息区 -->
       <div>
         <div class="flex items-center gap-3 mb-4 flex-wrap">
-          <Tag variant={data.type === 'album' ? 'primary' : 'accent'}>
-            {typeLabels[data.type]}
-          </Tag>
-          <span class="text-sm text-text-secondary">{new Date(data.releaseDate).getFullYear()}</span>
-          {data.label && <span class="text-xs text-text-secondary/60">· {data.label}</span>}
+          <Tag variant={data.type === 'album' ? 'primary' : 'accent'}>{typeLabels[data.type]}</Tag>
+          <span class="text-sm text-text-secondary">{new Date(data.releaseDate).toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
         </div>
 
         <h1 class="text-3xl sm:text-4xl font-heading font-bold text-text-primary mb-2">{data.title}</h1>
-        {data.titleEn && <p class="text-base text-text-secondary mb-4">{data.titleEn}</p>}
+        {data.titleEn && <p class="text-base text-text-secondary mb-6">{data.titleEn}</p>}
 
-        <!-- 歌曲介绍 -->
-        <div class="prose prose-gray max-w-none text-text-secondary leading-relaxed">
+        <!-- 歌曲信息卡片 -->
+        {infoItems.length > 0 && (
+          <div class="bg-white rounded-xl border border-primary-100/30 overflow-hidden mb-6">
+            {infoItems.map((item, i) => (
+              <div class={`flex items-start gap-3 px-5 py-3 ${i < infoItems.length - 1 ? 'border-b border-primary-100/30' : ''}`}>
+                <span class="text-xs font-medium text-text-secondary/60 w-14 flex-shrink-0 pt-0.5">{item.label}</span>
+                <span class="text-sm text-text-primary">{item.value}</span>
+              </div>
+            ))}
+          </div>
+        )}
+
+        <!-- 正文介绍 -->
+        <div class="text-sm text-text-secondary leading-relaxed">
           <slot />
         </div>
 
-        <!-- 专辑曲目列表 -->
+        <!-- 专辑曲目 -->
         {data.tracks && data.tracks.length > 0 && (
           <div class="mt-8">
             <h2 class="text-lg font-semibold text-text-primary mb-4 flex items-center gap-2">
-              曲目列表
-              <span class="text-sm font-normal text-text-secondary">{data.tracks.length}首</span>
+              曲目列表 <span class="text-sm font-normal text-text-secondary">{data.tracks.length}首</span>
             </h2>
             <div class="bg-white rounded-xl border border-primary-100/30 overflow-hidden">
               {data.tracks.map((track, index) => (
@@ -133,11 +134,11 @@ const musicSchema = {
         <!-- 收听链接 -->
         {data.platforms && data.platforms.length > 0 && (
           <div class="mt-8">
-            <h2 class="text-sm font-semibold text-text-primary mb-3">收听平台</h2>
+            <h3 class="text-sm font-semibold text-text-primary mb-3">收听平台</h3>
             <div class="flex flex-wrap gap-2">
               {data.platforms.map((platform) => (
                 <a href={platform.url} target="_blank" rel="noopener noreferrer"
-                   class="inline-flex items-center px-4 py-2 bg-primary-50 text-primary-700 rounded-full text-sm font-medium hover:bg-primary-100 transition-colors">
+                  class="inline-flex items-center px-4 py-2 bg-primary-50 text-primary-700 rounded-full text-sm font-medium hover:bg-primary-100 transition-colors">
                   {platform.name}
                 </a>
               ))}
@@ -150,7 +151,6 @@ const musicSchema = {
 </BaseLayout>
 
 <script is:inline>
-  // 歌词开幕动画 — 点击"进入"后淡出
   const overlay = document.getElementById('lyric-overlay');
   const btn = document.getElementById('enter-btn');
   if (overlay && btn) {
@@ -158,18 +158,13 @@ const musicSchema = {
       overlay.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
       overlay.style.opacity = '0';
       overlay.style.transform = 'scale(1.05)';
-      setTimeout(function() {
-        overlay.style.display = 'none';
-      }, 600);
+      setTimeout(function() { overlay.style.display = 'none'; }, 600);
     });
-    // 也支持点击空白区域关闭
     overlay.addEventListener('click', function(e) {
       if (e.target === overlay) {
         overlay.style.transition = 'opacity 0.6s ease';
         overlay.style.opacity = '0';
-        setTimeout(function() {
-          overlay.style.display = 'none';
-        }, 600);
+        setTimeout(function() { overlay.style.display = 'none'; }, 600);
       }
     });
   }
