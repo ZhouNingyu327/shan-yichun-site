@@ -26,15 +26,24 @@ const coverGradients: Record<string, string> = {
 };
 
 // Build a lookup from song title to slug for album track linking
-// Prefer non-album entries so self-titled tracks don't point to the album itself
+// Prefer album-only tracks for same-named songs (e.g. "纯妹妹" points to track, not pre-release single)
+const albumOnlySlugs = [
+  'ling-yi-zhong-da-an', 'yong-gan-e-du-track', 'ni-hao-kuai-le', 'tell-me',
+  'shi-jiao', 'yu-hou-ri-ji', 'forever-in-you-track', 'kong-er', 'ni-ming-xing',
+  'gray-turns-to-may', 'chun-mei-mei-track', 'xiang-ri-kui-chao-zhe-ye',
+  'jia-ru-wo-men-hai-ai-zhe', 'wo-biao-shi-li-jie', 'hai-ni-mo-li',
+  'wo-guan-bu-zhu-wo-zi-ji', 'zhu-yu', 'you-qu', 'duo-shao-de-guang-yin', 'hai-you-shen-me-geng-hao-de'
+];
 const allMusic = await getCollection('discography');
 const titleToSlug: Record<string, string> = {};
+// First pass: set all non-album mappings
 for (const m of allMusic) {
-  const existing = titleToSlug[m.data.title];
-  // If a title maps to an album and we find a non-album version, use the non-album version
-  if (!existing || (m.data.type !== 'album' && existing !== m.id)) {
-    titleToSlug[m.data.title] = m.id;
-  }
+  if (m.data.type !== 'album') titleToSlug[m.data.title] = m.id;
+}
+// Second pass: override with album-only tracks when they exist
+for (const slug of albumOnlySlugs) {
+  const track = allMusic.find(m => m.id === slug);
+  if (track) titleToSlug[track.data.title] = slug;
 }
 
 const musicSchema = {

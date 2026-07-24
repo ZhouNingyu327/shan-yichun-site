@@ -11,7 +11,8 @@ const albumOnlySlugs = [
   'ling-yi-zhong-da-an', 'yong-gan-e-du-track', 'ni-hao-kuai-le', 'tell-me',
   'shi-jiao', 'yu-hou-ri-ji', 'forever-in-you-track', 'kong-er', 'ni-ming-xing',
   'gray-turns-to-may', 'chun-mei-mei-track', 'xiang-ri-kui-chao-zhe-ye',
-  'jia-ru-wo-men-hai-ai-zhe', 'wo-biao-shi-li-jie', 'hai-ni-mo-li'
+  'jia-ru-wo-men-hai-ai-zhe', 'wo-biao-shi-li-jie', 'hai-ni-mo-li',
+  'wo-guan-bu-zhu-wo-zi-ji', 'zhu-yu', 'you-qu', 'duo-shao-de-guang-yin', 'hai-you-shen-me-geng-hao-de'
 ];
 const singles = allMusic.filter((m) => m.data.type === 'single' && !albumOnlySlugs.includes(m.id)).sort((a, b) => new Date(b.data.releaseDate).getTime() - new Date(a.data.releaseDate).getTime());
 const osts = allMusic.filter((m) => m.data.type === 'ost').sort((a, b) => new Date(b.data.releaseDate).getTime() - new Date(a.data.releaseDate).getTime());
