@@ -26,10 +26,15 @@ const coverGradients: Record<string, string> = {
 };
 
 // Build a lookup from song title to slug for album track linking
+// Prefer non-album entries so self-titled tracks don't point to the album itself
 const allMusic = await getCollection('discography');
 const titleToSlug: Record<string, string> = {};
 for (const m of allMusic) {
-  titleToSlug[m.data.title] = m.id;
+  const existing = titleToSlug[m.data.title];
+  // If a title maps to an album and we find a non-album version, use the non-album version
+  if (!existing || (m.data.type !== 'album' && existing !== m.id)) {
+    titleToSlug[m.data.title] = m.id;
+  }
 }
 
 const musicSchema = {
