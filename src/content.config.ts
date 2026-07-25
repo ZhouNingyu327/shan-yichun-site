@@ -71,6 +71,9 @@ const events = defineCollection({
       type: z.enum(['concert', 'variety', 'award', 'interview', 'fanmeeting', 'other']),
       location: z.string(),
       locationEn: z.string().optional(),
+      venue: z.string().optional(),
+      capacity: z.number().optional(),
+      tour: z.string().optional(),
       images: z.array(image()).optional(),
       links: z
         .array(
