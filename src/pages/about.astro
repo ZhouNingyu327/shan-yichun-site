@@ -11,14 +11,12 @@ const bio = bioEntries[0];
 const allMusic = await getCollection('discography');
 const allAwards = await getCollection('awards');
 const allEvents = await getCollection('events');
-
 const albumCount = allMusic.filter((m) => m.data.type === 'album').length;
 const songCount = allMusic.length;
 const totalWon = allAwards.filter((a) => a.data.result === 'won').length;
 const debutYear = 2020;
 const careerYears = Math.max(1, 2026 - debutYear);
 
-// Yearly release count
 const yearCounts: Record<string, number> = {};
 for (const m of allMusic) {
   const y = String(new Date(m.data.releaseDate).getFullYear());
@@ -27,12 +25,10 @@ for (const m of allMusic) {
 const yearLabels = Object.keys(yearCounts).sort();
 const maxYearCount = Math.max(...Object.values(yearCounts), 1);
 
-// Featured works for waveform section
 const featured = allMusic.filter((m) =>
   ['xiang-ni-shi-feng-qi', 'yong-gan-e-du', 'chun-mei-mei', 'xu-xie', 'ni-de-zhen-cang', 'yi-sheng-yi-nian'].includes(m.id)
 );
 
-// Achievement wall data
 const achievements = [
   { emoji: '🏆', label: '好声音总冠军', year: '2020', color: 'primary' },
   { emoji: '🎤', label: '央视春晚', year: '2023', color: 'accent' },
@@ -48,28 +44,25 @@ const achievements = [
   { emoji: '📰', label: '微博年度歌手', year: '2025', color: 'orange' },
 ];
 const achColors: Record<string, string> = {
-  primary: 'bg-primary-100 text-primary-700 border-primary-200',
-  accent: 'bg-accent-100 text-accent-700 border-accent-200',
-  emerald: 'bg-emerald-100 text-emerald-700 border-emerald-200',
-  amber: 'bg-amber-100 text-amber-700 border-amber-200',
-  rose: 'bg-rose-100 text-rose-700 border-rose-200',
-  purple: 'bg-purple-100 text-purple-700 border-purple-200',
-  sky: 'bg-sky-100 text-sky-700 border-sky-200',
-  indigo: 'bg-indigo-100 text-indigo-700 border-indigo-200',
-  teal: 'bg-teal-100 text-teal-700 border-teal-200',
-  pink: 'bg-pink-100 text-pink-700 border-pink-200',
-  violet: 'bg-violet-100 text-violet-700 border-violet-200',
-  orange: 'bg-orange-100 text-orange-700 border-orange-200',
+  primary: 'bg-primary-100/90 text-primary-700 border-primary-200',
+  accent: 'bg-accent-100/90 text-accent-700 border-accent-200',
+  emerald: 'bg-emerald-100/90 text-emerald-700 border-emerald-200',
+  amber: 'bg-amber-100/90 text-amber-700 border-amber-200',
+  rose: 'bg-rose-100/90 text-rose-700 border-rose-200',
+  purple: 'bg-purple-100/90 text-purple-700 border-purple-200',
+  sky: 'bg-sky-100/90 text-sky-700 border-sky-200',
+  indigo: 'bg-indigo-100/90 text-indigo-700 border-indigo-200',
+  teal: 'bg-teal-100/90 text-teal-700 border-teal-200',
+  pink: 'bg-pink-100/90 text-pink-700 border-pink-200',
+  violet: 'bg-violet-100/90 text-violet-700 border-violet-200',
+  orange: 'bg-orange-100/90 text-orange-700 border-orange-200',
 };
 
-// Early life cards
 const earlyLife = [
-  { emoji: '🎵', title: '音乐启蒙', text: '出生于浙江东阳普通家庭。母亲单梅芳喜欢越剧，受母亲影响从小热爱音乐。小学三年级开始学声乐，多次在东阳市童声大赛中获奖，六年级时演唱的《山里的阳光》被选为校歌。' },
-  { emoji: '⭐', title: '梦想萌芽', text: '初中开始在唱歌软件上发布作品积累粉丝。2018年通过"全民K歌"从150多万应征者中被选中，参加湖南卫视《我想和你唱》，与李健合唱《绒花》。这次经历让她坚定了走音乐道路的决心。' },
-  { emoji: '🎓', title: '艺考之路', text: '高二决定走音乐道路开始专业学习。高三参加艺考培训班。2020年以专业第一名的成绩考入浙江音乐学院流行音乐系（2024年7月毕业），师从音乐人王滔。学习音乐的费用靠父母贷款支持。' },
+  { emoji: '🎵', title: '🎤 音乐启蒙', text: '出生于浙江东阳普通家庭。母亲单梅芳喜欢越剧，受母亲影响从小热爱音乐。小学三年级开始学声乐，多次在东阳市童声大赛中获奖，六年级时演唱的《山里的阳光》被选为校歌。' },
+  { emoji: '⭐', title: '🌟 梦想萌芽', text: '初中开始在唱歌软件上发布作品积累粉丝。2018年通过"全民K歌"从150多万应征者中被选中，参加湖南卫视《我想和你唱》，与李健合唱《绒花》。这次经历让她坚定了走音乐道路的决心。' },
+  { emoji: '🎓', title: '🎶 艺考之路', text: '高二决定走音乐道路开始专业学习。高三参加艺考培训班。2020年以专业第一名的成绩考入浙江音乐学院流行音乐系（2024年7月毕业），师从音乐人王滔。学习音乐的费用靠父母贷款支持。' },
 ];
-
-// Personal life
 const personal = [
   { emoji: '💚', title: '家庭', text: '出身普通家庭，音乐费用靠父母贷款。母亲单梅芳喜欢越剧是其音乐启蒙。与恩师李健关系深厚。' },
   { emoji: '🧠', title: '性格', text: '自曝有表达障碍，从小跟着爷爷奶奶生活，音乐是她最早的倾诉对象和表达方式。' },
@@ -77,327 +70,344 @@ const personal = [
   { emoji: '🥛', title: '粉丝名', text: '粉丝名为"纯牛奶"。' },
 ];
 
-// Timeline entries for accordion
 const timeline = [
-  { year: '2020', title: '《中国好声音》夺冠出道', accent: true,
-    detail: '参加《中国好声音2020》，盲选演唱《永不失联的爱》刷屏，获四位导师转身，加入李健战队。11月20日决赛夺得全国总冠军，正式出道。签约百沐娱乐，为张艺谋电影《一秒钟》演唱推广曲，发行首支个人单曲《照片》。' },
-  { year: '2021', title: '崭露头角 · 多档综艺', accent: false,
-    detail: '发行《在夜里跳舞》《分身》《喂》等单曲。为《一生一世》演唱主题曲《续写》，为《误杀2》演唱片尾曲《萤火虫》。常驻《说唱听我的2》《爆裂舞台》《我们的歌第三季》等综艺。获第三届TMEA"年度最具潜力歌手"奖。' },
-  { year: '2022', title: '首张专辑《勇敢额度》', accent: true,
-    detail: '1月2日发行首张个人专辑《勇敢额度》，收录10首歌曲含全英文歌《Tell Me》。出演电影《你是我的一束光》（荧幕首秀）。参加《声生不息·港乐季》发行首支粤语单曲《靓仔日记》。获第29届东方风云榜"最佳新锐歌手"奖。',
-    link: '/music/yong-gan-e-du', linkLabel: '收听专辑 →' },
-  { year: '2023', title: '首登央视春晚 · 首次个唱', accent: true,
-    detail: '首次登上央视春晚，与黄霄雲、宋轶等合唱《绿水青山》。为《三体》演唱插曲《让我随风》，为《我的人间烟火》演唱《想你时风起》（年度热门）。12月23日生日当天在杭州举办首次个人演唱会。获浪潮音乐大赏"最佳新人"奖。',
-    link: '/music/xiang-ni-shi-feng-qi', linkLabel: '《想你时风起》→' },
-  { year: '2024', title: '再登春晚 · 连获大奖', accent: true,
-    detail: '连续第二年登上央视春晚，与海来阿木合唱《不如见一面》。获TMEA"年度最佳内地女歌手"、东方风云榜"最受欢迎女歌手"。参加《音乐缘计划》创作《终身孤独》《TENDER》等多首作品。为第二张专辑蓄力。' },
-  { year: '2025', title: '《歌手2025》· 二专《纯妹妹》', accent: true,
-    detail: '以首发歌手参加《歌手2025》，两度获周冠军，总决赛第三名。8月获东方风云榜"最佳女歌手"。12月成立个人工作室。12月28日发行第二张专辑《纯妹妹》（常石磊制作，10首歌曲）。与周深合作全运会主题歌《天海一心》。',
-    link: '/music/chun-mei-mei', linkLabel: '收听专辑 →' },
-  { year: '2026', title: '香奈儿大使 · 金曲奖提名', accent: true,
-    detail: '1月香奈儿官宣品牌形象大使（首位00后华人歌手代言人）。「纯妹妹2.0」巡演开唱。5月凭借《纯妹妹》入围第37届金曲奖最佳华语女歌手。发行《光波》《我在意的》等单曲。' },
+  { year: '2020', title: '《中国好声音》夺冠出道', accent: true, detail: '参加《中国好声音2020》，盲选演唱《永不失联的爱》刷屏，获四位导师转身，加入李健战队。11月20日决赛夺得全国总冠军，正式出道。签约百沐娱乐，为张艺谋电影《一秒钟》演唱推广曲，发行首支个人单曲《照片》。' },
+  { year: '2021', title: '崭露头角 · 多档综艺', accent: false, detail: '发行《在夜里跳舞》《分身》《喂》等单曲。为《一生一世》演唱主题曲《续写》，为《误杀2》演唱片尾曲《萤火虫》。常驻《说唱听我的2》《爆裂舞台》《我们的歌第三季》等综艺。获第三届TMEA"年度最具潜力歌手"奖。' },
+  { year: '2022', title: '首张专辑《勇敢额度》', accent: true, detail: '1月2日发行首张个人专辑《勇敢额度》，收录10首歌曲含全英文歌《Tell Me》。出演电影《你是我的一束光》（荧幕首秀）。参加《声生不息·港乐季》发行首支粤语单曲《靓仔日记》。获第29届东方风云榜"最佳新锐歌手"奖。', link: '/music/yong-gan-e-du', linkLabel: '收听专辑 →' },
+  { year: '2023', title: '首登央视春晚 · 首次个唱', accent: true, detail: '首次登上央视春晚，与黄霄雲、宋轶等合唱《绿水青山》。为《三体》演唱插曲《让我随风》，为《我的人间烟火》演唱《想你时风起》（年度热门）。12月23日生日当天在杭州举办首次个人演唱会。', link: '/music/xiang-ni-shi-feng-qi', linkLabel: '《想你时风起》→' },
+  { year: '2024', title: '再登春晚 · 连获大奖', accent: true, detail: '连续第二年登上央视春晚，与海来阿木合唱《不如见一面》。获TMEA"年度最佳内地女歌手"、东方风云榜"最受欢迎女歌手"。参加《音乐缘计划》创作《终身孤独》等作品。' },
+  { year: '2025', title: '《歌手2025》· 二专《纯妹妹》', accent: true, detail: '以首发歌手参加《歌手2025》，两度获周冠军，总决赛第三名。8月获东方风云榜"最佳女歌手"。12月成立个人工作室。12月28日发行第二张专辑《纯妹妹》。', link: '/music/chun-mei-mei', linkLabel: '收听专辑 →' },
+  { year: '2026', title: '香奈儿大使 · 金曲奖提名', accent: true, detail: '1月香奈儿官宣品牌形象大使（首位00后华人歌手代言人）。「纯妹妹2.0」巡演开唱。5月凭借《纯妹妹》入围第37届金曲奖最佳华语女歌手。' },
 ];
 ---
 
 <BaseLayout title="个人简介" path="/about">
-  <!-- ===== HERO: 声波辐射 + 多色交汇 ===== -->
-  <section class="relative bg-gradient-to-br from-[#1a1a2e] via-[#16213e] to-[#0f3460] py-16 sm:py-24 overflow-hidden">
+  <!-- ===== 全页背景容器 ===== -->
+  <div class="relative bg-gradient-to-br from-[#0a0a1a] via-[#120a2e] via-[#1a0a2e] to-[#0f1923] overflow-hidden">
 
-    <!-- 多色模糊大圆交汇 -->
-    <div class="absolute inset-0 overflow-hidden">
-      <div class="absolute top-[-15%] left-[-5%] w-[32rem] h-[32rem] rounded-full blur-[100px] opacity-40 animate-blob"
+    <!-- 全页背景装饰——多色模糊大圆 -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+      <div class="absolute top-[-10%] left-[-5%] w-[40rem] h-[40rem] rounded-full blur-[120px] opacity-30 animate-blob"
            style="background: linear-gradient(135deg, #8b5cf6, #ec4899)" />
-      <div class="absolute bottom-[-20%] right-[-5%] w-[28rem] h-[28rem] rounded-full blur-[100px] opacity-30 animate-blob animation-delay-2"
+      <div class="absolute bottom-[-15%] right-[-5%] w-[35rem] h-[35rem] rounded-full blur-[120px] opacity-25 animate-blob animation-delay-2"
            style="background: linear-gradient(135deg, #f59e0b, #ef4444)" />
-      <div class="absolute top-[30%] right-[15%] w-[20rem] h-[20rem] rounded-full blur-[100px] opacity-25 animate-blob animation-delay-4"
+      <div class="absolute top-[20%] right-[10%] w-[25rem] h-[25rem] rounded-full blur-[100px] opacity-20 animate-blob animation-delay-4"
            style="background: linear-gradient(135deg, #06b6d4, #8b5cf6)" />
-      <div class="absolute bottom-[20%] left-[10%] w-[18rem] h-[18rem] rounded-full blur-[100px] opacity-20 animate-blob animation-delay-3"
+      <div class="absolute bottom-[20%] left-[8%] w-[22rem] h-[22rem] rounded-full blur-[100px] opacity-15 animate-blob animation-delay-3"
            style="background: linear-gradient(135deg, #22d3ee, #a78bfa)" />
+      <!-- 新增粉色暖调补充 -->
+      <div class="absolute top-[55%] right-[25%] w-[18rem] h-[18rem] rounded-full blur-[80px] opacity-15 animate-blob animation-delay-5"
+           style="background: linear-gradient(135deg, #f472b6, #fb923c)" />
     </div>
 
-    <!-- 声波辐射环（从SYC头像位置向外扩散） -->
-    <div class="absolute inset-0 flex items-center justify-center overflow-hidden pointer-events-none">
-      <div class="relative w-full max-w-3xl aspect-square flex items-center justify-center">
-        <div class="absolute w-[120%] aspect-square rounded-full border border-white/[0.03] animate-sonar-scale-1" />
-        <div class="absolute w-[100%] aspect-square rounded-full border border-white/[0.04] animate-sonar-scale-2" />
-        <div class="absolute w-[80%] aspect-square rounded-full border border-white/[0.05] animate-sonar-scale-3" />
-        <div class="absolute w-[60%] aspect-square rounded-full border border-white/[0.06] animate-sonar-scale-1" style="animation-delay: 1.5s" />
-        <div class="absolute w-[45%] aspect-square rounded-full border border-white/[0.07] animate-sonar-scale-2" style="animation-delay: 2s" />
-        <div class="absolute w-[30%] aspect-square rounded-full border border-white/[0.08] animate-sonar-scale-3" style="animation-delay: 0.8s" />
+    <!-- 全页声波辐射环 -->
+    <div class="fixed inset-0 flex items-center justify-center overflow-hidden pointer-events-none">
+      <div class="relative w-full max-w-4xl aspect-square flex items-center justify-center">
+        <div class="absolute w-[130%] aspect-square rounded-full border border-white/[0.02] animate-sonar-scale-1" />
+        <div class="absolute w-[110%] aspect-square rounded-full border border-white/[0.03] animate-sonar-scale-2" />
+        <div class="absolute w-[90%] aspect-square rounded-full border border-white/[0.04] animate-sonar-scale-3" />
+        <div class="absolute w-[70%] aspect-square rounded-full border border-white/[0.05] animate-sonar-scale-1" style="animation-delay: 1.5s" />
+        <div class="absolute w-[55%] aspect-square rounded-full border border-white/[0.06] animate-sonar-scale-2" style="animation-delay: 2.5s" />
+        <div class="absolute w-[40%] aspect-square rounded-full border border-white/[0.07] animate-sonar-scale-3" style="animation-delay: 1s" />
       </div>
     </div>
 
-    <!-- 顶部高光-->
-    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[60rem] h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+    <!-- 浮动乐谱符号（音乐元素） -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none select-none">
+      <span class="absolute top-[12%] left-[8%] text-4xl text-white/[0.04] animate-floatNote" style="animation-delay: 0s">♪</span>
+      <span class="absolute top-[25%] right-[12%] text-3xl text-white/[0.04] animate-floatNote" style="animation-delay: 2s">♫</span>
+      <span class="absolute top-[45%] left-[5%] text-5xl text-white/[0.03] animate-floatNote" style="animation-delay: 4s">♩</span>
+      <span class="absolute top-[60%] right-[8%] text-4xl text-white/[0.04] animate-floatNote" style="animation-delay: 1s">♪</span>
+      <span class="absolute top-[75%] left-[12%] text-5xl text-white/[0.03] animate-floatNote" style="animation-delay: 3s">♫</span>
+      <span class="absolute top-[85%] right-[15%] text-3xl text-white/[0.04] animate-floatNote" style="animation-delay: 5s">♬</span>
+      <!-- 更多悬浮音符 -->
+      <span class="absolute top-[35%] left-[55%] text-3xl text-white/[0.03] animate-floatNote" style="animation-delay: 1.5s">♩</span>
+      <span class="absolute top-[8%] right-[35%] text-4xl text-white/[0.03] animate-floatNote" style="animation-delay: 3.5s">♫</span>
+      <!-- 旋律线装饰 -->
+      <svg class="absolute top-[40%] left-[60%] w-32 h-8 text-white/[0.03]" viewBox="0 0 120 20"><path d="M0 10 Q 20 0 40 10 Q 60 20 80 10 Q 100 0 120 10" fill="none" stroke="currentColor" stroke-width="1"/></svg>
+      <svg class="absolute top-[70%] left-[5%] w-24 h-6 text-white/[0.03]" viewBox="0 0 120 20"><path d="M0 15 Q 30 0 60 15 Q 90 30 120 15" fill="none" stroke="currentColor" stroke-width="1"/></svg>
+    </div>
 
-    <Container class="relative z-10">
-      <div class="flex flex-col md:flex-row items-center gap-8 md:gap-16 mb-10">
-        <div class="w-36 h-36 sm:w-44 sm:h-44 rounded-full bg-white/10 backdrop-blur-md border-2 border-white/20 flex items-center justify-center flex-shrink-0 shadow-2xl overflow-hidden float-anim">
-          <div class="text-center">
-            <span class="text-white/30 text-5xl font-heading font-bold">SYC</span>
-          </div>
-        </div>
-        <div class="text-center md:text-left">
-          <div class="flex items-center gap-3 justify-center md:justify-start mb-2 flex-wrap">
-            <h1 class="text-4xl sm:text-5xl font-heading font-bold text-white">单依纯</h1>
-            <span class="px-2.5 py-0.5 rounded-full bg-white/15 text-white/80 text-[11px] font-medium border border-white/10">00后歌手</span>
-            <span class="px-2.5 py-0.5 rounded-full bg-accent-500/30 text-accent-200 text-[11px] font-medium border border-accent-300/20">金曲奖提名</span>
-          </div>
-          <p class="text-lg text-white/70 font-light tracking-wide">Shan Yichun</p>
-          <p class="mt-3 text-white/85 text-sm sm:text-base max-w-2xl leading-relaxed">
-            中国内地流行乐女歌手 · 2020年《中国好声音》全国总冠军 · 第37届金曲奖最佳华语女歌手提名
-          </p>
-          <div class="flex flex-wrap gap-2 mt-4 justify-center md:justify-start">
-            {SOCIAL_LINKS.map((link) => (
-              <a href={link.url} target="_blank" rel="noopener noreferrer"
-                class="px-3.5 py-1 rounded-full bg-white/10 text-white/75 border border-white/15 text-xs hover:bg-white/20 hover:text-white transition-all">
-                {link.name}
-              </a>
-            ))}
-          </div>
-        </div>
-      </div>
+    <!-- 水印文字：单依纯 反复出现作为底纹 -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none select-none">
+      {[8, 25, 42, 58, 75, 90].map((top, i) => (
+        <div class="absolute text-[10rem] sm:text-[16rem] font-heading font-bold text-white/[0.015]" style={`top: ${top}%; left: ${i % 2 === 0 ? '-5%' : '50%'}; transform: rotate(${i % 2 === 0 ? '-15' : '10'}deg);`}>依</div>
+      ))}
+      {[15, 35, 50, 68, 82].map((top, i) => (
+        <div class="absolute text-[8rem] sm:text-[12rem] font-heading font-bold text-white/[0.012]" style={`top: ${top}%; right: ${i % 2 === 0 ? '-3%' : '30%'}; transform: rotate(${i % 2 === 0 ? '12' : '-8'}deg);`}>纯</div>
+      ))}
+    </div>
 
-      <!-- 数据仪表板 -->
-      <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
-        {[
-          { value: songCount, label: '原创歌曲' },
-          { value: albumCount, label: '录音室专辑' },
-          { value: totalWon, label: '获奖荣誉' },
-          { value: careerYears, label: '出道年数' },
-          { value: allEvents.length, label: '演出活动' },
-        ].map((s) => (
-          <div class="bg-white/10 backdrop-blur-sm rounded-xl border border-white/10 p-4 text-center card-hover">
-            <p class="text-2xl sm:text-3xl font-heading font-bold text-white stat-num">{s.value}</p>
-            <p class="text-xs text-white/60 mt-1">{s.label}</p>
-          </div>
-        ))}
-      </div>
-    </Container>
-  </section>
+    <!-- 顶部高光线 -->
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[80rem] h-px bg-gradient-to-r from-transparent via-white/15 to-transparent" />
 
-  <Container class="py-10 sm:py-14">
-    <!-- ===== 基本信息 ===== -->
-    <section class="mb-12">
-      <h2 class="text-xl sm:text-2xl font-heading font-bold text-text-primary mb-6 flex items-center gap-3">
-        <span class="w-1 h-7 bg-primary-500 rounded-full inline-block" /> 基本信息
-      </h2>
-      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
-        <InfoCard label="中文名" value="单依纯" />
-        <InfoCard label="英文名" value="Shan Yichun" />
-        <InfoCard label="国籍" value="中国" />
-        <InfoCard label="出生" value="2001.12.23 · 东阳" />
-        <InfoCard label="职业" value="歌手" />
-        <InfoCard label="毕业院校" value="浙江音乐学院" />
-        <InfoCard label="经纪公司" value="自来卷音乐工作室" />
-        <InfoCard label="身高" value="168cm" />
-        <InfoCard label="粉丝名" value="纯牛奶" />
-        <InfoCard label="导师" value="李健" />
-        <InfoCard label="擅长风格" value="流行 / R&B" />
-        <InfoCard label="个人工作室" value="2025.12 成立" />
-      </div>
-    </section>
-
-    <!-- ===== 金句引用 ===== -->
-    <section class="mb-12">
-      <div class="relative bg-gradient-to-r from-primary-50 via-white to-accent-50 rounded-2xl border border-primary-100/50 p-8 sm:p-10 text-center">
-        <span class="text-5xl text-primary-300 font-heading leading-none absolute top-4 left-6 opacity-40">"</span>
-        <blockquote class="text-lg sm:text-xl md:text-2xl font-heading text-text-primary italic leading-relaxed max-w-2xl mx-auto relative z-10">
-          音乐是我最早的倾诉对象和表达方式。
-        </blockquote>
-        <p class="mt-4 text-sm text-text-secondary/60">—— 单依纯</p>
-        <span class="text-5xl text-primary-300 font-heading leading-none absolute bottom-4 right-6 opacity-40">"</span>
-      </div>
-    </section>
-
-    <!-- ===== 早年经历 ===== -->
-    <section class="mb-12">
-      <h2 class="text-xl sm:text-2xl font-heading font-bold text-text-primary mb-6 flex items-center gap-3">
-        <span class="w-1 h-7 bg-primary-500 rounded-full inline-block" /> 早年经历
-      </h2>
-      <div class="grid sm:grid-cols-3 gap-4">
-        {earlyLife.map((card) => (
-          <div class="bg-white rounded-2xl border border-primary-100/30 p-5 card-hover">
-            <div class="flex items-center gap-3 mb-3">
-              <div class="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center text-lg flex-shrink-0">{card.emoji}</div>
-              <h3 class="text-sm font-bold text-text-primary">{card.title}</h3>
-            </div>
-            <p class="text-xs text-text-secondary leading-relaxed">{card.text}</p>
-          </div>
-        ))}
-      </div>
-    </section>
-
-    <!-- ===== 成长数据可视化：年度发布量 ===== -->
-    <section class="mb-12">
-      <h2 class="text-xl sm:text-2xl font-heading font-bold text-text-primary mb-6 flex items-center gap-3">
-        <span class="w-1 h-7 bg-primary-500 rounded-full inline-block" /> 成长数据
-        <span class="text-sm font-normal text-text-secondary font-body">· 年度歌曲发布量</span>
-      </h2>
-      <div class="bg-white rounded-2xl border border-primary-100/30 p-6 sm:p-8">
-        <div class="flex items-end gap-3 sm:gap-4 h-48 sm:h-56">
-          {yearLabels.map((y) => {
-            const count = yearCounts[y];
-            const pct = Math.max(8, Math.round((count / maxYearCount) * 100));
-            return (
-              <div class="flex-1 flex flex-col items-center gap-2 h-full justify-end">
-                <span class="text-xs font-bold text-text-primary">{count}</span>
-                <div
-                  class="w-full rounded-lg bar-glow transition-all duration-300 cursor-pointer"
-                  style={`height: ${pct}%; background: linear-gradient(to top, #8b5cf6, #a78bfa)`}
-                  title={`${y}年 发布${count}首`}
-                />
-                <span class="text-[11px] text-text-secondary/70 font-medium">{y}</span>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== 时间线 ===== -->
-    <section class="mb-12">
-      <h2 class="text-xl sm:text-2xl font-heading font-bold text-text-primary mb-8 flex items-center gap-3">
-        <span class="w-1 h-7 bg-primary-500 rounded-full inline-block" /> 演艺经历
-        <span class="text-sm font-normal text-text-secondary font-body">· 点击展开详情</span>
-      </h2>
-
-      <div class="relative max-w-4xl mx-auto">
-        <div class="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-primary-200 transform md:-translate-x-px" />
-
-        {timeline.map((t, idx) => {
-          const isRight = idx % 2 === 0;
-          return (
-            <div class="tl-item relative flex items-start gap-4 md:flex-row mb-8 last:mb-0">
-              <div class="hidden md:block w-1/2 text-right pr-8 pt-1">
-                <span class={`inline-block text-xs font-bold px-2.5 py-0.5 rounded-full ${t.accent ? 'bg-primary-100 text-primary-700' : 'bg-accent-100 text-accent-700'}`}>{t.year}</span>
-              </div>
-              <div class="relative flex-shrink-0 w-4 h-4 rounded-full border-2 mt-1 z-10" class:list={{ 'bg-primary-500 border-primary-500': t.accent, 'bg-white border-primary-300': !t.accent }}>
-                <div class="absolute top-0 left-1/2 w-4 h-4 -translate-x-1/2"><div class="w-full h-full rounded-full" class:list={{ 'bg-primary-500': t.accent }} /></div>
-              </div>
-              <div class="md:w-1/2 pl-2 md:pl-8">
-                <div class="flex items-center justify-between mb-1 cursor-pointer tl-toggle select-none">
-                  <div>
-                    <span class="md:hidden inline-block text-xs font-bold text-primary-600 bg-primary-50 px-2.5 py-0.5 rounded-full mb-1">{t.year}</span>
-                    <h3 class="text-base font-bold text-text-primary">{t.title}</h3>
-                  </div>
-                  <svg class="tl-arrow w-4 h-4 text-text-secondary/40 flex-shrink-0 transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-                </div>
-                <div class="tl-body">
-                  <p class="text-sm text-text-secondary leading-relaxed">{t.detail}</p>
-                  {t.link && (
-                    <div class="mt-3 flex items-center gap-2">
-                      <a href={t.link} class="inline-flex items-center gap-1.5 text-xs text-primary-600 hover:text-primary-700 font-medium">→ {t.linkLabel}</a>
-                    </div>
-                  )}
-                </div>
+    <!-- ===== HERO 区域 ===== -->
+    <section class="relative z-10 pt-20 sm:pt-28 pb-12 sm:pb-16">
+      <Container>
+        <div class="flex flex-col md:flex-row items-center gap-8 md:gap-16 mb-10">
+          <div class="relative w-36 h-36 sm:w-44 sm:h-44 flex-shrink-0">
+            <!-- 头像外圈光晕 -->
+            <div class="absolute inset-[-8px] rounded-full bg-gradient-to-br from-primary-500/30 to-accent-500/30 blur-xl animate-pulse" />
+            <div class="w-full h-full rounded-full bg-white/5 backdrop-blur-md border-2 border-white/15 flex items-center justify-center shadow-2xl overflow-hidden float-anim relative">
+              <div class="text-center">
+                <span class="text-white/25 text-5xl font-heading font-bold">依</span>
               </div>
             </div>
-          );
-        })}
-      </div>
-    </section>
+          </div>
+          <div class="text-center md:text-left">
+            <div class="flex items-center gap-3 justify-center md:justify-start mb-2 flex-wrap">
+              <h1 class="text-4xl sm:text-5xl font-heading font-bold text-white">单依纯</h1>
+              <span class="px-3 py-0.5 rounded-full bg-white/10 text-white/75 text-[11px] font-medium border border-white/15 backdrop-blur-sm">00后歌手</span>
+              <span class="px-3 py-0.5 rounded-full bg-gradient-to-r from-amber-500/20 to-rose-500/20 text-amber-200 text-[11px] font-medium border border-amber-400/20 backdrop-blur-sm">金曲奖提名</span>
+            </div>
+            <p class="text-lg text-white/60 font-light tracking-wide">Shan Yichun</p>
+            <p class="mt-3 text-white/75 text-sm sm:text-base max-w-2xl leading-relaxed">
+              中国内地流行乐女歌手 · 2020年《中国好声音》全国总冠军 · 第37届金曲奖最佳华语女歌手提名
+            </p>
+            <div class="flex flex-wrap gap-2 mt-4 justify-center md:justify-start">
+              {SOCIAL_LINKS.map((link) => (
+                <a href={link.url} target="_blank" rel="noopener noreferrer"
+                  class="px-3.5 py-1 rounded-full bg-white/8 text-white/65 border border-white/12 text-xs hover:bg-white/15 hover:text-white transition-all backdrop-blur-sm">
+                  {link.name}
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
 
-    <!-- ===== 热门歌曲 + 波形动效 ===== -->
-    <section class="mb-12">
-      <h2 class="text-xl sm:text-2xl font-heading font-bold text-text-primary mb-6 flex items-center gap-3">
-        <span class="w-1 h-7 bg-primary-500 rounded-full inline-block" /> 热门歌曲
-        <span class="text-sm font-normal text-text-secondary font-body">· 悬停封面查看波形动画</span>
-      </h2>
-      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
-        {featured.map((item) => {
-          const [c1, c2] = item.data.coverColor ? item.data.coverColor.split('-') : ['#8b5cf6', '#7c3aed'];
-          return (
-            <a href={`/music/${item.id}`} class="group waveform-card block">
-              <div class="bg-white rounded-xl border border-primary-100/30 overflow-hidden card-hover">
-                <div class="aspect-square flex items-center justify-center relative overflow-hidden" style={`background: linear-gradient(135deg, ${c1}, ${c2})`}>
-                  <img src={`/images/covers/${item.id}.jpg`} alt={item.data.title} class="absolute inset-0 w-full h-full object-cover" loading="lazy" onerror="this.style.display='none'" />
-                  <div class="absolute inset-0 bg-gradient-to-br from-black/20 to-transparent" />
-                  <p class="relative z-10 text-white/90 text-sm font-heading font-bold px-2 text-center leading-tight">{item.data.title}</p>
-                  <!-- Waveform bars -->
-                  <div class="absolute bottom-2 left-2 right-2 flex items-end gap-[2px] justify-center z-20">
-                    {Array.from({ length: 12 }).map((_, i) => (
-                      <div class="wf-bar w-[3px] rounded-full bg-white/60" style="height: 4px; transition: height 0.2s" />
-                    ))}
-                  </div>
-                </div>
-                <div class="p-2.5 text-center">
-                  <p class="text-xs font-medium text-text-primary truncate group-hover:text-primary-600 transition-colors">{item.data.title}</p>
-                  <p class="text-[10px] text-text-secondary/60">{item.data.type === 'album' ? '专辑' : item.data.type === 'ost' ? 'OST' : '单曲'}</p>
-                </div>
-              </div>
-            </a>
-          );
-        })}
-      </div>
-    </section>
-
-    <!-- ===== 成就墙 ===== -->
-    <section class="mb-12">
-      <h2 class="text-xl sm:text-2xl font-heading font-bold text-text-primary mb-6 flex items-center gap-3">
-        <span class="w-1 h-7 bg-primary-500 rounded-full inline-block" /> 成就墙
-      </h2>
-      <div class="bg-white rounded-2xl border border-primary-100/30 p-6 sm:p-8">
-        <div class="flex flex-wrap gap-2.5 justify-center">
-          {achievements.map((a) => (
-            <span class={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-sm font-medium border ${achColors[a.color]} transition-transform duration-200 hover:scale-105 cursor-default`}>
-              <span>{a.emoji}</span>
-              <span>{a.label}</span>
-              <span class={`text-[10px] px-1.5 py-0.5 rounded-full ${a.color === 'primary' ? 'bg-primary-200/50' : 'bg-white/40'} ml-0.5`}>{a.year}</span>
-            </span>
+        <!-- 数据仪表板 -->
+        <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
+          {[
+            { value: songCount, label: '原创歌曲' },
+            { value: albumCount, label: '录音室专辑' },
+            { value: totalWon, label: '获奖荣誉' },
+            { value: careerYears, label: '出道年数' },
+            { value: allEvents.length, label: '演出活动' },
+          ].map((s) => (
+            <div class="backdrop-blur-xl bg-white/[0.06] rounded-xl border border-white/10 p-4 text-center card-hover">
+              <p class="text-2xl sm:text-3xl font-heading font-bold text-white stat-num">{s.value}</p>
+              <p class="text-xs text-white/50 mt-1">{s.label}</p>
+            </div>
           ))}
         </div>
-      </div>
+      </Container>
     </section>
 
-    <!-- ===== 第二段金句 ===== -->
-    <section class="mb-12">
-      <div class="relative bg-gradient-to-r from-primary-50 via-white to-accent-50 rounded-2xl border border-primary-100/50 p-6 sm:p-8 text-center">
-        <p class="text-sm text-text-secondary leading-relaxed max-w-xl mx-auto">
-          她用歌声讲述故事，用音乐传递温度。<br class="hidden sm:inline" />
-          从好声音冠军到金曲奖提名，每一步都走得坚定而明亮。
-        </p>
-      </div>
-    </section>
-
-    <!-- ===== 个人生活 ===== -->
-    <section class="mb-12">
-      <h2 class="text-xl sm:text-2xl font-heading font-bold text-text-primary mb-6 flex items-center gap-3">
-        <span class="w-1 h-7 bg-primary-500 rounded-full inline-block" /> 个人生活
-      </h2>
-      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
-        {personal.map((p) => (
-          <div class="bg-white rounded-xl border border-primary-100/30 p-4 card-hover">
-            <div class="flex items-center gap-3 mb-3">
-              <span class="text-2xl">{p.emoji}</span>
-              <p class="text-xs font-bold text-primary-600 uppercase tracking-wider">{p.title}</p>
-            </div>
-            <p class="text-sm text-text-secondary leading-relaxed">{p.text}</p>
+    <!-- ===== 玻璃容器主体 ===== -->
+    <div class="relative z-10 pb-16 sm:pb-20">
+      <Container>
+        <!-- 基本信息 -->
+        <section class="mb-10">
+          <h2 class="text-xl sm:text-2xl font-heading font-bold text-white/90 mb-6 flex items-center gap-3">
+            <span class="w-1 h-7 bg-primary-400 rounded-full inline-block" /> 基本信息
+          </h2>
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+            {[ ['中文名','单依纯'],['英文名','Shan Yichun'],['国籍','中国'],['出生','2001.12.23 · 东阳'],['职业','歌手'],['毕业院校','浙江音乐学院'],['经纪公司','自来卷音乐工作室'],['身高','168cm'],['粉丝名','纯牛奶'],['导师','李健'],['擅长风格','流行 / R&B'],['个人工作室','2025.12 成立'] ].map(([label, value]) => (
+              <div class="backdrop-blur-xl bg-white/[0.06] rounded-xl border border-white/10 p-4 card-hover">
+                <p class="text-[11px] font-medium text-white/40 uppercase tracking-wider mb-1">{label}</p>
+                <p class="text-sm font-semibold text-white/85">{value}</p>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-    </section>
+        </section>
 
-    <!-- ===== 快速导航 ===== -->
-    <section class="text-center py-6">
-      <div class="flex flex-wrap justify-center gap-3">
-        <a href="/music" class="inline-flex items-center gap-2 px-6 py-3 bg-primary-600 text-white rounded-full text-sm font-medium hover:bg-primary-700 transition-all shadow-sm">
-          🎵 探索音乐作品
-        </a>
-        <a href="/news" class="inline-flex items-center gap-2 px-6 py-3 bg-white text-text-primary border border-primary-200 rounded-full text-sm font-medium hover:bg-primary-50 transition-all">
-          📰 最新动态
-        </a>
-        <a href="/awards" class="inline-flex items-center gap-2 px-6 py-3 bg-white text-text-primary border border-primary-200 rounded-full text-sm font-medium hover:bg-primary-50 transition-all">
-          🏆 荣誉奖项
-        </a>
-      </div>
-    </section>
-  </Container>
+        <!-- 分隔装饰线 -->
+        <div class="mx-auto w-24 h-[2px] bg-gradient-to-r from-transparent via-primary-400/40 to-transparent mb-10" />
+
+        <!-- 金句 -->
+        <section class="mb-10">
+          <div class="backdrop-blur-xl bg-white/[0.04] rounded-2xl border border-white/8 p-8 sm:p-10 text-center relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary-400/30 to-transparent" />
+            <span class="text-5xl text-white/10 font-heading leading-none absolute top-4 left-6">"</span>
+            <blockquote class="text-xl sm:text-2xl md:text-3xl font-heading text-white/80 italic leading-relaxed max-w-2xl mx-auto relative z-10 tracking-wide">
+              音乐是我最早的倾诉对象和表达方式。
+            </blockquote>
+            <p class="mt-4 text-sm text-white/40">—— 单依纯</p>
+            <span class="text-5xl text-white/10 font-heading leading-none absolute bottom-4 right-6">"</span>
+          </div>
+        </section>
+
+        <!-- 早年经历 -->
+        <section class="mb-10">
+          <h2 class="text-xl sm:text-2xl font-heading font-bold text-white/90 mb-6 flex items-center gap-3">
+            <span class="w-1 h-7 bg-primary-400 rounded-full inline-block" /> 早年经历
+          </h2>
+          <div class="grid sm:grid-cols-3 gap-4">
+            {earlyLife.map((card) => (
+              <div class="backdrop-blur-xl bg-white/[0.06] rounded-2xl border border-white/10 p-5 card-hover">
+                <div class="flex items-center gap-3 mb-3">
+                  <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-lg flex-shrink0">{card.emoji}</div>
+                  <h3 class="text-sm font-bold text-white/85">{card.title}</h3>
+                </div>
+                <p class="text-xs text-white/55 leading-relaxed">{card.text}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <!-- 分隔装饰线 -->
+        <div class="mx-auto w-24 h-[2px] bg-gradient-to-r from-transparent via-accent-400/30 to-transparent mb-10" />
+
+        <!-- 成长柱状图 -->
+        <section class="mb-10">
+          <h2 class="text-xl sm:text-2xl font-heading font-bold text-white/90 mb-6 flex items-center gap-3">
+            <span class="w-1 h-7 bg-primary-400 rounded-full inline-block" /> 成长数据
+            <span class="text-sm font-normal text-white/40 font-body">· 年度歌曲发布量</span>
+          </h2>
+          <div class="backdrop-blur-xl bg-white/[0.06] rounded-2xl border border-white/10 p-6 sm:p-8">
+            <div class="flex items-end gap-3 sm:gap-4 h-48 sm:h-56">
+              {yearLabels.map((y) => {
+                const count = yearCounts[y];
+                const pct = Math.max(8, Math.round((count / maxYearCount) * 100));
+                return (
+                  <div class="flex-1 flex flex-col items-center gap-2 h-full justify-end">
+                    <span class="text-xs font-bold text-white/70">{count}</span>
+                    <div class="w-full rounded-lg bar-glow transition-all duration-300 cursor-pointer hover:opacity-80"
+                      style={`height: ${pct}%; background: linear-gradient(to top, #8b5cf6, #c084fc)`} />
+                    <span class="text-[11px] text-white/40 font-medium">{y}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        <!-- 时间线 -->
+        <section class="mb-10">
+          <h2 class="text-xl sm:text-2xl font-heading font-bold text-white/90 mb-8 flex items-center gap-3">
+            <span class="w-1 h-7 bg-primary-400 rounded-full inline-block" /> 演艺经历
+            <span class="text-sm font-normal text-white/40 font-body">· 点击展开详情</span>
+          </h2>
+          <div class="relative max-w-4xl mx-auto">
+            <div class="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-white/10" />
+            {timeline.map((t, idx) => (
+              <div class="tl-item relative flex items-start gap-4 md:flex-row mb-8 last:mb-0">
+                <div class="hidden md:block w-1/2 text-right pr-8 pt-1">
+                  <span class={`inline-block text-xs font-bold px-2.5 py-0.5 rounded-full ${t.accent ? 'bg-primary-500/20 text-primary-300' : 'bg-white/10 text-white/50'}`}>{t.year}</span>
+                </div>
+                <div class="relative flex-shrink-0 w-4 h-4 rounded-full border-2 mt-1 z-10"
+                  class:list={{ 'bg-primary-400 border-primary-400': t.accent, 'bg-transparent border-white/30': !t.accent }}>
+                  <div class="absolute inset-0 rounded-full" class:list={{ 'bg-primary-400': t.accent }} />
+                </div>
+                <div class="md:w-1/2 pl-2 md:pl-8">
+                  <div class="flex items-center justify-between mb-1 cursor-pointer tl-toggle select-none">
+                    <div>
+                      <span class="md:hidden inline-block text-xs font-bold text-primary-300 bg-primary-500/20 px-2.5 py-0.5 rounded-full mb-1">{t.year}</span>
+                      <h3 class="text-base font-bold text-white/85">{t.title}</h3>
+                    </div>
+                    <svg class="tl-arrow w-4 h-4 text-white/30 flex-shrink-0 transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                  </div>
+                  <div class="tl-body">
+                    <p class="text-sm text-white/55 leading-relaxed">{t.detail}</p>
+                    {t.link && <div class="mt-3"><a href={t.link} class="inline-flex items-center gap-1.5 text-xs text-primary-300 hover:text-primary-200 font-medium">→ {t.linkLabel}</a></div>}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <!-- 热门歌曲 -->
+        <section class="mb-10">
+          <h2 class="text-xl sm:text-2xl font-heading font-bold text-white/90 mb-6 flex items-center gap-3">
+            <span class="w-1 h-7 bg-primary-400 rounded-full inline-block" /> 热门歌曲
+            <span class="text-sm font-normal text-white/40 font-body">· 悬停封面查看波形动画</span>
+          </h2>
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+            {featured.map((item) => {
+              const [c1, c2] = item.data.coverColor ? item.data.coverColor.split('-') : ['#8b5cf6', '#7c3aed'];
+              return (
+                <a href={`/music/${item.id}`} class="group waveform-card block">
+                  <div class="backdrop-blur-xl bg-white/[0.06] rounded-xl border border-white/10 overflow-hidden card-hover">
+                    <div class="aspect-square flex items-center justify-center relative overflow-hidden" style={`background: linear-gradient(135deg, ${c1}, ${c2})`}>
+                      <img src={`/images/covers/${item.id}.jpg`} alt={item.data.title} class="absolute inset-0 w-full h-full object-cover" loading="lazy" onerror="this.style.display='none'" />
+                      <div class="absolute inset-0 bg-gradient-to-br from-black/20 to-transparent" />
+                      <p class="relative z-10 text-white/90 text-sm font-heading font-bold px-2 text-center leading-tight">{item.data.title}</p>
+                      <div class="absolute bottom-2 left-2 right-2 flex items-end gap-[2px] justify-center z-20">
+                        {Array.from({ length: 12 }).map((_, i) => (
+                          <div class="wf-bar w-[3px] rounded-full bg-white/60" style="height: 4px; transition: height 0.2s" />
+                        ))}
+                      </div>
+                    </div>
+                    <div class="p-2.5 text-center">
+                      <p class="text-xs font-medium text-white/85 truncate group-hover:text-primary-300 transition-colors">{item.data.title}</p>
+                      <p class="text-[10px] text-white/40">{item.data.type === 'album' ? '专辑' : item.data.type === 'ost' ? 'OST' : '单曲'}</p>
+                    </div>
+                  </div>
+                </a>
+              );
+            })}
+          </div>
+        </section>
+
+        <!-- 成就墙 -->
+        <section class="mb-10">
+          <h2 class="text-xl sm:text-2xl font-heading font-bold text-white/90 mb-6 flex items-center gap-3">
+            <span class="w-1 h-7 bg-primary-400 rounded-full inline-block" /> 成就墙
+          </h2>
+          <div class="backdrop-blur-xl bg-white/[0.06] rounded-2xl border border-white/10 p-6 sm:p-8">
+            <div class="flex flex-wrap gap-2.5 justify-center">
+              {achievements.map((a) => (
+                <span class={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-sm font-medium border ${achColors[a.color]} transition-transform duration-200 hover:scale-105 cursor-default backdrop-blur-sm`}>
+                  <span>{a.emoji}</span>
+                  <span>{a.label}</span>
+                  <span class="text-[10px] px-1.5 py-0.5 rounded-full bg-black/5 ml-0.5">{a.year}</span>
+                </span>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <!-- 第二段金句 -->
+        <section class="mb-10">
+          <div class="backdrop-blur-xl bg-white/[0.04] rounded-2xl border border-white/8 p-6 sm:p-8 text-center relative overflow-hidden">
+            <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-accent-400/30 to-transparent" />
+            <p class="text-sm text-white/50 leading-relaxed max-w-xl mx-auto">
+              她用歌声讲述故事，用音乐传递温度。<br class="hidden sm:inline" />
+              从好声音冠军到金曲奖提名，每一步都走得坚定而明亮。
+            </p>
+          </div>
+        </section>
+
+        <!-- 个人生活 -->
+        <section class="mb-10">
+          <h2 class="text-xl sm:text-2xl font-heading font-bold text-white/90 mb-6 flex items-center gap-3">
+            <span class="w-1 h-7 bg-primary-400 rounded-full inline-block" /> 个人生活
+          </h2>
+          <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            {personal.map((p) => (
+              <div class="backdrop-blur-xl bg-white/[0.06] rounded-xl border border-white/10 p-4 card-hover">
+                <div class="flex items-center gap-3 mb-3">
+                  <span class="text-2xl">{p.emoji}</span>
+                  <p class="text-xs font-bold text-white/50 uppercase tracking-wider">{p.title}</p>
+                </div>
+                <p class="text-sm text-white/55 leading-relaxed">{p.text}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <!-- 快速导航 -->
+        <section class="text-center py-6">
+          <div class="flex flex-wrap justify-center gap-3">
+            <a href="/music" class="inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-medium transition-all shadow-sm backdrop-blur-xl bg-primary-500/80 text-white border border-primary-400/30 hover:bg-primary-500">
+              🎵 探索音乐作品
+            </a>
+            <a href="/news" class="inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-medium transition-all backdrop-blur-xl bg-white/8 text-white/75 border border-white/15 hover:bg-white/15">
+              📰 最新动态
+            </a>
+            <a href="/awards" class="inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-medium transition-all backdrop-blur-xl bg-white/8 text-white/75 border border-white/15 hover:bg-white/15">
+              🏆 荣誉奖项
+            </a>
+          </div>
+        </section>
+      </Container>
+    </div>
+  </div>
 </BaseLayout>
 
 <script is:inline>
   document.addEventListener('DOMContentLoaded', function () {
-    // Scroll reveal
     var observer = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
         if (e.isIntersecting) {
@@ -411,21 +421,15 @@ const timeline = [
       observer.observe(el);
     });
 
-    // Timeline accordion
     document.querySelectorAll('.tl-toggle').forEach(function (btn) {
       btn.addEventListener('click', function () {
         var body = btn.nextElementSibling;
         body.classList.toggle('open');
         btn.querySelector('.tl-arrow').classList.toggle('rotate-180');
-        if (body.classList.contains('open')) {
-          body.style.maxHeight = body.scrollHeight + 80 + 'px';
-        } else {
-          body.style.maxHeight = '0';
-        }
+        body.style.maxHeight = body.classList.contains('open') ? body.scrollHeight + 80 + 'px' : '0';
       });
     });
 
-    // Waveform animation on hover
     document.querySelectorAll('.waveform-card').forEach(function (card) {
       card.addEventListener('mouseenter', function () {
         card.querySelectorAll('.wf-bar').forEach(function (bar, i) {
@@ -442,15 +446,13 @@ const timeline = [
       });
     });
 
-    // Stat counter animation
     document.querySelectorAll('.stat-num').forEach(function (el) {
       var target = parseInt(el.textContent);
       if (isNaN(target) || target > 999) return;
       var current = 0;
       var step = Math.max(1, Math.floor(target / 30));
       var timer = setInterval(function () {
-        current += step;
-        if (current >= target) { current = target; clearInterval(timer); }
+        current += step; if (current >= target) { current = target; clearInterval(timer); }
         el.textContent = current;
       }, 40);
     });
@@ -467,47 +469,44 @@ const timeline = [
     50% { transform: translateY(-10px); }
   }
   .float-anim { animation: slowFloat 6s ease-in-out infinite; }
-  .float-anim:nth-child(2) { animation-delay: 1s; }
-  .float-anim:nth-child(3) { animation-delay: 2s; }
-
-  .tl-body {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.4s ease;
+  @keyframes floatNote {
+    0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.04; }
+    50% { transform: translateY(-20px) rotate(10deg); opacity: 0.08; }
   }
+  .animate-floatNote { animation: floatNote 8s ease-in-out infinite; }
+
+  .tl-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
   .tl-body.open { max-height: 500px !important; }
+  .bar-glow:hover { filter: brightness(1.2); transition: filter 0.2s; }
 
-  .bar-glow:hover { filter: brightness(1.15); transition: filter 0.2s; }
-
-  /* Blob float animation */
   @keyframes blob {
     0%, 100% { transform: translate(0, 0) scale(1); }
-    25% { transform: translate(30px, -30px) scale(1.05); }
-    50% { transform: translate(-20px, 20px) scale(0.95); }
-    75% { transform: translate(20px, 30px) scale(1.02); }
+    25% { transform: translate(40px, -40px) scale(1.05); }
+    50% { transform: translate(-30px, 30px) scale(0.95); }
+    75% { transform: translate(30px, 40px) scale(1.02); }
   }
-  .animate-blob { animation: blob 18s ease-in-out infinite; }
-  .animation-delay-2 { animation-delay: 4s; }
-  .animation-delay-3 { animation-delay: 8s; }
-  .animation-delay-4 { animation-delay: 12s; }
+  .animate-blob { animation: blob 20s ease-in-out infinite; }
+  .animation-delay-2 { animation-delay: 5s; }
+  .animation-delay-3 { animation-delay: 10s; }
+  .animation-delay-4 { animation-delay: 15s; }
+  .animation-delay-5 { animation-delay: 7s; }
 
-  /* Sonar wave rings */
   @keyframes sonar1 {
     0% { transform: scale(0.5); opacity: 0; }
-    10% { opacity: 0.6; }
-    100% { transform: scale(1.2); opacity: 0; }
+    10% { opacity: 0.5; }
+    100% { transform: scale(1.3); opacity: 0; }
   }
   @keyframes sonar2 {
     0% { transform: scale(0.5); opacity: 0; }
-    10% { opacity: 0.5; }
-    100% { transform: scale(1.2); opacity: 0; }
+    10% { opacity: 0.4; }
+    100% { transform: scale(1.3); opacity: 0; }
   }
   @keyframes sonar3 {
     0% { transform: scale(0.5); opacity: 0; }
-    10% { opacity: 0.4; }
-    100% { transform: scale(1.2); opacity: 0; }
+    10% { opacity: 0.3; }
+    100% { transform: scale(1.3); opacity: 0; }
   }
-  .animate-sonar-scale-1 { animation: sonar1 4s ease-out infinite; }
-  .animate-sonar-scale-2 { animation: sonar2 5s ease-out infinite; }
-  .animate-sonar-scale-3 { animation: sonar3 6s ease-out infinite; }
+  .animate-sonar-scale-1 { animation: sonar1 5s ease-out infinite; }
+  .animate-sonar-scale-2 { animation: sonar2 6s ease-out infinite; }
+  .animate-sonar-scale-3 { animation: sonar3 7s ease-out infinite; }
 </style>
