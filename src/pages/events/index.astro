@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Container from '@/components/ui/Container.astro';
-import Tag from '@/components/ui/Tag.astro';
 import { getCollection } from 'astro:content';
 
 const allEvents = (await getCollection('events'))
@@ -9,10 +8,14 @@ const allEvents = (await getCollection('events'))
 
 const typeLabels: Record<string, string> = {
   concert: '演唱会', variety: '综艺', award: '颁奖礼',
-  interview: '采访', fanmeeting: '粉丝见面会', other: '其他',
+  interview: '采访', fanmeeting: '粉丝见面会', other: '活动',
 };
 
-// Group by year
+const typeEmoji: Record<string, string> = {
+  concert: '🎤', variety: '📺', award: '🏆',
+  interview: '🎙️', fanmeeting: '💜', other: '🎬',
+};
+
 const grouped: Record<number, typeof allEvents> = {};
 for (const event of allEvents) {
   const year = new Date(event.data.date).getFullYear();
@@ -22,38 +25,107 @@ for (const event of allEvents) {
 ---
 
 <BaseLayout title="演出经历" path="/events">
-  <Container class="py-16 sm:py-20">
-    <h1 class="text-3xl sm:text-4xl font-heading font-bold text-text-primary mb-10">演出经历</h1>
+  <!-- 全页背景 -->
+  <div class="relative bg-gradient-to-br from-[#0a0a1a] via-[#120a2e] to-[#0f1923] overflow-hidden min-h-screen">
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+      <div class="absolute top-[-10%] left-[-5%] w-[35rem] h-[35rem] rounded-full blur-[120px] opacity-25 animate-blob" style="background: linear-gradient(135deg, #8b5cf6, #ec4899)" />
+      <div class="absolute bottom-[-15%] right-[-5%] w-[30rem] h-[30rem] rounded-full blur-[120px] opacity-20 animate-blob animation-delay-2" style="background: linear-gradient(135deg, #06b6d4, #8b5cf6)" />
+      <div class="absolute top-[30%] right-[15%] w-[20rem] h-[20rem] rounded-full blur-[100px] opacity-15 animate-blob animation-delay-4" style="background: linear-gradient(135deg, #f59e0b, #ef4444)" />
+    </div>
 
-    {Object.entries(grouped).reverse().map(([year, events]) => (
-      <section class="mb-12">
-        <h2 class="text-xl font-heading font-semibold text-text-primary mb-6">{year}年</h2>
-        <div class="space-y-3">
-          {events.map((event) => (
-            <a href={`/events/${event.id}`} class="block">
-              <div class="bg-white rounded-xl border border-primary-100/30 p-5 card-hover flex items-start gap-4">
-                <div class="text-center flex-shrink-0 w-14">
-                  <div class="text-lg font-bold text-primary-600">{new Date(event.data.date).getDate()}</div>
-                  <div class="text-xs text-text-secondary">{new Date(event.data.date).toLocaleDateString('zh-CN', { month: 'short' })}</div>
-                </div>
-                <div class="flex-1 min-w-0">
-                  <h3 class="font-semibold text-text-primary">{event.data.title}</h3>
-                  <p class="text-sm text-text-secondary mt-1">{event.data.location}</p>
-                </div>
-                <Tag variant={event.data.type === 'concert' ? 'primary' : 'default'}>
-                  {typeLabels[event.data.type] || event.data.type}
-                </Tag>
-              </div>
-            </a>
-          ))}
-        </div>
-      </section>
-    ))}
+    <!-- 顶部高光线 -->
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[80rem] h-px bg-gradient-to-r from-transparent via-white/15 to-transparent" />
 
-    {allEvents.length === 0 && (
-      <div class="text-center py-20 text-text-secondary">
-        <p>暂无演出信息，敬请期待。</p>
+    <Container class="relative z-10 py-16 sm:py-20">
+      <!-- 页面头部 -->
+      <div class="text-center mb-12">
+        <h1 class="text-4xl sm:text-5xl font-heading font-bold text-white mb-3">演出经历</h1>
+        <p class="text-white/50">从好声音冠军到巡演舞台 · 共 {allEvents.length} 场活动记录</p>
+        <div class="mx-auto mt-4 w-16 h-[2px] bg-gradient-to-r from-primary-400/60 to-accent-400/60 rounded-full" />
       </div>
-    )}
-  </Container>
+
+      <!-- 年份导航标签 -->
+      <div class="flex flex-wrap justify-center gap-2 mb-12">
+        {Object.keys(grouped).reverse().map((year) => (
+          <a href={`#year-${year}`}
+            class="px-4 py-1.5 rounded-full text-sm font-medium transition-all backdrop-blur-xl bg-white/8 text-white/60 border border-white/10 hover:bg-white/15 hover:text-white">
+            {year}年
+          </a>
+        ))}
+      </div>
+
+      {Object.entries(grouped).reverse().map(([year, events]) => (
+        <section id={`year-${year}`} class="mb-14 scroll-mt-20">
+          <!-- 年份标题 -->
+          <div class="flex items-center gap-4 mb-6">
+            <span class="text-2xl sm:text-3xl font-heading font-bold text-white/90">{year}年</span>
+            <div class="flex-1 h-px bg-gradient-to-r from-white/20 to-transparent" />
+            <span class="text-sm text-white/40">{events.length} 场</span>
+          </div>
+
+          <div class="grid gap-4 sm:grid-cols-2">
+            {events.map((event, idx) => {
+              const d = new Date(event.data.date);
+              const month = d.toLocaleDateString('zh-CN', { month: 'long' });
+              const day = d.getDate();
+              const d2 = event.data.endDate ? new Date(event.data.endDate) : null;
+              return (
+                <a href={`/events/${event.id}`} class="group block">
+                  <div class="backdrop-blur-xl bg-white/[0.05] rounded-xl border border-white/10 p-5 card-hover h-full">
+                    <div class="flex items-start gap-4">
+                      <!-- 日期 -->
+                      <div class="text-center flex-shrink-0 w-14 pt-1">
+                        <div class="text-xl font-bold text-primary-300 leading-none">{day}</div>
+                        <div class="text-xs text-white/40 mt-1">{month.replace('月','')}月</div>
+                      </div>
+                      <!-- 内容 -->
+                      <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-2 mb-1 flex-wrap">
+                          <span class="text-lg">{typeEmoji[event.data.type] || '🎬'}</span>
+                          <h3 class="font-semibold text-white/85 group-hover:text-primary-300 transition-colors line-clamp-1">{event.data.title}</h3>
+                        </div>
+                        <p class="text-sm text-white/45">{event.data.location}</p>
+                        {d2 && <p class="text-xs text-white/30 mt-1">至 {d2.toLocaleDateString('zh-CN', { month: 'long', day: 'numeric' })}</p>}
+                      </div>
+                      <!-- 类型标签 + 箭头 -->
+                      <div class="flex flex-col items-end gap-2 flex-shrink-0">
+                        <span class={`text-[11px] px-2 py-0.5 rounded-full font-medium ${
+                          event.data.type === 'concert' ? 'bg-primary-500/20 text-primary-300 border border-primary-400/20' :
+                          event.data.type === 'award' ? 'bg-amber-500/20 text-amber-200 border border-amber-400/20' :
+                          event.data.type === 'variety' ? 'bg-sky-500/20 text-sky-200 border border-sky-400/20' :
+                          'bg-white/10 text-white/50 border border-white/10'
+                        }`}>
+                          {typeLabels[event.data.type] || event.data.type}
+                        </span>
+                        {event.data.featured && <span class="text-[10px] text-accent-300/60">✦ 精选</span>}
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              );
+            })}
+          </div>
+        </section>
+      ))}
+
+      {allEvents.length === 0 && (
+        <div class="text-center py-20 text-white/40 backdrop-blur-xl bg-white/[0.05] rounded-2xl border border-white/10">
+          <p class="text-lg">暂无活动记录</p>
+        </div>
+      )}
+    </Container>
+  </div>
 </BaseLayout>
+
+<style is:global>
+  @keyframes blob {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    25% { transform: translate(40px, -40px) scale(1.05); }
+    50% { transform: translate(-30px, 30px) scale(0.95); }
+    75% { transform: translate(30px, 40px) scale(1.02); }
+  }
+  .animate-blob { animation: blob 20s ease-in-out infinite; }
+  .animation-delay-2 { animation-delay: 5s; }
+  .animation-delay-4 { animation-delay: 15s; }
+  html { scroll-behavior: smooth; }
+</style>
