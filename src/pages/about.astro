@@ -3,11 +3,16 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import Container from '@/components/ui/Container.astro';
 import InfoCard from '@/components/ui/InfoCard.astro';
 import TimelineItem from '@/components/sections/TimelineItem.astro';
-import { SOCIAL_LINKS, SITE } from '@/utils/constants';
+import { SOCIAL_LINKS } from '@/utils/constants';
+import { getCollection, render } from 'astro:content';
+
+const bioEntries = await getCollection('biography');
+const bio = bioEntries[0];
+const { Content } = await render(bio);
 ---
 
 <BaseLayout title="个人简介" path="/about">
-  <!-- Hero 头图区 -->
+  <!-- Hero -->
   <section class="relative bg-gradient-to-br from-primary-600 via-primary-500 to-accent-500 py-20 sm:py-28 overflow-hidden">
     <div class="absolute inset-0 opacity-10">
       <div class="absolute top-10 left-10 w-64 h-64 bg-white rounded-full blur-3xl" />
@@ -22,12 +27,12 @@ import { SOCIAL_LINKS, SITE } from '@/utils/constants';
           <h1 class="text-4xl sm:text-5xl font-heading font-bold text-white mb-2">单依纯</h1>
           <p class="text-lg text-white/80 font-light tracking-wide">Shan Yichun</p>
           <p class="mt-4 text-white/90 text-base max-w-xl leading-relaxed">
-            中国内地流行乐女歌手，2020年《中国好声音》全国总冠军
+            中国内地流行乐女歌手，2020年《中国好声音》全国总冠军，2026年入围第37届金曲奖最佳华语女歌手
           </p>
           <div class="flex flex-wrap gap-3 mt-6 justify-center md:justify-start">
             {SOCIAL_LINKS.map((link) => (
               <a href={link.url} target="_blank" rel="noopener noreferrer"
-                class="px-4 py-1.5 rounded-full bg-white/10 text-white/80 border border-white/20 text-sm hover:bg-white/20 transition-all">
+                class="px-4 py-1.5 rounded-full bg-white/10 text-white/80 border border-white/20 text-sm hover:bg-white/20 hover:text-white transition-all">
                 {link.name}
               </a>
             ))}
@@ -37,9 +42,9 @@ import { SOCIAL_LINKS, SITE } from '@/utils/constants';
     </Container>
   </section>
 
-  <!-- 基本信息卡片 -->
+  <!-- 基本信息 -->
   <Container class="py-12 sm:py-16">
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-16">
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-12">
       <InfoCard label="中文名" value="单依纯" />
       <InfoCard label="英文名" value="Shan Yichun" />
       <InfoCard label="国籍" value="中国" />
@@ -47,54 +52,92 @@ import { SOCIAL_LINKS, SITE } from '@/utils/constants';
       <InfoCard label="出生地" value="浙江省东阳市" />
       <InfoCard label="职业" value="歌手" />
       <InfoCard label="毕业院校" value="浙江音乐学院" />
-      <InfoCard label="经纪公司" value="百沐娱乐" />
+      <InfoCard label="经纪公司" value="自来卷音乐工作室" />
+      <InfoCard label="身高" value="168cm" />
+      <InfoCard label="粉丝名" value="纯牛奶" />
+      <InfoCard label="导师" value="李健" />
+      <InfoCard label="代表作" value="《永不失联的爱》等" />
     </div>
 
-    <!-- 时间线传记 -->
-    <section>
+    <!-- 早年经历版块 -->
+    <section class="mb-16">
+      <h2 class="text-2xl sm:text-3xl font-heading font-bold text-text-primary mb-6 flex items-center gap-3">
+        <span class="w-1 h-8 bg-primary-500 rounded-full inline-block" /> 早年经历
+      </h2>
+      <div class="bg-white rounded-2xl border border-primary-100/30 p-6 sm:p-8">
+        <p class="text-text-secondary leading-relaxed mb-4">
+          单依纯出生于浙江省东阳市一个普通家庭。母亲单梅芳是绍兴嵊州人，喜欢唱越剧，受母亲影响，单依纯从小对音乐产生浓厚兴趣，小时候喜欢抱着CD机听歌。小学三年级时，母亲送她去学入门级声乐课。她多次在东阳市童声大赛中获奖，六年级时演唱的《山里的阳光》成为校歌。
+        </p>
+        <p class="text-text-secondary leading-relaxed mb-4">
+          从初一开始，单依纯在唱歌软件上练习并发布日常训练作品，逐渐积累粉丝。2018年，她在"全民K歌"上参与湖南卫视《我想和你唱》节目的素人征集，从150多万应征者中被选中，最终入选27位素人之一。在节目中，她与李健合唱了《绒花》，这次经历让她萌生出参加艺考的想法。
+        </p>
+        <p class="text-text-secondary leading-relaxed">
+          高二时，单依纯决定走音乐道路，开始专业学习音乐。期间《中国好声音》导演曾邀请她参加节目，但她以学业为重拒绝了。为提高演唱水平，高三参加了艺考培训班。2020年，她以专业第一名的成绩考入浙江音乐学院流行音乐系（2024年7月毕业），师从音乐人王滔。学习音乐的费用靠父母贷款支持。
+        </p>
+      </div>
+    </section>
+
+    <!-- 时间线 -->
+    <section class="mb-16">
       <h2 class="text-2xl sm:text-3xl font-heading font-bold text-text-primary mb-12 flex items-center gap-3">
-        <span class="w-1 h-8 bg-primary-500 rounded-full inline-block" />
-        个人经历
+        <span class="w-1 h-8 bg-primary-500 rounded-full inline-block" /> 演艺经历
       </h2>
 
       <div class="relative max-w-4xl mx-auto">
         <div class="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-primary-200 transform md:-translate-x-px" />
 
-        <TimelineItem year="2001" title="出生" align="right">
-          12月23日出生于浙江省东阳市，自幼展现音乐天赋。
-        </TimelineItem>
-
-        <TimelineItem year="2018" title="考入浙江音乐学院" align="left">
-          顺利考入浙江音乐学院流行音乐系，接受系统专业的音乐训练。
-        </TimelineItem>
-
-        <TimelineItem year="2020" title="中国好声音夺冠" align="right" accent>
-          参加《中国好声音2020》，凭借《永不失联的爱》获四位导师转身，最终夺得全国总冠军，正式出道。
+        <TimelineItem year="2020" title="《中国好声音》夺冠出道" align="right" accent>
+          参加《中国好声音2020》，盲选演唱《永不失联的爱》刷屏，获四位导师转身，加入李健战队。11月20日决赛凭借《好久不见》《星·Sailing》夺得全国总冠军，正式出道。签约百沐娱乐，为张艺谋电影《一秒钟》演唱推广曲《给电影人的情书》，发行首支个人单曲《照片》。
         </TimelineItem>
 
         <TimelineItem year="2021" title="崭露头角" align="left">
-          发行多首单曲，为多部影视剧献唱OST。获得第29届东方风云榜"最佳新锐歌手"奖、TMEA"年度最佳新生代歌手"奖。
+          发行《在夜里跳舞》《分身》《喂》等单曲。为《一生一世》演唱主题曲《续写》。为《误杀2》演唱片尾曲《萤火虫》。常驻《说唱听我的2》《爆裂舞台》《我们的歌第三季》等综艺。获第三届TMEA"年度最具潜力歌手"奖。
         </TimelineItem>
 
         <TimelineItem year="2022" title="首张专辑《勇敢额度》" align="right" accent>
-          1月2日发行首张个人专辑《勇敢额度》。参加《天赐的声音》第三季，获东方风云榜"最佳女歌手"提名。
+          1月2日发行首张专辑《勇敢额度》收录10首歌曲（含全英文歌《Tell Me》）。出演电影《你是我的一束光》（荧幕首秀）。参加《声生不息·港乐季》发行粤语单曲《靓仔日记》。获第29届东方风云榜"最佳新锐歌手"奖。
         </TimelineItem>
 
-        <TimelineItem year="2023" title="声生不息" align="left">
-          参加《声生不息·宝岛季》，发行《想你时风起》等热门OST，与常石磊开始深度合作。
+        <TimelineItem year="2023" title="首次登上央视春晚" align="left" accent>
+          首次登上央视春晚，与黄霄雲、宋轶等合唱《绿水青山》。为《三体》演唱插曲《让我随风》，为《我的人间烟火》演唱《想你时风起》（年度热门）。为《星汉灿烂》演唱同名主题曲。12月23日生日当天在杭州举办首次个人演唱会。
         </TimelineItem>
 
-        <TimelineItem year="2024" title="音乐突破" align="right" accent>
-          参加《音乐缘计划》创作多首作品。参加《歌手2025》获首期周冠军。发行预热单曲为第二张专辑蓄力。
+        <TimelineItem year="2024" title="再登春晚 · 连获大奖" align="right" accent>
+          连续第二年登上央视春晚，与海来阿木合唱《不如见一面》。获TMEA"年度最佳内地女歌手"、东方风云榜"最受欢迎女歌手"。参加《音乐缘计划》创作多首高质量作品。发行预热单曲《纯妹妹》《多少的光阴》为第二张专辑蓄力。
         </TimelineItem>
 
-        <TimelineItem year="2025" title="「纯妹妹」巡演 & 第二张专辑" align="left" accent>
-          首次个人巡演覆盖6城13场。12月28日发行第二张专辑《纯妹妹》。单曲《珠玉》获东方风云榜"十大金曲"。与周深合唱全运会主题歌《天海一心》。
+        <TimelineItem year="2025" title="《歌手2025》· 二专《纯妹妹》" align="left" accent>
+          以首发歌手参加《歌手2025》，两度获周冠军，总决赛第三名。8月获第32届东方风云榜"最佳女歌手"奖。12月成立个人工作室"北京自来卷音乐工作室"。12月28日发行第二张专辑《纯妹妹》（常石磊制作，10首歌曲）。与周深合作全运会主题歌《天海一心》。
         </TimelineItem>
 
-        <TimelineItem year="2026" title="香奈儿大使 & 「纯妹妹2.0」" align="right" accent>
-          "纯妹妹2.0"升级巡演启动。被香奈儿官宣为品牌形象大使（首位00后华人歌手代言人）。发行《光波》《我在意的》等单曲。
+        <TimelineItem year="2026" title="香奈儿大使 · 金曲奖提名" align="right" accent>
+          1月香奈儿官宣为品牌形象大使（首位00后华人歌手代言人）。「纯妹妹2.0」升级巡演开唱。5月凭借《纯妹妹》入围第37届金曲奖"最佳华语女歌手"。发行《光波》《我在意的》等单曲。
         </TimelineItem>
+      </div>
+    </section>
+
+    <!-- 个人生活 -->
+    <section class="mb-16">
+      <h2 class="text-2xl sm:text-3xl font-heading font-bold text-text-primary mb-6 flex items-center gap-3">
+        <span class="w-1 h-8 bg-primary-500 rounded-full inline-block" /> 个人生活
+      </h2>
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div class="bg-white rounded-xl border border-primary-100/30 p-5">
+          <p class="text-xs font-bold text-primary-600 uppercase tracking-wider mb-2">家庭</p>
+          <p class="text-sm text-text-secondary leading-relaxed">出身普通家庭，学习音乐的费用靠父母贷款。母亲单梅芳喜欢越剧，是音乐启蒙者。与恩师李健关系深厚。</p>
+        </div>
+        <div class="bg-white rounded-xl border border-primary-100/30 p-5">
+          <p class="text-xs font-bold text-primary-600 uppercase tracking-wider mb-2">性格</p>
+          <p class="text-sm text-text-secondary leading-relaxed">2025年自曝有表达障碍，从小跟着爷爷奶奶生活，音乐是她最早的倾诉对象和表达方式。</p>
+        </div>
+        <div class="bg-white rounded-xl border border-primary-100/30 p-5">
+          <p class="text-xs font-bold text-primary-600 uppercase tracking-wider mb-2">爱好</p>
+          <p class="text-sm text-text-secondary leading-relaxed">除了音乐，另一大爱好是美妆。喜欢看美妆视频，节目录制时坚持自己完成眼妆和高光。</p>
+        </div>
+        <div class="bg-white rounded-xl border border-primary-100/30 p-5">
+          <p class="text-xs font-bold text-primary-600 uppercase tracking-wider mb-2">粉丝名</p>
+          <p class="text-sm text-text-secondary leading-relaxed">粉丝名为"纯牛奶"。</p>
+        </div>
       </div>
     </section>
   </Container>
