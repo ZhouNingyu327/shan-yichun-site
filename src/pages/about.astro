@@ -100,20 +100,35 @@ const timeline = [
 ---
 
 <BaseLayout title="个人简介" path="/about">
-  <!-- ===== HERO ===== -->
-  <section class="relative bg-gradient-to-br from-primary-800 via-primary-600 to-accent-700 py-16 sm:py-24 overflow-hidden">
-    <!-- Album cover mosaic background -->
-    <div class="absolute inset-0 opacity-8">
-      <div class="grid grid-cols-6 sm:grid-cols-8 md:grid-cols-12 gap-1 p-4 w-full h-full">
-        {Array.from({ length: 48 }).map((_, i) => {
-          const m = allMusic[i % allMusic.length];
-          if (!m) return <div class="aspect-square rounded bg-white/5" />;
-          const [c1, c2] = m.data.coverColor ? m.data.coverColor.split('-') : ['#8b5cf6', '#7c3aed'];
-          return <div class="aspect-square rounded-sm opacity-30" style={`background: linear-gradient(135deg, ${c1}, ${c2})`} />;
-        })}
+  <!-- ===== HERO: 声波辐射 + 多色交汇 ===== -->
+  <section class="relative bg-gradient-to-br from-[#1a1a2e] via-[#16213e] to-[#0f3460] py-16 sm:py-24 overflow-hidden">
+
+    <!-- 多色模糊大圆交汇 -->
+    <div class="absolute inset-0 overflow-hidden">
+      <div class="absolute top-[-15%] left-[-5%] w-[32rem] h-[32rem] rounded-full blur-[100px] opacity-40 animate-blob"
+           style="background: linear-gradient(135deg, #8b5cf6, #ec4899)" />
+      <div class="absolute bottom-[-20%] right-[-5%] w-[28rem] h-[28rem] rounded-full blur-[100px] opacity-30 animate-blob animation-delay-2"
+           style="background: linear-gradient(135deg, #f59e0b, #ef4444)" />
+      <div class="absolute top-[30%] right-[15%] w-[20rem] h-[20rem] rounded-full blur-[100px] opacity-25 animate-blob animation-delay-4"
+           style="background: linear-gradient(135deg, #06b6d4, #8b5cf6)" />
+      <div class="absolute bottom-[20%] left-[10%] w-[18rem] h-[18rem] rounded-full blur-[100px] opacity-20 animate-blob animation-delay-3"
+           style="background: linear-gradient(135deg, #22d3ee, #a78bfa)" />
+    </div>
+
+    <!-- 声波辐射环（从SYC头像位置向外扩散） -->
+    <div class="absolute inset-0 flex items-center justify-center overflow-hidden pointer-events-none">
+      <div class="relative w-full max-w-3xl aspect-square flex items-center justify-center">
+        <div class="absolute w-[120%] aspect-square rounded-full border border-white/[0.03] animate-sonar-scale-1" />
+        <div class="absolute w-[100%] aspect-square rounded-full border border-white/[0.04] animate-sonar-scale-2" />
+        <div class="absolute w-[80%] aspect-square rounded-full border border-white/[0.05] animate-sonar-scale-3" />
+        <div class="absolute w-[60%] aspect-square rounded-full border border-white/[0.06] animate-sonar-scale-1" style="animation-delay: 1.5s" />
+        <div class="absolute w-[45%] aspect-square rounded-full border border-white/[0.07] animate-sonar-scale-2" style="animation-delay: 2s" />
+        <div class="absolute w-[30%] aspect-square rounded-full border border-white/[0.08] animate-sonar-scale-3" style="animation-delay: 0.8s" />
       </div>
     </div>
-    <div class="absolute inset-0 bg-gradient-to-t from-primary-900/80 via-primary-700/50 to-transparent" />
+
+    <!-- 顶部高光-->
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[60rem] h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
 
     <Container class="relative z-10">
       <div class="flex flex-col md:flex-row items-center gap-8 md:gap-16 mb-10">
@@ -463,4 +478,36 @@ const timeline = [
   .tl-body.open { max-height: 500px !important; }
 
   .bar-glow:hover { filter: brightness(1.15); transition: filter 0.2s; }
+
+  /* Blob float animation */
+  @keyframes blob {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    25% { transform: translate(30px, -30px) scale(1.05); }
+    50% { transform: translate(-20px, 20px) scale(0.95); }
+    75% { transform: translate(20px, 30px) scale(1.02); }
+  }
+  .animate-blob { animation: blob 18s ease-in-out infinite; }
+  .animation-delay-2 { animation-delay: 4s; }
+  .animation-delay-3 { animation-delay: 8s; }
+  .animation-delay-4 { animation-delay: 12s; }
+
+  /* Sonar wave rings */
+  @keyframes sonar1 {
+    0% { transform: scale(0.5); opacity: 0; }
+    10% { opacity: 0.6; }
+    100% { transform: scale(1.2); opacity: 0; }
+  }
+  @keyframes sonar2 {
+    0% { transform: scale(0.5); opacity: 0; }
+    10% { opacity: 0.5; }
+    100% { transform: scale(1.2); opacity: 0; }
+  }
+  @keyframes sonar3 {
+    0% { transform: scale(0.5); opacity: 0; }
+    10% { opacity: 0.4; }
+    100% { transform: scale(1.2); opacity: 0; }
+  }
+  .animate-sonar-scale-1 { animation: sonar1 4s ease-out infinite; }
+  .animate-sonar-scale-2 { animation: sonar2 5s ease-out infinite; }
+  .animate-sonar-scale-3 { animation: sonar3 6s ease-out infinite; }
 </style>
