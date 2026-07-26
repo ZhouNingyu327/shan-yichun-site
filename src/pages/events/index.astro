@@ -232,6 +232,67 @@ for (const c of concerts) {
             <span><span class="text-cyan-300/80">O</span> 飞岛舞台（受顶棚限制）</span>
           </div>
         </section>
+
+        <!-- ===== 纯妹妹1.0 歌单 ===== -->
+        <section class="mb-10">
+          <h2 class="text-xl font-heading font-bold text-white/90 mb-5 flex items-center gap-3">
+            <span class="w-1 h-7 bg-accent-400 rounded-full inline-block" /> 🎵 纯妹妹一巡 歌单
+            <span class="text-sm font-normal text-white/40 font-body">· 各站共通曲目与差异</span>
+          </h2>
+
+          <div class="backdrop-blur-xl bg-white/[0.05] rounded-2xl border border-white/10 p-6 mb-5">
+            <h3 class="text-sm font-bold text-white/85 mb-3">📋 常规曲目（共30首）</h3>
+            <div class="flex flex-wrap gap-1.5 mb-4">
+              {['纯妹妹','tender','雨后日记','爱我的时候','另一种答案','gray turns to may','失焦','天空','多少的光阴','空耳','不值得','rnb all night','二十二','才二十三','还有什么更好的','在夜里跳舞','终身孤独','给电影人的情书','forever in you','4ever in u','tell me','喂','爱的回归线','爱里','想你时风起','照片','永不失联的爱','奇观','分身'].map(s => (
+                <span class="text-[11px] px-2 py-0.5 rounded-full bg-white/8 text-white/60 border border-white/5">{s}</span>
+              ))}
+            </div>
+            <p class="text-[11px] text-white/35">* 各站在此基础上会有曲目替换或新增</p>
+          </div>
+
+          <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {[
+              {label: '成都 1.04', songs: ['纯妹妹','tender','雨后日记','爱我的时候','另一种答案','gray turns to may','失焦','天空','多少的光阴','空耳','分身','不值得','rnb all night','二十二','才二十三','还有什么更好的','在夜里跳舞','终身孤独','给电影人的情书','forever in you','4ever in u','tell me','喂','如果爱忘了','爱的回归线','爱里','奇观','想你时风起','照片','永不失联的爱'], guest: null},
+              {label: '成都 1.05', songs: ['纯妹妹','tender','雨后日记','爱我的时候','另一种答案','gray turns to may','失焦','天空','多少的光阴','空耳','分身','不值得','rnb all night','二十二','才二十三','还有什么更好的','在夜里跳舞','终身孤独','给电影人的情书','forever in you','4ever in u','tell me','喂','平凡的一天（翻唱）','分身','爱的回归线','爱里','情人（翻唱）','想你时风起','照片','永不失联的爱'], guest: null},
+              {label: '北京 2.14', songs: ['纯妹妹','tender','雨后日记','爱我的时候','另一种答案','gray turns to may','失焦','天空','多少的光阴','空耳','分身','不值得','rnb all night','二十二','才二十三','还有什么更好的','在夜里跳舞','终身孤独','给电影人的情书','forever in you','4ever in u','tell me','喂','如果爱忘了','爱的回归线','爱里','续写','想你时风起','照片','永不失联的爱'], guest: null},
+              {label: '北京 2.15', songs: ['纯妹妹','tender','雨后日记','爱我的时候','另一种答案','gray turns to may','失焦','天空','多少的光阴','空耳','分身','不值得','rnb all night','二十二','才二十三','还有什么更好的','在夜里跳舞','终身孤独','给电影人的情书','forever in you','4ever in u','tell me','喂','我管不住我自己','爱的回归线','爱里','情人（翻唱）','想你时风起','照片','永不失联的爱'], guest: null},
+              {label: '南京 3.01', songs: ['纯妹妹','tender','雨后日记','爱我的时候','我管不住我自己','另一种答案','失焦','天空','多少的光阴','空耳','分身','不值得','rnb all night','二十二','才二十三','还有什么更好的','在夜里跳舞','forever in you','4ever in u','tell me','喂','如果爱忘了','爱的回归线','爱里','奇观','想你时风起','照片','永不失联的爱'], guest: '嘉宾：嘉宾合作曲：像风一样、在那天回不去的路上、续写（薛之谦）'},
+              {label: '南京 3.02', songs: ['纯妹妹','tender','雨后日记','爱我的时候','我管不住我自己','另一种答案','失焦','天空','多少的光阴','空耳','分身','不值得','rnb all night','二十二','才二十三','还有什么更好的','为你钟情','在夜里跳舞','给电影人的情书','forever in you','4ever in u','tell me','喂','往事只能回味','天涯歌女','续写','爱的回归线','爱里','情人（翻唱）','想你时风起','照片','永不失联的爱'], guest: '嘉宾合作曲：往事只能回味、天涯歌女'},
+              {label: '深圳 3.07', songs: ['纯妹妹','tender','雨后日记','爱我的时候','续写','我管不住我自己','另一种答案','失焦','天空','多少的光阴','空耳','分身','不值得','rnb all night','二十二','才二十三','还有什么更好的','为你钟情','在夜里跳舞','forever in you','4ever in u','tell me','喂','你的珍藏（翻唱）','飞花（翻唱）','如果爱忘了','爱的回归线','情人（翻唱）','想你时风起','照片','永不失联的爱'], guest: '嘉宾李克勤：你的珍藏、飞花'},
+              {label: '深圳 3.08', songs: ['纯妹妹','tender','雨后日记','爱我的时候','我管不住我自己','另一种答案','失焦','天空','多少的光阴','空耳','分身','不值得','rnb all night','二十二','才二十三','还有什么更好的','在夜里跳舞','forever in you','4ever in u','tell me','喂','续写','如果爱忘了','爱的回归线','爱里','情人（翻唱）','想你时风起','照片','永不失联的爱'], guest: null},
+              {label: '济南 3.29', songs: ['纯妹妹','tender','雨后日记','爱我的时候','续写','我管不住我自己','另一种答案','失焦','天空','多少的光阴','空耳','分身','不值得','rnb all night','轻轻的告诉你','瘦子','还有什么更好的','在夜里跳舞','终身孤独','给电影人的情书','forever in you','4ever in u','tell me','喂','如果爱忘了','爱的回归线','爱里','奇观','想你时风起','照片','永不失联的爱'], guest: null},
+              {label: '济南 3.30', songs: ['纯妹妹','tender','雨后日记','爱我的时候','续写','我管不住我自己','另一种答案','失焦','天空','多少的光阴','空耳','分身','不值得','rnb all night','轻轻的告诉你','瘦子','还有什么更好的','在夜里跳舞','终身孤独','给电影人的情书','forever in you','4ever in u','tell me','喂','踮起脚尖爱（翻唱）','爱的回归线','爱里','奇观','想你时风起','照片','永不失联的爱'], guest: null},
+              {label: '上海 4.18', songs: ['纯妹妹','tender','雨后日记','爱我的时候','续写','我管不住我自己','另一种答案','失焦','天空','多少的光阴','空耳','分身','不值得','rnb all night','轻轻的告诉你','瘦子','还有什么更好的','在夜里跳舞','终身孤独','给电影人的情书','forever in you','4ever in u','tell me','喂','如果爱忘了','爱的回归线','爱里','情人（翻唱）','想你时风起','照片','永不失联的爱'], guest: null},
+              {label: '上海 4.19', songs: ['纯妹妹','tender','雨后日记','爱我的时候','续写','我管不住我自己','另一种答案','失焦','天空','多少的光阴','空耳','分身','不值得','rnb all night','轻轻的告诉你','瘦子','还有什么更好的','在夜里跳舞','终身孤独','给电影人的情书','forever in you','4ever in u','tell me','喂','踮起脚尖爱（翻唱）','爱的回归线','爱里','奇观','想你时风起','照片','永不失联的爱'], guest: null},
+              {label: '上海 4.20', songs: ['纯妹妹','tender','雨后日记','爱我的时候','续写','我管不住我自己','另一种答案','失焦','天空','多少的光阴','空耳','分身','不值得','rnb all night','轻轻的告诉你','瘦子','还有什么更好的','在夜里跳舞','终身孤独','给电影人的情书','forever in you','4ever in u','tell me','喂','如果爱忘了','爱的回归线','爱里','情人（翻唱）','想你时风起','照片','永不失联的爱'], guest: null},
+            ].map(set => (
+              <div class="backdrop-blur-xl bg-white/[0.05] rounded-xl border border-white/10 p-4 card-hover">
+                <div class="flex items-center justify-between mb-3">
+                  <h3 class="text-sm font-bold text-white/85">{set.label}</h3>
+                  <span class="text-[11px] text-white/35">{set.songs.length}首</span>
+                </div>
+                {set.guest && <p class="text-[10px] text-accent-300/80 mb-2 bg-accent-500/8 px-2 py-1 rounded">{set.guest}</p>}
+                <div class="flex flex-wrap gap-1.5">
+                  {set.songs.map(s => (
+                    <span class={`text-[11px] px-2 py-0.5 rounded-full ${
+                      s.includes('翻唱') ? 'bg-amber-500/12 text-amber-300/80 border border-amber-400/15' :
+                      s === '续写' || s === '轻轻地告诉你' || s === '瘦子' || s === '为你钟情' ? 'bg-accent-500/10 text-accent-300/70 border border-accent-400/15' :
+                      s === '我管不住我自己' ? 'bg-emerald-500/10 text-emerald-300/70 border border-emerald-400/15' :
+                      s === '情人' || s === '平凡的一天' || s === '往事只能回味' || s === '天涯歌女' || s === '踮起脚尖爱' || s === '如果爱忘了' ? 'bg-sky-500/10 text-sky-300/70 border border-sky-400/15' :
+                      'bg-white/8 text-white/60 border border-white/5'
+                    }`}>{s}</span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+          <div class="mt-3 text-[10px] text-white/30 flex flex-wrap gap-3">
+            <span><span class="text-amber-300/80">翻唱</span> 翻唱曲目</span>
+            <span><span class="text-accent-300/70">玫红</span> 嘉宾合作曲</span>
+            <span><span class="text-emerald-300/70">绿</span> 先行单曲</span>
+            <span><span class="text-sky-300/70">蓝</span> 场次限定</span>
+          </div>
+        </section>
       </div>
     </Container>
   </div>
