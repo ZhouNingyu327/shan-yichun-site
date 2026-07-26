@@ -1,0 +1,118 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Container from '@/components/ui/Container.astro';
+import { getCollection } from 'astro:content';
+
+const allStages = (await getCollection('stages'))
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+
+const showLabels: Record<string, string> = {};
+for (const s of allStages) {
+  const show = s.data.show;
+  if (!showLabels[show]) showLabels[show] = 0;
+  showLabels[show]++;
+}
+
+const showOrder = ['中国好声音2020','天赐的声音第二季','说唱听我的2','爆裂舞台','我们的歌第三季','天赐的声音第三季','声生不息·港乐季','声生不息·宝岛季','音乐缘计划','歌手2025','央视春节联欢晚会','央视元宵晚会'];
+
+const typeEmoji: Record<string, string> = { solo: '🎤', duet: '🎵', group: '🎶' };
+const typeLabel: Record<string, string> = { solo: '独唱', duet: '合作', group: '群演' };
+const typeColor: Record<string, string> = { solo: 'bg-primary-500/20 text-primary-300 border-primary-400/20', duet: 'bg-accent-500/20 text-accent-200 border-accent-400/20', group: 'bg-emerald-500/20 text-emerald-200 border-emerald-400/20' };
+
+// Group by show
+const grouped: Record<string, typeof allStages> = {};
+for (const s of allStages) {
+  if (!grouped[s.data.show]) grouped[s.data.show] = [];
+  grouped[s.data.show].push(s);
+}
+---
+
+<BaseLayout title="综艺舞台" path="/stages">
+  <div class="relative bg-gradient-to-br from-[#0a0a1a] via-[#120a2e] to-[#0f1923] overflow-hidden min-h-screen">
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+      <div class="absolute top-[-10%] left-[-5%] w-[35rem] h-[35rem] rounded-full blur-[120px] opacity-25 animate-blob" style="background: linear-gradient(135deg, #8b5cf6, #06b6d4)" />
+      <div class="absolute bottom-[-15%] right-[-5%] w-[30rem] h-[30rem] rounded-full blur-[120px] opacity-20 animate-blob animation-delay-2" style="background: linear-gradient(135deg, #f59e0b, #ec4899)" />
+    </div>
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[80rem] h-px bg-gradient-to-r from-transparent via-white/15 to-transparent" />
+
+    <Container class="relative z-10 py-16 sm:py-20">
+      <div class="text-center mb-10">
+        <h1 class="text-4xl sm:text-5xl font-heading font-bold text-white mb-3">综艺舞台</h1>
+        <p class="text-white/50">出道以来在各大综艺中的精彩表演 · 共 {allStages.length} 个舞台</p>
+        <div class="mx-auto mt-4 w-16 h-[2px] bg-gradient-to-r from-primary-400/60 to-accent-400/60 rounded-full" />
+      </div>
+
+      <!-- 节目导航 -->
+      <div class="flex flex-wrap justify-center gap-2 mb-10">
+        {showOrder.filter(s => showLabels[s]).map(show => (
+          <a href={`#show-${show}`} class="px-3.5 py-1.5 rounded-full text-xs font-medium transition-all backdrop-blur-xl bg-white/8 text-white/55 border border-white/10 hover:bg-white/15 hover:text-white whitespace-nowrap">
+            {show} <span class="text-white/30">{showLabels[show]}</span>
+          </a>
+        ))}
+      </div>
+
+      {showOrder.filter(s => showLabels[s]).map(show => {
+        const stages = grouped[show];
+        const showType = show.includes('春晚') || show.includes('元宵') ? 'special' : show.includes('好声音') ? 'start' : 'variety';
+        return (
+          <section id={`show-${show}`} class="mb-12 scroll-mt-20">
+            <div class="flex items-center gap-3 mb-5">
+              <span class={`w-2 h-2 rounded-full ${showType === 'start' ? 'bg-amber-400' : showType === 'special' ? 'bg-accent-400' : 'bg-primary-400'}`} />
+              <h2 class="text-xl sm:text-2xl font-heading font-bold text-white/90">{show}</h2>
+              <span class="text-sm text-white/35">{stages.length} 个舞台</span>
+              <div class="flex-1 h-px bg-gradient-to-r from-white/10 to-transparent" />
+            </div>
+
+            <div class="grid gap-3 sm:grid-cols-2">
+              {stages.map(s => {
+                const d = new Date(s.data.date);
+                return (
+                  <a href={`/stages/${s.id}`} class="group block">
+                    <div class="backdrop-blur-xl bg-white/[0.05] rounded-xl border border-white/10 p-4 card-hover h-full">
+                      <div class="flex items-start gap-3">
+                        <div class="text-center flex-shrink-0 w-12 pt-0.5">
+                          <div class="text-lg font-bold text-primary-300 leading-none">{d.getDate()}</div>
+                          <div class="text-[10px] text-white/40">{d.toLocaleDateString('zh-CN',{month:'short'}).replace('月','')}月</div>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                          <div class="flex items-center gap-1.5 mb-1 flex-wrap">
+                            <span>{typeEmoji[s.data.type] || '🎤'}</span>
+                            <h3 class="text-sm font-semibold text-white/85 group-hover:text-primary-300 transition-colors line-clamp-1">{s.data.title}</h3>
+                          </div>
+                          <div class="flex flex-wrap gap-1">
+                            {s.data.songs.map(song => <span class="text-[11px] px-1.5 py-0.5 rounded bg-white/8 text-white/50">{song}</span>)}
+                          </div>
+                        </div>
+                        <span class={`text-[10px] px-2 py-0.5 rounded-full font-medium flex-shrink-0 border ${typeColor[s.data.type] || ''}`}>
+                          {typeLabel[s.data.type] || s.data.type}
+                        </span>
+                      </div>
+                    </div>
+                  </a>
+                );
+              })}
+            </div>
+          </section>
+        );
+      })}
+
+      {allStages.length === 0 && (
+        <div class="text-center py-20 text-white/40 backdrop-blur-xl bg-white/[0.05] rounded-2xl border border-white/10">
+          <p class="text-lg">暂无舞台记录</p>
+        </div>
+      )}
+    </Container>
+  </div>
+</BaseLayout>
+
+<style is:global>
+  @keyframes blob {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    25% { transform: translate(40px, -40px) scale(1.05); }
+    50% { transform: translate(-30px, 30px) scale(0.95); }
+    75% { transform: translate(30px, 40px) scale(1.02); }
+  }
+  .animate-blob { animation: blob 20s ease-in-out infinite; }
+  .animation-delay-2 { animation-delay: 5s; }
+  html { scroll-behavior: smooth; }
+</style>

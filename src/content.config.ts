@@ -122,10 +122,27 @@ const awards = defineCollection({
   }),
 });
 
+const stages = defineCollection({
+  loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/stages' }),
+  schema: z.object({
+    title: z.string(),
+    date: z.date(),
+    show: z.string(),
+    showEn: z.string().optional(),
+    type: z.enum(['solo', 'duet', 'group']),
+    songs: z.array(z.string()),
+    originalArtist: z.string().optional(),
+    partner: z.string().optional(),
+    featured: z.boolean().default(false),
+    locale: z.enum(['zh', 'en']).default('zh'),
+  }),
+});
+
 export const collections = {
   biography,
   discography,
   events,
   news,
   awards,
+  stages,
 };

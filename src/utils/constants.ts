@@ -20,6 +20,7 @@ export const NAV_ITEMS = [
   { label: '首页', href: '/' },
   { label: '个人简介', href: '/about' },
   { label: '音乐作品', href: '/music' },
+  { label: '综艺舞台', href: '/stages' },
   { label: '演出经历', href: '/events' },
   { label: '最新动态', href: '/news' },
   { label: '荣誉奖项', href: '/awards' },

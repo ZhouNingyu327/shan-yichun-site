@@ -1,0 +1,93 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Container from '@/components/ui/Container.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('stages');
+  return entries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { data } = entry;
+
+const typeEmoji: Record<string, string> = { solo: '🎤', duet: '🎵', group: '🎶' };
+const typeLabels: Record<string, string> = { solo: '独唱', duet: '合作舞台', group: '群演' };
+const typeColors: Record<string, string> = { solo: 'bg-primary-500/20 text-primary-300 border-primary-400/20', duet: 'bg-accent-500/20 text-accent-200 border-accent-400/20', group: 'bg-emerald-500/20 text-emerald-200 border-emerald-400/20' };
+---
+
+<BaseLayout title={data.title} path={`/stages/${entry.id}`}>
+  <div class="relative bg-gradient-to-br from-[#0a0a1a] via-[#120a2e] to-[#0f1923] overflow-hidden min-h-screen">
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+      <div class="absolute top-[10%] left-[10%] w-[25rem] h-[25rem] rounded-full blur-[100px] opacity-20 animate-blob" style="background: linear-gradient(135deg, #8b5cf6, #06b6d4)" />
+      <div class="absolute bottom-[20%] right-[10%] w-[20rem] h-[20rem] rounded-full blur-[100px] opacity-15 animate-blob animation-delay-2" style="background: linear-gradient(135deg, #f59e0b, #ec4899)" />
+    </div>
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[80rem] h-px bg-gradient-to-r from-transparent via-white/15 to-transparent" />
+
+    <Container class="relative z-10 py-16 sm:py-20">
+      <div class="max-w-3xl mx-auto">
+        <a href="/stages" class="inline-flex items-center gap-1.5 text-sm text-white/40 hover:text-white/70 transition-colors mb-8">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          返回综艺舞台
+        </a>
+
+        <div class="flex items-center gap-3 mb-4 flex-wrap">
+          <span class={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium backdrop-blur-xl border ${typeColors[data.type]}`}>
+            <span>{typeEmoji[data.type]}</span>
+            {typeLabels[data.type]}
+          </span>
+          {data.featured && <span class="px-2.5 py-0.5 rounded-full text-xs font-medium backdrop-blur-xl bg-amber-500/20 text-amber-200 border border-amber-400/20">⭐ 精选</span>}
+        </div>
+
+        <h1 class="text-3xl sm:text-4xl font-heading font-bold text-white mb-6">{data.title}</h1>
+
+        <div class="backdrop-blur-xl bg-white/[0.06] rounded-xl border border-white/10 p-5 sm:p-6 mb-8">
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div class="flex items-center gap-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary-300 flex-shrink-0"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              <div>
+                <p class="text-xs text-white/40 font-medium">播出时间</p>
+                <p class="text-sm text-white/80">{new Date(data.date).toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary-300 flex-shrink-0"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              <div>
+                <p class="text-xs text-white/40 font-medium">节目</p>
+                <p class="text-sm text-white/80">{data.show}</p>
+              </div>
+            </div>
+          </div>
+          <div class="mt-4 pt-4 border-t border-white/10">
+            <p class="text-xs text-white/40 font-medium mb-2">演唱歌曲</p>
+            <div class="flex flex-wrap gap-2">
+              {data.songs.map(song => (
+                <span class="px-3 py-1 rounded-full bg-white/10 text-white/70 text-sm font-medium border border-white/10">{song}</span>
+              ))}
+            </div>
+            {data.originalArtist && <p class="text-xs text-white/35 mt-2">原唱：{data.originalArtist}</p>}
+            {data.partner && <p class="text-xs text-white/35 mt-1">合作：{data.partner}</p>}
+          </div>
+        </div>
+
+        <article class="text-white/60 leading-relaxed text-sm sm:text-base">
+          <slot />
+        </article>
+      </div>
+    </Container>
+  </div>
+</BaseLayout>
+
+<style is:global>
+  @keyframes blob {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    25% { transform: translate(40px, -40px) scale(1.05); }
+    50% { transform: translate(-30px, 30px) scale(0.95); }
+    75% { transform: translate(30px, 40px) scale(1.02); }
+  }
+  .animate-blob { animation: blob 20s ease-in-out infinite; }
+  .animation-delay-2 { animation-delay: 5s; }
+</style>
