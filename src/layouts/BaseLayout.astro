@@ -37,6 +37,80 @@ const canonicalPath = path || Astro.url.pathname;
     />
   </head>
   <body class="min-h-screen flex flex-col">
+    <!-- 网站进入动画（仅首次访问） -->
+    <div id="splash-screen" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-gradient-to-br from-[#0a0a1a] via-[#120a2e] to-[#0f1923]">
+      <!-- 光晕背景 -->
+      <div class="absolute inset-0 overflow-hidden">
+        <div class="absolute top-[-10%] left-[-5%] w-[30rem] h-[30rem] rounded-full blur-[120px] opacity-30 animate-splash-blob" style="background: linear-gradient(135deg, #8b5cf6, #ec4899)" />
+        <div class="absolute bottom-[-15%] right-[-5%] w-[25rem] h-[25rem] rounded-full blur-[120px] opacity-20 animate-splash-blob animation-delay-2" style="background: linear-gradient(135deg, #06b6d4, #8b5cf6)" />
+      </div>
+
+      <!-- 声波环 -->
+      <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <div class="relative w-80 aspect-square flex items-center justify-center">
+          <div class="absolute inset-0 rounded-full border border-white/[0.04] animate-splash-ring" style="animation-duration: 3s" />
+          <div class="absolute inset-[-20px] rounded-full border border-white/[0.03] animate-splash-ring" style="animation-duration: 4s; animation-delay: 0.5s" />
+          <div class="absolute inset-[-40px] rounded-full border border-white/[0.02] animate-splash-ring" style="animation-duration: 5s; animation-delay: 1s" />
+        </div>
+      </div>
+
+      <!-- 中心内容 -->
+      <div class="relative z-10 text-center animate-splash-content">
+        <p class="text-sm tracking-[0.5em] text-white/30 font-light mb-6 animate-splash-fade-in" style="animation-delay: 0.2s">SHAN YICHUN</p>
+        <h1 class="text-6xl sm:text-8xl font-heading font-bold text-white/90 animate-splash-fade-in" style="animation-delay: 0.4s">
+          单依纯
+        </h1>
+        <div class="mt-6 h-px w-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-splash-line" />
+        <p class="mt-6 text-sm text-white/40 font-light tracking-wider animate-splash-fade-in" style="animation-delay: 0.8s">用歌声温暖世界</p>
+
+        <!-- 装饰音符 -->
+        <div class="mt-8 flex justify-center gap-3 text-white/20 text-lg animate-splash-fade-in" style="animation-delay: 1s">
+          <span class="animate-splash-note" style="animation-delay: 1.2s">♪</span>
+          <span class="animate-splash-note" style="animation-delay: 1.5s">♫</span>
+          <span class="animate-splash-note" style="animation-delay: 1.8s">♩</span>
+          <span class="animate-splash-note" style="animation-delay: 2.1s">♬</span>
+        </div>
+      </div>
+
+      <!-- 底部加载指示 -->
+      <div class="absolute bottom-12 left-1/2 -translate-x-1/2 z-10 animate-splash-fade-in" style="animation-delay: 1.5s">
+        <div class="w-8 h-8 rounded-full border-2 border-white/10 border-t-white/30 animate-spin" />
+      </div>
+    </div>
+
+    <script is:inline>
+      (function() {
+        var splash = document.getElementById('splash-screen');
+        if (splash && sessionStorage.getItem('splashShown')) {
+          splash.style.display = 'none';
+        } else if (splash) {
+          var minShow = 2200;
+          var start = Date.now();
+          window.addEventListener('load', function() {
+            var elapsed = Date.now() - start;
+            var remaining = Math.max(0, minShow - elapsed);
+            setTimeout(function() {
+              splash.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+              splash.style.opacity = '0';
+              splash.style.transform = 'scale(1.05)';
+              setTimeout(function() {
+                splash.style.display = 'none';
+                try { sessionStorage.setItem('splashShown', '1'); } catch(e) {}
+              }, 800);
+            }, remaining);
+          });
+          // Fallback: hide after max 4s
+          setTimeout(function() {
+            if (splash.style.display !== 'none') {
+              splash.style.transition = 'opacity 0.6s ease';
+              splash.style.opacity = '0';
+              setTimeout(function() { splash.style.display = 'none'; }, 600);
+            }
+          }, 4000);
+        }
+      })();
+    </script>
+
     <Header />
     <main class="flex-1">
       <slot />
