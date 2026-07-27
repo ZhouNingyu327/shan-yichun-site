@@ -38,10 +38,12 @@ const canonicalPath = path || Astro.url.pathname;
   </head>
   <body class="min-h-screen flex flex-col">
     <!-- 网站进入动画（仅首次访问） -->
-    <div id="splash-screen" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center overflow-hidden">
-      <!-- 背景图片轮播 -->
-      <div class="absolute inset-0">
-        <img src="/images/封面图1.jpg" class="splash-bg absolute inset-0 w-full h-full object-cover" data-index="0" />
+    <div id="splash-screen" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center overflow-hidden bg-[#0a0a1a]">
+      <!-- 背景图片轮播 - 完整显示不裁切 -->
+      <div class="absolute inset-0 flex items-center justify-center bg-[#0a0a1a]">
+        <img src="/images/封面图1.jpg" class="splash-bg absolute w-full h-full object-contain" style="max-width:100%;max-height:100%" data-index="0" />
+        <img src="/images/封面图2.jpg" class="splash-bg absolute w-full h-full object-contain opacity-0" style="max-width:100%;max-height:100%" data-index="1" />
+        <img src="/images/封面图3.jpg" class="splash-bg absolute w-full h-full object-contain opacity-0" style="max-width:100%;max-height:100%" data-index="2" />
         <img src="/images/封面图2.jpg" class="splash-bg absolute inset-0 w-full h-full object-cover opacity-0" data-index="1" />
         <img src="/images/封面图3.jpg" class="splash-bg absolute inset-0 w-full h-full object-cover opacity-0" data-index="2" />
       </div>
@@ -87,20 +89,20 @@ const canonicalPath = path || Astro.url.pathname;
           return;
         }
 
-        // 背景轮播：每1.2秒切换一张
+        // 背景轮播：每3秒切换一张（缓慢交叉淡入淡出）
         var currentBg = 0;
         var bgImages = splash.querySelectorAll('.splash-bg');
         if (bgImages.length > 1) {
           setInterval(function() {
-            bgImages.forEach(function(img) { img.classList.add('opacity-0'); img.classList.remove('opacity-100'); });
+            bgImages.forEach(function(img) { img.classList.remove('opacity-100'); img.classList.add('opacity-0'); });
             currentBg = (currentBg + 1) % bgImages.length;
             bgImages[currentBg].classList.remove('opacity-0');
             bgImages[currentBg].classList.add('opacity-100');
-          }, 1200);
+          }, 3000);
         }
 
         if (splash) {
-          var minShow = 3000;
+          var minShow = 6000;  // 最少显示6秒
           var start = Date.now();
           window.addEventListener('load', function() {
             var elapsed = Date.now() - start;
@@ -121,7 +123,7 @@ const canonicalPath = path || Astro.url.pathname;
               splash.style.opacity = '0';
               setTimeout(function() { splash.style.display = 'none'; }, 600);
             }
-          }, 5000);
+          }, 8000);
         }
       })();
     </script>
