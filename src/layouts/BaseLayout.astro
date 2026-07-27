@@ -38,33 +38,34 @@ const canonicalPath = path || Astro.url.pathname;
   </head>
   <body class="min-h-screen flex flex-col">
     <!-- 网站进入动画（仅首次访问） -->
-    <div id="splash-screen" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-gradient-to-br from-[#0a0a1a] via-[#120a2e] to-[#0f1923]">
-      <!-- 光晕背景 -->
-      <div class="absolute inset-0 overflow-hidden">
-        <div class="absolute top-[-10%] left-[-5%] w-[30rem] h-[30rem] rounded-full blur-[120px] opacity-30 animate-splash-blob" style="background: linear-gradient(135deg, #8b5cf6, #ec4899)" />
-        <div class="absolute bottom-[-15%] right-[-5%] w-[25rem] h-[25rem] rounded-full blur-[120px] opacity-20 animate-splash-blob animation-delay-2" style="background: linear-gradient(135deg, #06b6d4, #8b5cf6)" />
+    <div id="splash-screen" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center overflow-hidden">
+      <!-- 背景图片轮播 -->
+      <div class="absolute inset-0">
+        <img src="/images/封面图1.jpg" class="splash-bg absolute inset-0 w-full h-full object-cover" data-index="0" />
+        <img src="/images/封面图2.jpg" class="splash-bg absolute inset-0 w-full h-full object-cover opacity-0" data-index="1" />
+        <img src="/images/封面图3.jpg" class="splash-bg absolute inset-0 w-full h-full object-cover opacity-0" data-index="2" />
       </div>
+      <!-- 遮罩层 -->
+      <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
 
       <!-- 声波环 -->
       <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
         <div class="relative w-80 aspect-square flex items-center justify-center">
-          <div class="absolute inset-0 rounded-full border border-white/[0.04] animate-splash-ring" style="animation-duration: 3s" />
-          <div class="absolute inset-[-20px] rounded-full border border-white/[0.03] animate-splash-ring" style="animation-duration: 4s; animation-delay: 0.5s" />
-          <div class="absolute inset-[-40px] rounded-full border border-white/[0.02] animate-splash-ring" style="animation-duration: 5s; animation-delay: 1s" />
+          <div class="absolute inset-0 rounded-full border border-white/[0.06] animate-splash-ring" style="animation-duration: 3s" />
+          <div class="absolute inset-[-20px] rounded-full border border-white/[0.04] animate-splash-ring" style="animation-duration: 4s; animation-delay: 0.5s" />
+          <div class="absolute inset-[-40px] rounded-full border border-white/[0.03] animate-splash-ring" style="animation-duration: 5s; animation-delay: 1s" />
         </div>
       </div>
 
       <!-- 中心内容 -->
       <div class="relative z-10 text-center animate-splash-content">
-        <p class="text-sm tracking-[0.5em] text-white/30 font-light mb-6 animate-splash-fade-in" style="animation-delay: 0.2s">SHAN YICHUN</p>
-        <h1 class="text-6xl sm:text-8xl font-heading font-bold text-white/90 animate-splash-fade-in" style="animation-delay: 0.4s">
+        <p class="text-sm tracking-[0.5em] text-white/40 font-light mb-4 animate-splash-fade-in" style="animation-delay: 0.2s">SHAN YICHUN</p>
+        <h1 class="text-6xl sm:text-8xl font-heading font-bold text-white drop-shadow-lg animate-splash-fade-in" style="animation-delay: 0.4s">
           单依纯
         </h1>
-        <div class="mt-6 h-px w-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-splash-line" />
-        <p class="mt-6 text-sm text-white/40 font-light tracking-wider animate-splash-fade-in" style="animation-delay: 0.8s">用歌声温暖世界</p>
-
-        <!-- 装饰音符 -->
-        <div class="mt-8 flex justify-center gap-3 text-white/20 text-lg animate-splash-fade-in" style="animation-delay: 1s">
+        <div class="mx-auto mt-5 h-px w-0 bg-gradient-to-r from-transparent via-white/40 to-transparent animate-splash-line" />
+        <p class="mt-5 text-sm text-white/50 font-light tracking-widest animate-splash-fade-in" style="animation-delay: 0.8s">用歌声温暖世界</p>
+        <div class="mt-6 flex justify-center gap-3 text-white/30 text-lg animate-splash-fade-in" style="animation-delay: 1s">
           <span class="animate-splash-note" style="animation-delay: 1.2s">♪</span>
           <span class="animate-splash-note" style="animation-delay: 1.5s">♫</span>
           <span class="animate-splash-note" style="animation-delay: 1.8s">♩</span>
@@ -74,7 +75,7 @@ const canonicalPath = path || Astro.url.pathname;
 
       <!-- 底部加载指示 -->
       <div class="absolute bottom-12 left-1/2 -translate-x-1/2 z-10 animate-splash-fade-in" style="animation-delay: 1.5s">
-        <div class="w-8 h-8 rounded-full border-2 border-white/10 border-t-white/30 animate-spin" />
+        <div class="w-8 h-8 rounded-full border-2 border-white/15 border-t-white/40 animate-spin" />
       </div>
     </div>
 
@@ -83,8 +84,23 @@ const canonicalPath = path || Astro.url.pathname;
         var splash = document.getElementById('splash-screen');
         if (splash && sessionStorage.getItem('splashShown')) {
           splash.style.display = 'none';
-        } else if (splash) {
-          var minShow = 2200;
+          return;
+        }
+
+        // 背景轮播：每1.2秒切换一张
+        var currentBg = 0;
+        var bgImages = splash.querySelectorAll('.splash-bg');
+        if (bgImages.length > 1) {
+          setInterval(function() {
+            bgImages.forEach(function(img) { img.classList.add('opacity-0'); img.classList.remove('opacity-100'); });
+            currentBg = (currentBg + 1) % bgImages.length;
+            bgImages[currentBg].classList.remove('opacity-0');
+            bgImages[currentBg].classList.add('opacity-100');
+          }, 1200);
+        }
+
+        if (splash) {
+          var minShow = 3000;
           var start = Date.now();
           window.addEventListener('load', function() {
             var elapsed = Date.now() - start;
@@ -99,14 +115,13 @@ const canonicalPath = path || Astro.url.pathname;
               }, 800);
             }, remaining);
           });
-          // Fallback: hide after max 4s
           setTimeout(function() {
             if (splash.style.display !== 'none') {
               splash.style.transition = 'opacity 0.6s ease';
               splash.style.opacity = '0';
               setTimeout(function() { splash.style.display = 'none'; }, 600);
             }
-          }, 4000);
+          }, 5000);
         }
       })();
     </script>

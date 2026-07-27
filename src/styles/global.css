@@ -111,6 +111,10 @@ html {
   animation: splashNote 1.2s ease-in-out infinite;
 }
 
+.splash-bg {
+  transition: opacity 1.2s ease-in-out;
+}
+
 @keyframes splashBlob {
   0%, 100% { transform: translate(0, 0) scale(1); }
   25% { transform: translate(30px, -30px) scale(1.05); }
