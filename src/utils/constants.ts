@@ -1,7 +1,7 @@
 export const SITE = {
   name: '单依纯',
   nameEn: 'Shan Yichun',
-  tagline: '中国新生代歌手 · 用歌声温暖世界',
+  tagline: '只有音乐和真心最重要',
   description: '单依纯个人资讯站 — 了解单依纯的最新动态、音乐作品、演出信息和媒体资料',
   url: 'https://shanyichun.fans',
   locale: 'zh_CN',
