@@ -13,39 +13,44 @@ const typeLabels: Record<string, string> = {
   award: '颁奖礼',
   interview: '采访',
   fanmeeting: '粉丝见面会',
-  other: '其他',
+  other: '活动',
 };
 ---
 
-<section class="py-16 sm:py-20">
+<section class="py-16 sm:py-20 bg-[#0f1923]">
   <Container>
     <div class="flex items-center justify-between mb-10">
-      <h2 class="text-2xl sm:text-3xl font-heading font-bold text-text-primary">演出经历</h2>
-      <a href="/events" class="text-sm text-primary-600 hover:text-primary-700 font-medium transition-colors">
+      <h2 class="text-2xl sm:text-3xl font-heading font-bold text-white/90">演出经历</h2>
+      <a href="/events" class="text-sm text-primary-300 hover:text-primary-200 font-medium transition-colors">
         查看全部 →
       </a>
     </div>
 
     <div class="space-y-4">
       {events.slice(0, 5).map((event) => (
-        <a href={`/events/${event.id}`} class="block">
-          <div class="bg-white rounded-xl border border-primary-100/30 p-5 card-hover flex items-start gap-4">
+        <a href={`/events/${event.id}`} class="block group">
+          <div class="backdrop-blur-xl bg-white/[0.05] rounded-xl border border-white/10 p-5 card-hover flex items-start gap-4">
             <div class="text-center flex-shrink-0 w-14">
-              <div class="text-lg font-bold text-primary-600">
+              <div class="text-lg font-bold text-primary-300">
                 {new Date(event.data.date).getDate()}
               </div>
-              <div class="text-xs text-text-secondary">
+              <div class="text-xs text-white/45">
                 {new Date(event.data.date).toLocaleDateString('zh-CN', { month: 'long' })}
               </div>
             </div>
             <div class="flex-1 min-w-0">
-              <h3 class="font-semibold text-text-primary group-hover:text-primary-600 transition-colors">
+              <h3 class="font-semibold text-white/85 group-hover:text-primary-300 transition-colors">
                 {event.data.title}
               </h3>
-              <p class="text-sm text-text-secondary mt-1">{event.data.location}</p>
+              <p class="text-sm text-white/45 mt-1">{event.data.location}</p>
             </div>
             <div>
-              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-50 text-primary-700">
+              <span class={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                event.data.type === 'concert' ? 'bg-primary-500/20 text-primary-300 border border-primary-400/20' :
+                event.data.type === 'award' ? 'bg-amber-500/20 text-amber-200 border border-amber-400/20' :
+                event.data.type === 'variety' ? 'bg-sky-500/20 text-sky-200 border border-sky-400/20' :
+                'bg-white/10 text-white/50 border border-white/10'
+              }`}>
                 {typeLabels[event.data.type] || event.data.type}
               </span>
             </div>
