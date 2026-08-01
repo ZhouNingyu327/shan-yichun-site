@@ -1,27 +1,238 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Container from '@/components/ui/Container.astro';
+import { getCollection } from 'astro:content';
+
+const allMusic = await getCollection('discography');
+
+// Build gallery items: albums, singles, OSTs (covers) + splash images
+const albums = allMusic.filter(m => m.data.type === 'album').sort((a,b) => new Date(b.data.releaseDate) - new Date(a.data.releaseDate));
+const singles = allMusic.filter(m => m.data.type === 'single').sort((a,b) => new Date(b.data.releaseDate) - new Date(a.data.releaseDate));
+const osts = allMusic.filter(m => m.data.type === 'ost').sort((a,b) => new Date(b.data.releaseDate) - new Date(a.data.releaseDate));
+
+// Splash/feature images
+const splashImages = [
+  { title: '开屏海报', date: '2026-01-01', src: '/images/封面图1.jpg', tag: '写真' },
+  { title: '开屏海报', date: '2026-01-01', src: '/images/封面图2.jpg', tag: '写真' },
+  { title: '开屏海报', date: '2026-01-01', src: '/images/封面图3.jpg', tag: '写真' },
+];
+
+const typeLabel: Record<string,string> = { album: '专辑', single: '单曲', ost: 'OST' };
+const catLabel: Record<string,string> = { photo: '写真', cover: '封面', stage: '舞台', video: '视频' };
+
+// Build item with cover
+function coverItem(m: any) {
+  const [c1, c2] = m.data.coverColor ? m.data.coverColor.split('-') : ['#8b5cf6', '#7c3aed'];
+  return {
+    id: m.id,
+    title: m.data.title,
+    date: m.data.releaseDate,
+    type: m.data.type,
+    src: `/images/covers/${m.id}.jpg`,
+    c1, c2,
+    tag: typeLabel[m.data.type],
+  };
+}
+
+const photoItems = splashImages;
+const coverItems = [...albums, ...singles, ...osts].map(coverItem);
+const allItems = [...photoItems, ...coverItems];
+
+// Counts for tabs
+const photoCount = photoItems.length;
+const coverCount = coverItems.length;
 ---
 
 <BaseLayout title="媒体库" path="/media">
-  <Container class="py-16 sm:py-20">
-    <h1 class="text-3xl sm:text-4xl font-heading font-bold text-text-primary mb-2">媒体库</h1>
-    <p class="text-text-secondary mb-10">照片与视频集锦</p>
-
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-      {Array.from({ length: 12 }).map((_, i) => (
-        <div class="aspect-square rounded-xl img-placeholder flex items-center justify-center card-hover cursor-pointer" key={i}>
-          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" class="text-primary-300">
-            <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-            <circle cx="8.5" cy="8.5" r="1.5" />
-            <polyline points="21 15 16 10 5 21" />
-          </svg>
-        </div>
-      ))}
+  <div class="relative bg-gradient-to-br from-[#0a0a1a] via-[#120a2e] to-[#0f1923] overflow-hidden min-h-screen">
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+      <div class="absolute top-[-10%] left-[-5%] w-[35rem] h-[35rem] rounded-full blur-[120px] opacity-25 animate-blob" style="background: linear-gradient(135deg, #8b5cf6, #ec4899)" />
+      <div class="absolute bottom-[-15%] right-[-5%] w-[30rem] h-[30rem] rounded-full blur-[120px] opacity-20 animate-blob animation-delay-2" style="background: linear-gradient(135deg, #06b6d4, #8b5cf6)" />
     </div>
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[80rem] h-px bg-gradient-to-r from-transparent via-white/15 to-transparent" />
 
-    <div class="text-center mt-12 text-text-secondary/60">
-      <p>媒体资料持续更新中，敬请期待。</p>
+    <Container class="relative z-10 py-16 sm:py-20">
+      <div class="text-center mb-10">
+        <h1 class="text-4xl sm:text-5xl font-heading font-bold text-white mb-3">媒体库</h1>
+        <p class="text-white/50">照片与封面集锦 · 共 {allItems.length} 张</p>
+        <div class="mx-auto mt-4 w-16 h-[2px] bg-gradient-to-r from-primary-400/60 to-accent-400/60 rounded-full" />
+      </div>
+
+      <!-- Tab 切换 -->
+      <div class="flex justify-center gap-2 mb-10">
+        <button data-tab="all" class="g-tab px-5 py-2 rounded-full text-sm font-medium transition-all backdrop-blur-xl bg-white/15 text-white border border-white/20">全部 {allItems.length}</button>
+        <button data-tab="photo" class="g-tab px-5 py-2 rounded-full text-sm font-medium transition-all backdrop-blur-xl bg-white/5 text-white/50 border border-white/5 hover:bg-white/10">📷 写真 {photoCount}</button>
+        <button data-tab="cover" class="g-tab px-5 py-2 rounded-full text-sm font-medium transition-all backdrop-blur-xl bg-white/5 text-white/50 border border-white/5 hover:bg-white/10">💿 封面 {coverCount}</button>
+      </div>
+
+      <!-- 分类快速筛选（封面页） -->
+      <div id="cover-filter" class="flex justify-center gap-2 mb-8">
+        <button data-cat="all" class="g-cat px-3.5 py-1.5 rounded-full text-xs font-medium transition-all backdrop-blur-xl bg-white/15 text-white border border-white/20">全部封面</button>
+        <button data-cat="album" class="g-cat px-3.5 py-1.5 rounded-full text-xs font-medium transition-all backdrop-blur-xl bg-white/5 text-white/50 border border-white/5 hover:bg-white/10">💿 专辑</button>
+        <button data-cat="single" class="g-cat px-3.5 py-1.5 rounded-full text-xs font-medium transition-all backdrop-blur-xl bg-white/5 text-white/50 border border-white/5 hover:bg-white/10">🎵 单曲</button>
+        <button data-cat="ost" class="g-cat px-3.5 py-1.5 rounded-full text-xs font-medium transition-all backdrop-blur-xl bg-white/5 text-white/50 border border-white/5 hover:bg-white/10">🎬 OST</button>
+      </div>
+
+      <!-- 照片瀑布流 -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+        <!-- 写真区 -->
+        {photoItems.map((item, i) => (
+          <div class="g-item g-photo g-cat-photo">
+            <button class="group block w-full gallery-img" data-src={item.src} data-title={item.title} data-tag={item.tag}>
+              <div class="relative rounded-xl overflow-hidden card-hover aspect-[3/4]">
+                <img src={item.src} alt={item.title} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div class="absolute bottom-3 left-3 right-3 text-left opacity-0 group-hover:opacity-100 transition-opacity translate-y-2 group-hover:translate-y-0">
+                  <p class="text-white text-xs font-semibold">{item.title}</p>
+                  <p class="text-white/60 text-[10px]">{item.tag}</p>
+                </div>
+                <span class="absolute top-2 right-2 text-[10px] px-2 py-0.5 rounded-full bg-white/15 text-white/70 backdrop-blur-sm">写真</span>
+              </div>
+            </button>
+          </div>
+        ))}
+
+        <!-- 封面区 -->
+        {coverItems.map((item) => (
+          <div class="g-item g-cover" data-type={item.type}>
+            <button class="group block w-full gallery-img" data-src={item.src} data-title={item.title} data-tag={item.tag}>
+              <div class="relative rounded-xl overflow-hidden card-hover aspect-square" style={`background: linear-gradient(135deg, ${item.c1}, ${item.c2})`}>
+                <img src={item.src} alt={item.title} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" onerror="this.style.display='none'" />
+                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div class="absolute bottom-3 left-3 right-3 text-left opacity-0 group-hover:opacity-100 transition-opacity translate-y-2 group-hover:translate-y-0">
+                  <p class="text-white text-xs font-semibold line-clamp-1">{item.title}</p>
+                  <p class="text-white/60 text-[10px]">{item.tag} · {new Date(item.date).getFullYear()}</p>
+                </div>
+                <span class="absolute top-2 right-2 text-[10px] px-2 py-0.5 rounded-full bg-white/15 text-white/70 backdrop-blur-sm">{item.tag}</span>
+              </div>
+            </button>
+          </div>
+        ))}
+      </div>
+
+      <div class="text-center mt-12 text-white/30 text-xs">
+        <p>图片版权归原作者及所属公司所有</p>
+      </div>
+    </Container>
+  </div>
+
+  <!-- 灯箱 -->
+  <div id="lightbox" class="fixed inset-0 z-[9998] hidden items-center justify-center bg-black/95 backdrop-blur-sm">
+    <button id="lb-close" class="absolute top-6 right-8 text-white/70 hover:text-white text-3xl z-20">✕</button>
+    <button id="lb-prev" class="absolute left-4 sm:left-8 text-white/70 hover:text-white text-4xl z-20">‹</button>
+    <button id="lb-next" class="absolute right-4 sm:right-8 text-white/70 hover:text-white text-4xl z-20">›</button>
+    <div class="max-w-4xl max-h-[85vh] px-4 flex flex-col items-center">
+      <img id="lb-img" src="" alt="" class="max-w-full max-h-[75vh] object-contain rounded-lg" />
+      <div class="mt-4 text-center">
+        <p id="lb-title" class="text-white text-lg font-semibold"></p>
+        <p id="lb-tag" class="text-white/50 text-sm mt-1"></p>
+      </div>
     </div>
-  </Container>
+  </div>
 </BaseLayout>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Tab switching
+    var tabs = document.querySelectorAll('.g-tab');
+    var cats = document.querySelectorAll('.g-cat');
+    var coverFilter = document.getElementById('cover-filter');
+
+    function setTab(tabName) {
+      tabs.forEach(function(t) {
+        var active = t.dataset.tab === tabName;
+        t.className = 'g-tab px-5 py-2 rounded-full text-sm font-medium transition-all backdrop-blur-xl ' + (active ? 'bg-white/15 text-white border border-white/20' : 'bg-white/5 text-white/50 border border-white/5 hover:bg-white/10');
+      });
+      // Show/hide cover filter
+      if (coverFilter) coverFilter.style.display = tabName === 'cover' || tabName === 'all' ? 'flex' : 'none';
+      // Show/hide items
+      document.querySelectorAll('.g-item').forEach(function(item) {
+        var show = tabName === 'all' || (tabName === 'photo' && item.classList.contains('g-photo')) || (tabName === 'cover' && item.classList.contains('g-cover'));
+        item.style.display = show ? '' : 'none';
+      });
+    }
+
+    function setCat(catName) {
+      cats.forEach(function(c) {
+        var active = c.dataset.cat === catName;
+        c.className = 'g-cat px-3.5 py-1.5 rounded-full text-xs font-medium transition-all backdrop-blur-xl ' + (active ? 'bg-white/15 text-white border border-white/20' : 'bg-white/5 text-white/50 border border-white/5 hover:bg-white/10');
+      });
+      document.querySelectorAll('.g-item.g-cover').forEach(function(item) {
+        var show = catName === 'all' || item.dataset.type === catName;
+        item.style.display = show ? '' : 'none';
+      });
+    }
+
+    tabs.forEach(function(t) { t.addEventListener('click', function() { setTab(t.dataset.tab); }); });
+    cats.forEach(function(c) { c.addEventListener('click', function() { setCat(c.dataset.cat); }); });
+    setTab('all');
+    setCat('all');
+
+    // Lightbox
+    var lightbox = document.getElementById('lightbox');
+    var lbImg = document.getElementById('lb-img');
+    var lbTitle = document.getElementById('lb-title');
+    var lbTag = document.getElementById('lb-tag');
+    var lbClose = document.getElementById('lb-close');
+    var lbPrev = document.getElementById('lb-prev');
+    var lbNext = document.getElementById('lb-next');
+    var items = [];
+    var currentIdx = 0;
+
+    function collectItems() {
+      items = [];
+      document.querySelectorAll('.gallery-img').forEach(function(btn) {
+        if (btn.closest('.g-item').style.display !== 'none') {
+          items.push({ src: btn.dataset.src, title: btn.dataset.title, tag: btn.dataset.tag });
+        }
+      });
+    }
+
+    function showLb(idx) {
+      if (items.length === 0) return;
+      currentIdx = (idx + items.length) % items.length;
+      var item = items[currentIdx];
+      lbImg.src = item.src;
+      lbImg.alt = item.title;
+      lbTitle.textContent = item.title;
+      lbTag.textContent = item.tag;
+      lightbox.classList.remove('hidden');
+      lightbox.classList.add('flex');
+    }
+
+    function hideLb() {
+      lightbox.classList.add('hidden');
+      lightbox.classList.remove('flex');
+    }
+
+    document.querySelectorAll('.gallery-img').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        collectItems();
+        var idx = items.findIndex(function(i) { return i.src === btn.dataset.src; });
+        showLb(idx >= 0 ? idx : 0);
+      });
+    });
+
+    lbClose.addEventListener('click', hideLb);
+    lbPrev.addEventListener('click', function() { showLb(currentIdx - 1); });
+    lbNext.addEventListener('click', function() { showLb(currentIdx + 1); });
+    lightbox.addEventListener('click', function(e) { if (e.target === lightbox) hideLb(); });
+    document.addEventListener('keydown', function(e) {
+      if (lightbox.classList.contains('hidden')) return;
+      if (e.key === 'Escape') hideLb();
+      if (e.key === 'ArrowLeft') showLb(currentIdx - 1);
+      if (e.key === 'ArrowRight') showLb(currentIdx + 1);
+    });
+  });
+</script>
+
+<style is:global>
+  @keyframes blob {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    25% { transform: translate(40px, -40px) scale(1.05); }
+    50% { transform: translate(-30px, 30px) scale(0.95); }
+    75% { transform: translate(30px, 40px) scale(1.02); }
+  }
+  .animate-blob { animation: blob 20s ease-in-out infinite; }
+  .animation-delay-2 { animation-delay: 5s; }
+</style>
