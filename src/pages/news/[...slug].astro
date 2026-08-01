@@ -1,9 +1,7 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Container from '@/components/ui/Container.astro';
-import Tag from '@/components/ui/Tag.astro';
 import { getCollection } from 'astro:content';
-import { SITE } from '@/utils/constants';
 
 export async function getStaticPaths() {
   const entries = await getCollection('news');
@@ -18,37 +16,65 @@ const { data } = entry;
 ---
 
 <BaseLayout title={data.title} description={data.summary} path={`/news/${entry.id}`}>
-  <Container class="py-16 sm:py-20">
-    <article class="max-w-3xl mx-auto">
-      <div class="flex flex-wrap items-center gap-3 text-sm text-text-secondary mb-4">
-        <span>{new Date(data.publishDate).toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
-        <span>·</span>
-        <span>{data.source}</span>
-      </div>
+  <div class="relative bg-gradient-to-br from-[#0a0a1a] via-[#120a2e] to-[#0f1923] overflow-hidden min-h-screen">
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+      <div class="absolute top-[10%] left-[10%] w-[25rem] h-[25rem] rounded-full blur-[100px] opacity-20 animate-blob" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed)" />
+      <div class="absolute bottom-[20%] right-[10%] w-[20rem] h-[20rem] rounded-full blur-[100px] opacity-15 animate-blob animation-delay-2" style="background: linear-gradient(135deg, #ec4899, #f59e0b)" />
+    </div>
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[80rem] h-px bg-gradient-to-r from-transparent via-white/15 to-transparent" />
 
-      <h1 class="text-3xl font-heading font-bold text-text-primary mb-4">{data.title}</h1>
-      <p class="text-lg text-text-secondary leading-relaxed mb-6">{data.summary}</p>
+    <Container class="relative z-10 py-16 sm:py-20">
+      <article class="max-w-3xl mx-auto">
+        <a href="/news" class="inline-flex items-center gap-1.5 text-sm text-white/40 hover:text-white/70 transition-colors mb-8">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          返回最新动态
+        </a>
 
-      <div class="flex flex-wrap gap-2 mb-8">
-        {data.tags.map((t) => <Tag>{t}</Tag>)}
-      </div>
-
-      <div class="prose prose-gray max-w-none">
-        <slot />
-      </div>
-
-      {data.sourceUrl && (
-        <div class="mt-8 pt-6 border-t border-primary-100/30">
-          <a
-            href={data.sourceUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-sm text-primary-600 hover:text-primary-700 font-medium"
-          >
-            查看原文 →
-          </a>
+        <div class="flex flex-wrap items-center gap-3 text-sm text-white/40 mb-4">
+          <span>{new Date(data.publishDate).toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+          <span>·</span>
+          <span>{data.source}</span>
         </div>
-      )}
-    </article>
-  </Container>
+
+        <h1 class="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-white mb-5">{data.title}</h1>
+        <p class="text-base sm:text-lg text-white/60 leading-relaxed mb-6">{data.summary}</p>
+
+        <div class="flex flex-wrap gap-2 mb-8">
+          {data.tags.map((t) => (
+            <a href={`/news?tag=${encodeURIComponent(t)}`} class="text-[11px] px-2.5 py-0.5 rounded-full bg-primary-500/15 text-primary-300 border border-primary-400/20 hover:bg-primary-500/25 transition-colors">{t}</a>
+          ))}
+        </div>
+
+        <div class="backdrop-blur-xl bg-white/[0.05] rounded-2xl border border-white/10 p-6 sm:p-8 news-prose">
+          <slot />
+        </div>
+
+        {data.sourceUrl && (
+          <div class="mt-8 pt-6 border-t border-white/10">
+            <a href={data.sourceUrl} target="_blank" rel="noopener noreferrer" class="text-sm text-primary-300 hover:text-primary-200 font-medium">
+              查看原文 →
+            </a>
+          </div>
+        )}
+      </article>
+    </Container>
+  </div>
 </BaseLayout>
+
+<style is:global>
+  @keyframes blob {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    25% { transform: translate(40px, -40px) scale(1.05); }
+    50% { transform: translate(-30px, 30px) scale(0.95); }
+    75% { transform: translate(30px, 40px) scale(1.02); }
+  }
+  .animate-blob { animation: blob 20s ease-in-out infinite; }
+  .animation-delay-2 { animation-delay: 5s; }
+
+  .news-prose p { color: rgba(255,255,255,0.6); line-height: 1.9; margin-bottom: 1em; font-size: 0.95rem; }
+  .news-prose strong { color: rgba(255,255,255,0.9); }
+  .news-prose h1, .news-prose h2, .news-prose h3 { color: rgba(255,255,255,0.9); margin: 1.5em 0 0.6em; }
+  .news-prose ul { list-style: disc; padding-left: 1.5em; margin-bottom: 1em; }
+  .news-prose li { color: rgba(255,255,255,0.6); line-height: 1.8; margin-bottom: 0.3em; }
+  .news-prose a { color: #a78bfa; }
+</style>

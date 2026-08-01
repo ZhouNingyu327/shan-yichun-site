@@ -1,11 +1,9 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Container from '@/components/ui/Container.astro';
-import Tag from '@/components/ui/Tag.astro';
 import { getCollection } from 'astro:content';
-import { SITE } from '@/utils/constants';
 
-const pageSize = 10;
+const pageSize = 9;
 const page = Number(Astro.url.searchParams.get('page')) || 1;
 const tag = Astro.url.searchParams.get('tag');
 
@@ -18,70 +16,88 @@ if (tag) {
 
 const totalPages = Math.ceil(allPosts.length / pageSize);
 const posts = allPosts.slice((page - 1) * pageSize, page * pageSize);
-
-// Collect all tags
 const allTags = [...new Set(allPosts.flatMap((p) => p.data.tags))];
 ---
 
 <BaseLayout title={`最新动态${tag ? ` - ${tag}` : ''}`} path={`/news${tag ? `?tag=${tag}` : ''}`}>
-  <Container class="py-16 sm:py-20">
-    <div class="flex items-center justify-between mb-10">
-      <h1 class="text-3xl sm:text-4xl font-heading font-bold text-text-primary">最新动态</h1>
-      <a href="/rss.xml" class="text-sm text-primary-600 hover:text-primary-700 font-medium transition-colors">RSS</a>
+  <div class="relative bg-gradient-to-br from-[#0a0a1a] via-[#120a2e] to-[#0f1923] overflow-hidden min-h-screen">
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+      <div class="absolute top-[-10%] left-[-5%] w-[35rem] h-[35rem] rounded-full blur-[120px] opacity-25 animate-blob" style="background: linear-gradient(135deg, #8b5cf6, #ec4899)" />
+      <div class="absolute bottom-[-15%] right-[-5%] w-[30rem] h-[30rem] rounded-full blur-[120px] opacity-20 animate-blob animation-delay-2" style="background: linear-gradient(135deg, #06b6d4, #8b5cf6)" />
     </div>
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[80rem] h-px bg-gradient-to-r from-transparent via-white/15 to-transparent" />
 
-    <!-- Tags filter -->
-    <div class="flex flex-wrap gap-2 mb-8">
-      <a href="/news" class={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${!tag ? 'bg-primary-600 text-white' : 'bg-primary-50 text-text-secondary hover:bg-primary-100'}`}>
-        全部
-      </a>
-      {allTags.map((t) => (
-        <a href={`/news?tag=${encodeURIComponent(t)}`} class={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${tag === t ? 'bg-primary-600 text-white' : 'bg-primary-50 text-text-secondary hover:bg-primary-100'}`}>
-          {t}
+    <Container class="relative z-10 py-16 sm:py-20">
+      <div class="flex items-center justify-between mb-8">
+        <h1 class="text-3xl sm:text-4xl font-heading font-bold text-white">最新动态</h1>
+        <a href="/rss.xml" class="inline-flex items-center gap-1.5 text-sm text-primary-300 hover:text-primary-200 font-medium transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 11a9 9 0 0 1 9 9M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg>
+          RSS订阅
         </a>
-      ))}
-    </div>
-
-    <!-- News list -->
-    <div class="grid gap-6 md:grid-cols-2">
-      {posts.map((post) => (
-        <a href={`/news/${post.id}`} class="group">
-          <article class="bg-white rounded-2xl border border-primary-100/30 p-6 h-full card-hover">
-            <div class="flex items-center gap-2 mb-3">
-              <span class="text-xs text-text-secondary">{new Date(post.data.publishDate).toLocaleDateString('zh-CN')}</span>
-              <span class="text-xs text-text-secondary/40">·</span>
-              <span class="text-xs text-text-secondary">{post.data.source}</span>
-            </div>
-            <h2 class="text-lg font-semibold text-text-primary group-hover:text-primary-600 transition-colors mb-2 line-clamp-2">
-              {post.data.title}
-            </h2>
-            <p class="text-sm text-text-secondary leading-relaxed line-clamp-3">{post.data.summary}</p>
-            <div class="flex flex-wrap gap-1.5 mt-4">
-              {post.data.tags.map((t) => <Tag>{t}</Tag>)}
-            </div>
-          </article>
-        </a>
-      ))}
-    </div>
-
-    {posts.length === 0 && (
-      <div class="text-center py-20 text-text-secondary">
-        <p>暂无动态信息。</p>
       </div>
-    )}
 
-    <!-- Pagination -->
-    {totalPages > 1 && (
-      <div class="flex items-center justify-center gap-2 mt-10">
-        {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
-          <a
-            href={tag ? `/news?tag=${encodeURIComponent(tag)}&page=${p}` : `/news?page=${p}`}
-            class={`w-9 h-9 flex items-center justify-center rounded-lg text-sm font-medium transition-colors ${p === page ? 'bg-primary-600 text-white' : 'bg-white text-text-secondary hover:bg-primary-50 border border-primary-100/30'}`}
-          >
-            {p}
+      <!-- 标签筛选 -->
+      <div class="flex flex-wrap gap-2 mb-8">
+        <a href="/news" class={`px-3.5 py-1.5 rounded-full text-sm font-medium transition-all backdrop-blur-xl ${!tag ? 'bg-primary-500/30 text-primary-200 border border-primary-400/30' : 'bg-white/8 text-white/55 border border-white/10 hover:bg-white/15'}`}>全部</a>
+        {allTags.map((t) => (
+          <a href={`/news?tag=${encodeURIComponent(t)}`} class={`px-3.5 py-1.5 rounded-full text-sm font-medium transition-all backdrop-blur-xl ${tag === t ? 'bg-primary-500/30 text-primary-200 border border-primary-400/30' : 'bg-white/8 text-white/55 border border-white/10 hover:bg-white/15'}`}>{t}</a>
+        ))}
+      </div>
+
+      <!-- 新闻列表 -->
+      <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        {posts.map((post) => (
+          <a href={`/news/${post.id}`} class="group block">
+            <article class="backdrop-blur-xl bg-white/[0.05] rounded-2xl border border-white/10 p-6 h-full card-hover flex flex-col">
+              <div class="flex items-center gap-2 mb-3">
+                <span class="text-xs text-white/40">{new Date(post.data.publishDate).toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                <span class="text-xs text-white/20">·</span>
+                <span class="text-xs text-white/40">{post.data.source}</span>
+              </div>
+              <h2 class="text-base font-semibold text-white/85 group-hover:text-primary-300 transition-colors mb-2 line-clamp-2">
+                {post.data.title}
+              </h2>
+              <p class="text-sm text-white/50 leading-relaxed line-clamp-3 flex-1">{post.data.summary}</p>
+              <div class="flex flex-wrap gap-1.5 mt-4">
+                {post.data.tags.map((t) => (
+                  <span class="text-[11px] px-2.5 py-0.5 rounded-full bg-primary-500/15 text-primary-300 border border-primary-400/20">{t}</span>
+                ))}
+              </div>
+            </article>
           </a>
         ))}
       </div>
-    )}
-  </Container>
+
+      {posts.length === 0 && (
+        <div class="text-center py-20 text-white/40 backdrop-blur-xl bg-white/[0.05] rounded-2xl border border-white/10">
+          <p class="text-lg">暂无动态信息</p>
+        </div>
+      )}
+
+      <!-- 分页 -->
+      {totalPages > 1 && (
+        <div class="flex items-center justify-center gap-2 mt-10">
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
+            <a
+              href={tag ? `/news?tag=${encodeURIComponent(tag)}&page=${p}` : `/news?page=${p}`}
+              class={`w-9 h-9 flex items-center justify-center rounded-lg text-sm font-medium transition-all backdrop-blur-xl ${p === page ? 'bg-primary-500/40 text-white border border-primary-400/30' : 'bg-white/8 text-white/55 hover:bg-white/15 border border-white/10'}`}
+            >
+              {p}
+            </a>
+          ))}
+        </div>
+      )}
+    </Container>
+  </div>
 </BaseLayout>
+
+<style is:global>
+  @keyframes blob {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    25% { transform: translate(40px, -40px) scale(1.05); }
+    50% { transform: translate(-30px, 30px) scale(0.95); }
+    75% { transform: translate(30px, 40px) scale(1.02); }
+  }
+  .animate-blob { animation: blob 20s ease-in-out infinite; }
+  .animation-delay-2 { animation-delay: 5s; }
+</style>
