@@ -5,7 +5,7 @@ import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
   const entries = await getCollection('news');
-  return entries.map((entry) => ({
+  return entries.filter((entry) => entry.data.publicationStatus === 'published').map((entry) => ({
     params: { slug: entry.id },
     props: { entry },
   }));
@@ -13,6 +13,7 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { data } = entry;
+const sources = data.sources ?? (data.sourceUrl ? [{ name: data.source, url: data.sourceUrl }] : []);
 ---
 
 <BaseLayout title={data.title} description={data.summary} path={`/news/${entry.id}`}>
@@ -34,6 +35,12 @@ const { data } = entry;
           <span>{new Date(data.publishDate).toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
           <span>·</span>
           <span>{data.source}</span>
+          {data.verificationStatus === 'verified' && (
+            <span class="inline-flex items-center rounded-full bg-emerald-400/10 px-2 py-0.5 text-[11px] font-medium text-emerald-200 border border-emerald-300/20">已交叉核验</span>
+          )}
+          {data.verificationStatus === 'needs_review' && (
+            <span class="inline-flex items-center rounded-full bg-amber-300/10 px-2 py-0.5 text-[11px] font-medium text-amber-100 border border-amber-200/20">来源待补充</span>
+          )}
         </div>
 
         <h1 class="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-white mb-5">{data.title}</h1>
@@ -49,11 +56,19 @@ const { data } = entry;
           <slot />
         </div>
 
-        {data.sourceUrl && (
+        {sources.length > 0 && (
           <div class="mt-8 pt-6 border-t border-white/10">
-            <a href={data.sourceUrl} target="_blank" rel="noopener noreferrer" class="text-sm text-primary-300 hover:text-primary-200 font-medium">
-              查看原文 →
-            </a>
+            <h2 class="text-sm font-semibold text-white/80 mb-3">参考来源</h2>
+            <ul class="space-y-2">
+              {sources.map((source) => (
+                <li>
+                  <a href={source.url} target="_blank" rel="noopener noreferrer" class="text-sm text-primary-300 hover:text-primary-200 font-medium">
+                    {source.name} →
+                  </a>
+                  {source.excerpt && <p class="mt-1 text-sm text-white/50">{source.excerpt}</p>}
+                </li>
+              ))}
+            </ul>
           </div>
         )}
       </article>

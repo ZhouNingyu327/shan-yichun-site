@@ -97,6 +97,17 @@ const news = defineCollection({
       publishDate: z.date(),
       source: z.string(),
       sourceUrl: z.string().url().optional(),
+      sources: z
+        .array(
+          z.object({
+            name: z.string(),
+            url: z.string().url(),
+            excerpt: z.string().optional(),
+          })
+        )
+        .optional(),
+      verificationStatus: z.enum(['verified', 'needs_review']).default('needs_review'),
+      publicationStatus: z.enum(['published', 'review']).default('published'),
       summary: z.string(),
       summaryEn: z.string().optional(),
       featuredImage: image().optional(),

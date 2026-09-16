@@ -3,129 +3,67 @@ import { SITE, SOCIAL_LINKS } from '@/utils/constants';
 import Container from '@/components/ui/Container.astro';
 import { getCollection } from 'astro:content';
 
-const allMusic = await getCollection('discography');
-const allEvents = await getCollection('events');
-const allAwards = await getCollection('awards');
-const songCount = allMusic.length;
-const awardWon = allAwards.filter(a => a.data.result === 'won').length;
+const music = (await getCollection('discography'))
+  .sort((a, b) => new Date(b.data.releaseDate).getTime() - new Date(a.data.releaseDate).getTime());
+const events = await getCollection('events');
+const news = (await getCollection('news')).filter((item) => item.data.publicationStatus === 'published');
+const latestRelease = music[0];
+const [coverStart, coverEnd] = latestRelease?.data.coverColor?.split('-') ?? ['#7256e8', '#1f1641'];
+const verifiedNews = news.filter((item) => item.data.verificationStatus === 'verified').length;
 ---
 
-<section class="relative min-h-[80vh] flex items-center bg-gradient-to-br from-[#0a0a1a] via-[#120a2e] to-[#0f1923] overflow-hidden">
-  <!-- 彩色模糊光斑 -->
-  <div class="absolute inset-0 overflow-hidden">
-    <div class="absolute top-[-15%] left-[-5%] w-[35rem] h-[35rem] rounded-full blur-[120px] opacity-30 animate-hb" style="background: linear-gradient(135deg, #8b5cf6, #ec4899)" />
-    <div class="absolute bottom-[-20%] right-[-5%] w-[30rem] h-[30rem] rounded-full blur-[120px] opacity-20 animate-hb animation-delay-2" style="background: linear-gradient(135deg, #06b6d4, #8b5cf6)" />
-    <div class="absolute top-[25%] right-[15%] w-[20rem] h-[20rem] rounded-full blur-[100px] opacity-15 animate-hb animation-delay-4" style="background: linear-gradient(135deg, #f59e0b, #ec4899)" />
-  </div>
+<section class="hero-shell relative overflow-hidden bg-[#090914] text-white">
+  <div class="hero-grid absolute inset-0 opacity-40"></div>
+  <div class="absolute -left-32 top-8 h-96 w-96 rounded-full bg-primary-500/20 blur-[130px]"></div>
+  <div class="absolute -right-24 bottom-0 h-80 w-80 rounded-full bg-accent-500/15 blur-[130px]"></div>
 
-  <!-- 声波环 -->
-  <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-    <div class="relative w-full max-w-2xl aspect-square flex items-center justify-center">
-      <div class="absolute w-[100%] aspect-square rounded-full border border-white/[0.03] animate-hr" style="animation-duration: 5s" />
-      <div class="absolute w-[80%] aspect-square rounded-full border border-white/[0.04] animate-hr" style="animation-duration: 6s; animation-delay: 1s" />
-      <div class="absolute w-[60%] aspect-square rounded-full border border-white/[0.05] animate-hr" style="animation-duration: 7s; animation-delay: 2s" />
-    </div>
-  </div>
+  <Container class="relative z-10 py-16 sm:py-24 lg:py-28">
+    <div class="grid items-center gap-12 lg:grid-cols-[1.08fr_0.92fr] lg:gap-16">
+      <div>
+        <p class="mb-5 text-[11px] font-semibold tracking-[0.28em] text-primary-200/80 uppercase">Shan Yichun · Archive</p>
+        <h1 class="max-w-3xl text-5xl font-heading font-bold leading-[1.08] tracking-tight sm:text-7xl lg:text-8xl">{SITE.name}</h1>
+        <p class="mt-5 max-w-xl text-lg font-light leading-8 text-white/65 sm:text-xl">{SITE.tagline}</p>
+        <p class="mt-5 max-w-xl text-sm leading-7 text-white/45 sm:text-base">一个持续整理音乐、舞台与公开动态的非官方资料站。每一条新闻都有来源状态，让热爱也经得起回看。</p>
 
-  <!-- 浮动音符 -->
-  <div class="absolute inset-0 overflow-hidden pointer-events-none select-none">
-    <span class="absolute top-[15%] left-[10%] text-3xl text-white/[0.05] animate-hn" style="animation-delay: 0s">♪</span>
-    <span class="absolute top-[60%] right-[8%] text-4xl text-white/[0.04] animate-hn" style="animation-delay: 2s">♫</span>
-    <span class="absolute top-[30%] right-[30%] text-2xl text-white/[0.04] animate-hn" style="animation-delay: 4s">♩</span>
-    <span class="absolute top-[75%] left-[20%] text-3xl text-white/[0.04] animate-hn" style="animation-delay: 3s">♬</span>
-  </div>
-
-  <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[80rem] h-px bg-gradient-to-r from-transparent via-white/15 to-transparent" />
-
-  <Container class="relative z-10 py-24">
-    <div class="max-w-2xl">
-      <p class="text-sm tracking-[0.3em] text-white/40 font-light uppercase mb-5">{SITE.nameEn}</p>
-      <h1 class="text-6xl sm:text-7xl lg:text-8xl font-heading font-bold text-white leading-tight mb-6 drop-shadow-lg">
-        {SITE.name}
-      </h1>
-      <p class="text-xl text-white/60 font-light leading-relaxed mb-8">{SITE.tagline}</p>
-
-      <div class="flex flex-wrap gap-3 mt-8">
-        <a
-          href="/about"
-          class="inline-flex items-center px-7 py-3 bg-primary-500/80 text-white rounded-full font-medium hover:bg-primary-500 transition-all shadow-sm backdrop-blur-xl border border-primary-400/30"
-        >
-          了解单依纯
-        </a>
-        <a
-          href="/music"
-          class="inline-flex items-center px-7 py-3 bg-white/8 text-white/80 border border-white/15 rounded-full font-medium hover:bg-white/15 transition-all backdrop-blur-xl"
-        >
-          探索音乐作品
-        </a>
-        <a
-          href="/events"
-          class="inline-flex items-center px-7 py-3 bg-white/8 text-white/80 border border-white/15 rounded-full font-medium hover:bg-white/15 transition-all backdrop-blur-xl"
-        >
-          🎤 演唱会
-        </a>
-      </div>
-
-      <!-- 数据概览 -->
-      <div class="grid grid-cols-3 gap-3 mt-12 max-w-md">
-        <div class="backdrop-blur-xl bg-white/[0.06] rounded-xl border border-white/10 p-4 text-center card-hover">
-          <p class="text-2xl font-heading font-bold text-white">{songCount}</p>
-          <p class="text-xs text-white/40 mt-1">原创歌曲</p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="/music" class="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-[#171124] transition hover:bg-primary-100">浏览音乐档案 <span aria-hidden="true">↗</span></a>
+          <a href="/news" class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-6 py-3 text-sm font-medium text-white/85 transition hover:bg-white/[0.12]">查看动态来源 <span aria-hidden="true">→</span></a>
         </div>
-        <div class="backdrop-blur-xl bg-white/[0.06] rounded-xl border border-white/10 p-4 text-center card-hover">
-          <p class="text-2xl font-heading font-bold text-white">{awardWon}</p>
-          <p class="text-xs text-white/40 mt-1">获奖荣誉</p>
-        </div>
-        <div class="backdrop-blur-xl bg-white/[0.06] rounded-xl border border-white/10 p-4 text-center card-hover">
-          <p class="text-2xl font-heading font-bold text-white">{allEvents.length}</p>
-          <p class="text-xs text-white/40 mt-1">演出活动</p>
+
+        <dl class="mt-12 grid max-w-xl grid-cols-3 divide-x divide-white/10 border-y border-white/10 py-4">
+          <div class="px-4 first:pl-0"><dt class="text-[11px] tracking-wide text-white/40">收录作品</dt><dd class="mt-1 text-2xl font-heading font-bold text-white">{music.length}</dd></div>
+          <div class="px-4"><dt class="text-[11px] tracking-wide text-white/40">舞台与演出</dt><dd class="mt-1 text-2xl font-heading font-bold text-white">{events.length}</dd></div>
+          <div class="px-4"><dt class="text-[11px] tracking-wide text-white/40">核验动态</dt><dd class="mt-1 text-2xl font-heading font-bold text-white">{verifiedNews}</dd></div>
+        </dl>
+
+        <div class="mt-7 flex flex-wrap gap-x-5 gap-y-2">
+          {SOCIAL_LINKS.map((link) => (
+            <a href={link.url} target="_blank" rel="noopener noreferrer" class="text-xs text-white/45 transition hover:text-primary-200">{link.name}<span class="ml-1 text-white/25" aria-hidden="true">↗</span></a>
+          ))}
         </div>
       </div>
 
-      <div class="flex flex-wrap gap-4 mt-10">
-        {SOCIAL_LINKS.map((link) => (
-          <a
-            href={link.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-sm text-white/40 hover:text-white/70 transition-colors"
-          >
-            {link.name}
-          </a>
-        ))}
-      </div>
+      {latestRelease && (
+        <a href={`/music/${latestRelease.id}`} class="group relative mx-auto block w-full max-w-md">
+          <div class="absolute inset-6 rounded-[2.25rem] bg-primary-500/30 blur-3xl transition duration-500 group-hover:bg-accent-500/30"></div>
+          <article class="relative overflow-hidden rounded-[2rem] border border-white/15 bg-[#151224]/80 p-4 shadow-2xl backdrop-blur-xl sm:p-5">
+            <div class="relative aspect-[4/5] overflow-hidden rounded-[1.5rem]" style={`background: linear-gradient(145deg, ${coverStart}, ${coverEnd})`}>
+              <img src={`/images/covers/${latestRelease.id}.jpg`} alt={`${latestRelease.data.title} 封面`} class="h-full w-full object-cover transition duration-700 group-hover:scale-105" loading="eager" onerror="this.style.display='none'" />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent"></div>
+              <span class="absolute left-4 top-4 rounded-full border border-white/20 bg-black/25 px-3 py-1 text-[10px] font-medium tracking-[0.16em] text-white/80 backdrop-blur">LATEST RELEASE</span>
+              <div class="absolute inset-x-5 bottom-5">
+                <p class="text-xs text-white/55">{new Date(latestRelease.data.releaseDate).getFullYear()} · {latestRelease.data.type === 'album' ? '专辑' : latestRelease.data.type === 'ost' ? '影视原声' : '单曲'}</p>
+                <h2 class="mt-1 text-3xl font-heading font-bold text-white">{latestRelease.data.title}</h2>
+              </div>
+            </div>
+            <div class="flex items-center justify-between px-2 pb-1 pt-4"><p class="text-xs text-white/45">从作品进入完整资料</p><span class="grid h-8 w-8 place-items-center rounded-full border border-white/15 text-sm text-white/80 transition group-hover:bg-white group-hover:text-[#171124]" aria-hidden="true">↗</span></div>
+          </article>
+        </a>
+      )}
     </div>
   </Container>
-
-  <!-- Scroll indicator -->
-  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-white/30">
-      <path d="M12 5v14M5 12l7 7 7-7" />
-    </svg>
-  </div>
 </section>
 
 <style is:global>
-  @keyframes hb {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    25% { transform: translate(40px, -40px) scale(1.05); }
-    50% { transform: translate(-30px, 30px) scale(0.95); }
-    75% { transform: translate(30px, 40px) scale(1.02); }
-  }
-  .animate-hb { animation: hb 20s ease-in-out infinite; }
-  .animation-delay-2 { animation-delay: 5s; }
-  .animation-delay-4 { animation-delay: 15s; }
-
-  @keyframes hr {
-    0% { transform: scale(0.6); opacity: 0; }
-    15% { opacity: 1; }
-    100% { transform: scale(1.25); opacity: 0; }
-  }
-  .animate-hr { animation: hr 5s ease-out infinite; }
-
-  @keyframes hn {
-    0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.04; }
-    50% { transform: translateY(-18px) rotate(8deg); opacity: 0.08; }
-  }
-  .animate-hn { animation: hn 8s ease-in-out infinite; }
+  .hero-grid { background-image: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px); background-size: 40px 40px; mask-image: linear-gradient(to bottom, black, transparent 88%); }
 </style>

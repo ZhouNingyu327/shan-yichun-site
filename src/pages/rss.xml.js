@@ -4,6 +4,7 @@ import { SITE } from '@/utils/constants';
 
 export async function GET(context) {
   const posts = (await getCollection('news'))
+    .filter((post) => post.data.publicationStatus === 'published')
     .sort((a, b) => new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime());
 
   return rss({

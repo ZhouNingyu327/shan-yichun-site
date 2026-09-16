@@ -10,14 +10,18 @@ const { posts } = Astro.props;
 
 <section class="py-16 sm:py-20 bg-[#0a0a1a]">
   <Container>
-    <div class="flex items-center justify-between mb-10">
-      <h2 class="text-2xl sm:text-3xl font-heading font-bold text-white/90">最新动态</h2>
+    <div class="flex items-end justify-between gap-4 mb-10">
+      <div>
+        <p class="text-[11px] font-semibold tracking-[0.22em] text-primary-300 uppercase">Journal</p>
+        <h2 class="mt-2 text-2xl sm:text-3xl font-heading font-bold text-white/90">最新动态</h2>
+      </div>
       <a href="/news" class="text-sm text-primary-300 hover:text-primary-200 font-medium transition-colors">
         查看全部 →
       </a>
     </div>
 
-    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <p class="-mt-5 mb-7 max-w-2xl text-sm leading-6 text-white/45">所有动态都保留来源等级。已核验内容拥有至少两条可复核来源；其余条目会明确提醒读者继续核对。</p>
+    <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
       {
         posts.map((post) => (
           <a href={`/news/${post.id}`} class="group">
@@ -28,6 +32,12 @@ const { posts } = Astro.props;
                 </span>
                 <span class="text-xs text-white/25">·</span>
                 <span class="text-xs text-white/45">{post.data.source}</span>
+                {post.data.verificationStatus === 'verified' && (
+                  <span class="text-[10px] px-1.5 py-0.5 rounded-full bg-emerald-400/10 text-emerald-200 border border-emerald-300/20">已核验</span>
+                )}
+                {post.data.verificationStatus === 'needs_review' && (
+                  <span class="text-[10px] px-1.5 py-0.5 rounded-full bg-amber-300/10 text-amber-100 border border-amber-200/20">来源待补</span>
+                )}
               </div>
               <h3 class="text-base font-semibold text-white/85 group-hover:text-primary-300 transition-colors mb-2 line-clamp-2">
                 {post.data.title}
