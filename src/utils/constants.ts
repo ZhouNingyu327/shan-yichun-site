@@ -9,9 +9,9 @@ export const SITE = {
 };
 
 export const SOCIAL_LINKS = [
-  { name: '微博', url: 'https://weibo.com/u/7495645902', icon: 'weibo' },
+  { name: '微博', url: 'https://weibo.com/u/5598574734', icon: 'weibo' },
   { name: '网易云音乐', url: 'https://music.163.com/artist/35497986', icon: 'music' },
-  { name: 'QQ音乐', url: 'https://y.qq.com/artist/003R0dX80e8CCt', icon: 'music' },
+  { name: 'QQ音乐', url: 'https://y.qq.com/n/ryqq/singer/002ug9Ha2zYM1y', icon: 'music' },
   { name: 'Spotify', url: 'https://open.spotify.com/artist/7nIi4E7jPbfXMXF1cZOF63', icon: 'spotify' },
   { name: 'Instagram', url: 'https://www.instagram.com/syichun_1223/', icon: 'instagram' },
 ];

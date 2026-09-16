@@ -7,7 +7,7 @@ height: 168
 education: '浙江音乐学院流行音乐系'
 agency: '北京自来卷音乐工作室（个人独资）'
 debutYear: 2020
-weibo: 'https://weibo.com/u/7495645902'
+weibo: 'https://weibo.com/u/5598574734'
 intro: '中国内地流行乐女歌手，2020年《中国好声音》全国总冠军'
 locale: 'zh'
 ---
