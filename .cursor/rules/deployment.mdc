@@ -1,0 +1,12 @@
+---
+description: Deploy verified static-site changes to the production branch
+alwaysApply: true
+---
+
+# Verified change deployment
+
+- For changes to this website, run the relevant production build or validation first.
+- When validation passes and the change does not publish unverified factual content, commit only the intended source files and push the current production branch to `origin` so the configured host can deploy it.
+- Do not include generated `.project-os/` artifacts in site commits.
+- Keep claims with `needs_review` as drafts or clearly marked review items; do not publish them solely to complete a deployment.
+- If validation fails, or a change would publish an unverified claim, stop before deployment and report the reason.
