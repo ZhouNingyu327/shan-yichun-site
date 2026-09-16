@@ -37,13 +37,13 @@ const canonicalPath = path || Astro.url.pathname;
     />
   </head>
   <body class="min-h-screen flex flex-col">
-    <!-- 网站进入动画（仅首次访问） -->
+    <!-- 网站进入动画（仅首次访问，避免阻塞内容访问） -->
     <div id="splash-screen" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center overflow-hidden bg-[#0a0a1a]">
       <!-- 背景图片轮播 - 完整显示不裁切 -->
       <div class="absolute inset-0 flex items-center justify-center bg-[#0a0a1a]">
-        <img src="/images/封面图1.jpg" alt="" class="splash-bg absolute w-full h-full object-contain" style="max-width:100%;max-height:100%" data-index="0" />
-        <img src="/images/封面图2.jpg" alt="" class="splash-bg absolute w-full h-full object-contain opacity-0" style="max-width:100%;max-height:100%" data-index="1" />
-        <img src="/images/封面图3.jpg" alt="" class="splash-bg absolute w-full h-full object-contain opacity-0" style="max-width:100%;max-height:100%" data-index="2" />
+        <img src="/images/封面图1.jpg" alt="" class="splash-bg absolute w-full h-full object-contain" style="max-width:100%;max-height:100%" data-index="0" fetchpriority="high" decoding="async" />
+        <img src="/images/封面图2.jpg" alt="" class="splash-bg absolute w-full h-full object-contain opacity-0" style="max-width:100%;max-height:100%" data-index="1" loading="lazy" decoding="async" />
+        <img src="/images/封面图3.jpg" alt="" class="splash-bg absolute w-full h-full object-contain opacity-0" style="max-width:100%;max-height:100%" data-index="2" loading="lazy" decoding="async" />
       </div>
       <!-- 遮罩层 -->
       <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
@@ -87,32 +87,33 @@ const canonicalPath = path || Astro.url.pathname;
           return;
         }
 
-        // 背景轮播：每3秒切换一张（缓慢交叉淡入淡出）
+        // 背景轮播：减少动态效果时保留静态首图。
         var currentBg = 0;
         var bgImages = splash.querySelectorAll('.splash-bg');
-        if (bgImages.length > 1) {
+        var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (!reduceMotion && bgImages.length > 1) {
           setInterval(function() {
             bgImages.forEach(function(img) { img.classList.remove('opacity-100'); img.classList.add('opacity-0'); });
             currentBg = (currentBg + 1) % bgImages.length;
             bgImages[currentBg].classList.remove('opacity-0');
             bgImages[currentBg].classList.add('opacity-100');
-          }, 3000);
+          }, 2200);
         }
 
         if (splash) {
-          var minShow = 6000;  // 最少显示6秒
+          var minShow = reduceMotion ? 0 : 1800;
           var start = Date.now();
           window.addEventListener('load', function() {
             var elapsed = Date.now() - start;
             var remaining = Math.max(0, minShow - elapsed);
             setTimeout(function() {
-              splash.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+              splash.style.transition = 'opacity 0.45s ease, transform 0.45s ease';
               splash.style.opacity = '0';
               splash.style.transform = 'scale(1.05)';
               setTimeout(function() {
                 splash.style.display = 'none';
                 try { sessionStorage.setItem('splashShown', '1'); } catch(e) {}
-              }, 800);
+              }, 450);
             }, remaining);
           });
           setTimeout(function() {
@@ -121,7 +122,7 @@ const canonicalPath = path || Astro.url.pathname;
               splash.style.opacity = '0';
               setTimeout(function() { splash.style.display = 'none'; }, 600);
             }
-          }, 8000);
+          }, 3000);
         }
       })();
     </script>
