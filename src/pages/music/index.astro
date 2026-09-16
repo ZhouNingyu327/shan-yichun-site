@@ -17,17 +17,38 @@ const albumOnlySlugs = [
 const singles = allMusic.filter((m) => m.data.type === 'single' && !albumOnlySlugs.includes(m.id)).sort((a, b) => new Date(b.data.releaseDate).getTime() - new Date(a.data.releaseDate).getTime());
 const osts = allMusic.filter((m) => m.data.type === 'ost').sort((a, b) => new Date(b.data.releaseDate).getTime() - new Date(a.data.releaseDate).getTime());
 const displayTotal = albums.length + singles.length + osts.length;
+const latest = [...allMusic].sort((a, b) => new Date(b.data.releaseDate).getTime() - new Date(a.data.releaseDate).getTime())[0];
+const [coverStart, coverEnd] = latest?.data.coverColor?.split('-') ?? ['#7256e8', '#1f1641'];
 ---
 
 <BaseLayout title="音乐作品" path="/music">
-  <Container class="py-16 sm:py-20">
-    <h1 class="text-3xl sm:text-4xl font-heading font-bold text-text-primary mb-2">音乐作品</h1>
-    <p class="text-text-secondary mb-10">共 {displayTotal} 首原唱作品</p>
+  <div class="relative min-h-screen overflow-hidden bg-gradient-to-br from-[#0a0a1a] via-[#120a2e] to-[#0f1923]">
+    <div class="pointer-events-none absolute -left-32 top-16 h-96 w-96 rounded-full bg-primary-500/20 blur-[130px]"></div>
+    <div class="pointer-events-none absolute -right-32 bottom-0 h-96 w-96 rounded-full bg-accent-500/15 blur-[130px]"></div>
+    <Container class="relative z-10 py-16 sm:py-20">
+      <div class="grid gap-8 border-b border-white/10 pb-10 lg:grid-cols-[1fr_auto] lg:items-end">
+        <div>
+          <p class="text-[11px] font-semibold tracking-[0.24em] text-primary-300 uppercase">Discography</p>
+          <h1 class="mt-3 text-4xl sm:text-5xl font-heading font-bold text-white">音乐作品</h1>
+          <p class="mt-3 max-w-xl text-sm leading-6 text-white/50">共收录 {displayTotal} 项独立作品。专辑内曲目保留在专辑详情中，避免同一作品在不同层级重复出现。</p>
+          <div class="mt-6 flex flex-wrap gap-2">
+            <a href="#albums" class="rounded-full border border-white/10 bg-white/[0.06] px-3.5 py-1.5 text-xs text-white/60 transition hover:bg-white/[0.12] hover:text-white">专辑 {albums.length}</a>
+            <a href="#singles" class="rounded-full border border-white/10 bg-white/[0.06] px-3.5 py-1.5 text-xs text-white/60 transition hover:bg-white/[0.12] hover:text-white">单曲 {singles.length}</a>
+            <a href="#osts" class="rounded-full border border-white/10 bg-white/[0.06] px-3.5 py-1.5 text-xs text-white/60 transition hover:bg-white/[0.12] hover:text-white">影视原声 {osts.length}</a>
+          </div>
+        </div>
+        {latest && (
+          <a href={`/music/${latest.id}`} class="group flex max-w-sm items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.05] p-3 transition hover:bg-white/[0.1]">
+            <div class="h-16 w-16 shrink-0 overflow-hidden rounded-xl" style={`background: linear-gradient(135deg, ${coverStart}, ${coverEnd})`}><img src={`/images/covers/${latest.id}.jpg`} alt="" class="h-full w-full object-cover" loading="lazy" onerror="this.style.display='none'" /></div>
+            <div class="min-w-0"><p class="text-[10px] tracking-[0.16em] text-primary-300 uppercase">Latest release</p><p class="mt-1 truncate font-heading font-bold text-white">{latest.data.title}</p><p class="mt-1 text-xs text-white/40">进入作品资料 →</p></div>
+          </a>
+        )}
+      </div>
 
     {albums.length > 0 && (
-      <section class="mb-16">
-        <h2 class="text-xl font-heading font-semibold text-text-primary mb-6 flex items-center gap-2">
-          专辑 <span class="text-sm font-normal text-text-secondary">{albums.length}张</span>
+      <section id="albums" class="mb-16 mt-12 scroll-mt-20">
+        <h2 class="text-xl font-heading font-semibold text-white mb-6 flex items-center gap-2">
+          专辑 <span class="text-sm font-normal text-white/40">{albums.length}张</span>
         </h2>
         <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {albums.map((item) => <MusicCard item={item} />)}
@@ -36,9 +57,9 @@ const displayTotal = albums.length + singles.length + osts.length;
     )}
 
     {singles.length > 0 && (
-      <section class="mb-16">
-        <h2 class="text-xl font-heading font-semibold text-text-primary mb-6 flex items-center gap-2">
-          单曲 <span class="text-sm font-normal text-text-secondary">{singles.length}首</span>
+      <section id="singles" class="mb-16 scroll-mt-20">
+        <h2 class="text-xl font-heading font-semibold text-white mb-6 flex items-center gap-2">
+          单曲 <span class="text-sm font-normal text-white/40">{singles.length}首</span>
         </h2>
         <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {singles.map((item) => <MusicCard item={item} />)}
@@ -47,14 +68,15 @@ const displayTotal = albums.length + singles.length + osts.length;
     )}
 
     {osts.length > 0 && (
-      <section>
-        <h2 class="text-xl font-heading font-semibold text-text-primary mb-6 flex items-center gap-2">
-          OST / 影视原声 <span class="text-sm font-normal text-text-secondary">{osts.length}首</span>
+      <section id="osts" class="scroll-mt-20">
+        <h2 class="text-xl font-heading font-semibold text-white mb-6 flex items-center gap-2">
+          OST / 影视原声 <span class="text-sm font-normal text-white/40">{osts.length}首</span>
         </h2>
         <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {osts.map((item) => <MusicCard item={item} />)}
         </div>
       </section>
     )}
-  </Container>
+    </Container>
+  </div>
 </BaseLayout>

@@ -37,6 +37,9 @@ for (const c of concerts) {
   if (!tourGroups[tour]) tourGroups[tour] = [];
   tourGroups[tour].push(c);
 }
+const tourCount = Object.keys(tourGroups).filter((tour) => tour !== '其他').length;
+const cityCount = new Set(concerts.map((event) => event.data.location.split('·').pop() || event.data.location)).size;
+const recordedSeats = concerts.reduce((sum, event) => sum + (event.data.capacity || 0), 0);
 ---
 
 <BaseLayout title="演出经历" path="/events">
@@ -117,16 +120,16 @@ for (const c of concerts) {
             <p class="text-xs text-white/40 mt-1">总场次</p>
           </div>
           <div class="backdrop-blur-xl bg-white/[0.06] rounded-xl border border-white/10 p-4 text-center">
-            <p class="text-2xl font-heading font-bold text-white">3</p>
-            <p class="text-xs text-white/40 mt-1">巡演轮次</p>
+            <p class="text-2xl font-heading font-bold text-white">{tourCount}</p>
+            <p class="text-xs text-white/40 mt-1">巡演项目</p>
           </div>
           <div class="backdrop-blur-xl bg-white/[0.06] rounded-xl border border-white/10 p-4 text-center">
-            <p class="text-2xl font-heading font-bold text-white">13</p>
+            <p class="text-2xl font-heading font-bold text-white">{cityCount}</p>
             <p class="text-xs text-white/40 mt-1">到访城市</p>
           </div>
           <div class="backdrop-blur-xl bg-white/[0.06] rounded-xl border border-white/10 p-4 text-center">
-            <p class="text-2xl font-heading font-bold text-white">~48万+</p>
-            <p class="text-xs text-white/40 mt-1">累计观演人次</p>
+            <p class="text-2xl font-heading font-bold text-white">{recordedSeats.toLocaleString()}+</p>
+            <p class="text-xs text-white/40 mt-1">已记录座位</p>
           </div>
         </div>
 
@@ -185,8 +188,8 @@ for (const c of concerts) {
         <!-- 纯妹妹2.0 歌单 -->
         <section class="mb-10">
           <h2 class="text-xl font-heading font-bold text-white/90 mb-5 flex items-center gap-3">
-            <span class="w-1 h-7 bg-primary-400 rounded-full inline-block" /> 🎵 纯妹妹2.0 完整歌单
-            <span class="text-sm font-normal text-white/40 font-body">· 每场按演出顺序排列</span>
+            <span class="w-1 h-7 bg-primary-400 rounded-full inline-block" /> 🎵 纯妹妹2.0 现场歌单整理
+            <span class="text-sm font-normal text-white/40 font-body">· 非官方现场整理，需以演出方信息为准</span>
           </h2>
 
           <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -236,8 +239,8 @@ for (const c of concerts) {
         <!-- ===== 纯妹妹1.0 歌单 ===== -->
         <section class="mb-10">
           <h2 class="text-xl font-heading font-bold text-white/90 mb-5 flex items-center gap-3">
-            <span class="w-1 h-7 bg-accent-400 rounded-full inline-block" /> 🎵 纯妹妹一巡 歌单
-            <span class="text-sm font-normal text-white/40 font-body">· 各站共通曲目与差异</span>
+            <span class="w-1 h-7 bg-accent-400 rounded-full inline-block" /> 🎵 纯妹妹一巡歌单整理
+            <span class="text-sm font-normal text-white/40 font-body">· 各站共通曲目与差异，非官方现场整理</span>
           </h2>
 
           <div class="backdrop-blur-xl bg-white/[0.05] rounded-2xl border border-white/10 p-6 mb-5">

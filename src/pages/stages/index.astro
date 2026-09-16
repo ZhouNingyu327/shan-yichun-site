@@ -14,10 +14,16 @@ for (const s of allStages) {
 }
 
 const showOrder = ['中国好声音2020','天赐的声音第二季','说唱听我的2','爆裂舞台','我们的歌第三季','天赐的声音第三季','声生不息·港乐季','声生不息·宝岛季','音乐缘计划','歌手2025','央视春节联欢晚会','央视元宵晚会'];
+const orderedShows = [...showOrder.filter((show) => showLabels[show]), ...Object.keys(showLabels).filter((show) => !showOrder.includes(show))];
 
 const typeEmoji: Record<string, string> = { solo: '🎤', duet: '🎵', group: '🎶' };
 const typeLabel: Record<string, string> = { solo: '独唱', duet: '合作', group: '群演' };
 const typeColor: Record<string, string> = { solo: 'bg-primary-500/20 text-primary-300 border-primary-400/20', duet: 'bg-accent-500/20 text-accent-200 border-accent-400/20', group: 'bg-emerald-500/20 text-emerald-200 border-emerald-400/20' };
+const stageTypeCounts = {
+  solo: allStages.filter((stage) => stage.data.type === 'solo').length,
+  duet: allStages.filter((stage) => stage.data.type === 'duet').length,
+  group: allStages.filter((stage) => stage.data.type === 'group').length,
+};
 
 // Group by show
 const grouped: Record<string, typeof allStages> = {};
@@ -40,18 +46,23 @@ for (const s of allStages) {
         <h1 class="text-4xl sm:text-5xl font-heading font-bold text-white mb-3">综艺舞台</h1>
         <p class="text-white/50">出道以来在各大综艺中的精彩表演 · 共 {allStages.length} 个舞台</p>
         <div class="mx-auto mt-4 w-16 h-[2px] bg-gradient-to-r from-primary-400/60 to-accent-400/60 rounded-full" />
+        <div class="mt-6 flex flex-wrap justify-center gap-2">
+          <span class="rounded-full border border-primary-400/20 bg-primary-500/10 px-3 py-1 text-xs text-primary-200">独唱 {stageTypeCounts.solo}</span>
+          <span class="rounded-full border border-accent-400/20 bg-accent-500/10 px-3 py-1 text-xs text-accent-200">合作 {stageTypeCounts.duet}</span>
+          <span class="rounded-full border border-emerald-400/20 bg-emerald-500/10 px-3 py-1 text-xs text-emerald-200">群演 {stageTypeCounts.group}</span>
+        </div>
       </div>
 
       <!-- 节目导航 -->
       <div class="flex flex-wrap justify-center gap-2 mb-10">
-        {showOrder.filter(s => showLabels[s]).map(show => (
+        {orderedShows.map(show => (
           <a href={`#show-${show}`} class="px-3.5 py-1.5 rounded-full text-xs font-medium transition-all backdrop-blur-xl bg-white/8 text-white/55 border border-white/10 hover:bg-white/15 hover:text-white whitespace-nowrap">
             {show} <span class="text-white/30">{showLabels[show]}</span>
           </a>
         ))}
       </div>
 
-      {showOrder.filter(s => showLabels[s]).map(show => {
+      {orderedShows.map(show => {
         const stages = grouped[show];
         const showType = show.includes('春晚') || show.includes('元宵') ? 'special' : show.includes('好声音') ? 'start' : 'variety';
         return (

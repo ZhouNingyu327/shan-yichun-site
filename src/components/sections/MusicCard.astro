@@ -17,7 +17,7 @@ if (data.coverColor) {
 ---
 
 <a href={`/music/${item.id}`} class="group block">
-  <article class="bg-white rounded-2xl shadow-sm border border-primary-100/30 overflow-hidden card-hover">
+  <article class="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.055] shadow-sm card-hover">
     <div class="aspect-square flex items-center justify-center relative overflow-hidden rounded-t-2xl" style={`background: linear-gradient(135deg, ${c1}, ${c2})`}>
       <img
         src={`/images/covers/${item.id}.jpg`}
@@ -37,8 +37,8 @@ if (data.coverColor) {
       </div>
     </div>
     <div class="p-4">
-      <h3 class="font-semibold text-text-primary group-hover:text-primary-600 transition-colors line-clamp-1">{data.title}</h3>
-      <p class="text-xs text-text-secondary mt-1">{new Date(data.releaseDate).getFullYear()} · {typeLabels[data.type]}</p>
+      <h3 class="font-semibold text-white/85 group-hover:text-primary-300 transition-colors line-clamp-1">{data.title}</h3>
+      <p class="text-xs text-white/40 mt-1">{new Date(data.releaseDate).getFullYear()} · {typeLabels[data.type]}</p>
     </div>
   </article>
 </a>
