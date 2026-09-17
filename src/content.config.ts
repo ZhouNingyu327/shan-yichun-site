@@ -129,6 +129,8 @@ const awards = defineCollection({
     result: z.enum(['won', 'nominated']),
     work: z.string().optional(),
     date: z.date().optional(),
+    sources: z.array(z.object({ name: z.string(), url: z.string().url() })).default([]),
+    verificationStatus: z.enum(['verified', 'needs_review']).default('needs_review'),
     locale: z.enum(['zh', 'en']).default('zh'),
   }),
 });

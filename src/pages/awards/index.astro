@@ -44,6 +44,9 @@ for (const award of allAwards) {
                 {award.data.work && (
                   <p class="text-xs text-text-secondary/60 mt-1">作品：{award.data.work}</p>
                 )}
+                {award.data.sources.length > 0 && (
+                  <p class="mt-2 text-xs text-text-secondary/70">来源：{award.data.sources.map((source, index) => <><a href={source.url} target="_blank" rel="noopener noreferrer" class="text-primary-600 hover:underline">{source.name}</a>{index < award.data.sources.length - 1 ? ' · ' : ''}</>)}</p>
+                )}
               </div>
             </div>
           ))}
