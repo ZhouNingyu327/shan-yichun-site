@@ -63,12 +63,12 @@ const personal = [
 ];
 
 const timeline = [
-  { year: '2020', title: '《中国好声音》夺冠出道', accent: true, detail: '参加《中国好声音2020》，盲选演唱《永不失联的爱》刷屏，获四位导师转身，加入李健战队。11月20日决赛夺得全国总冠军，正式出道。签约百沐娱乐，为张艺谋电影《一秒钟》演唱推广曲，发行首支个人单曲《照片》。' },
-  { year: '2021', title: '崭露头角 · 多档综艺', accent: false, detail: '发行《在夜里跳舞》《分身》《喂》等单曲。为《一生一世》演唱主题曲《续写》，为《误杀2》演唱片尾曲《萤火虫》。常驻《说唱听我的2》《爆裂舞台》《我们的歌第三季》等综艺。获第三届TMEA"年度最具潜力歌手"奖。' },
-  { year: '2022', title: '首张专辑《勇敢额度》', accent: true, detail: '1月2日发行首张个人专辑《勇敢额度》，收录10首歌曲含全英文歌《Tell Me》。出演电影《你是我的一束光》（荧幕首秀）。参加《声生不息·港乐季》发行首支粤语单曲《靓仔日记》。获第29届东方风云榜"最佳新锐歌手"奖。', link: '/music/yong-gan-e-du', linkLabel: '收听专辑 →' },
-  { year: '2023', title: '首登央视春晚 · 首次个唱', accent: true, detail: '首次登上央视春晚，与黄霄雲、宋轶等合唱《绿水青山》。为《三体》演唱插曲《让我随风》，为《我的人间烟火》演唱《想你时风起》（年度热门）。12月23日生日当天在杭州举办首次个人演唱会。', link: '/music/xiang-ni-shi-feng-qi', linkLabel: '《想你时风起》→' },
-  { year: '2024', title: '再登春晚 · 连获大奖', accent: true, detail: '连续第二年登上央视春晚，与海来阿木合唱《不如见一面》。获TMEA"年度最佳内地女歌手"、东方风云榜"最受欢迎女歌手"。参加《音乐缘计划》创作《终身孤独》等作品。' },
-  { year: '2025', title: '《歌手2025》· 二专《纯妹妹》', accent: true, detail: '以首发歌手参加《歌手2025》，两度获周冠军，总决赛第三名。8月获东方风云榜"最佳女歌手"。12月成立个人工作室。12月28日发行第二张专辑《纯妹妹》。', link: '/music/chun-mei-mei', linkLabel: '收听专辑 →' },
+  { year: '2020', title: '《中国好声音》年度总冠军', accent: true, detail: '公开节目资料确认其获得 2020 年《中国好声音》年度总冠军。节目曲目和播出信息由综艺舞台档案逐条维护。', link: '/stages', linkLabel: '查看舞台档案 →' },
+  { year: '2021', title: '作品与节目资料持续归档', accent: false, detail: '该年度公开的作品和节目出现记录，按各自页面的来源状态归档；未附可访问来源的项目不在本页作结论。', link: '/music', linkLabel: '查看音乐档案 →' },
+  { year: '2022', title: '《勇敢额度》', accent: true, detail: '首张录音室专辑《勇敢额度》收录于音乐作品档案，并链接至发行平台。', link: '/music/yong-gan-e-du', linkLabel: '查看专辑 →' },
+  { year: '2023', title: '公开活动持续收录', accent: true, detail: '春晚、影视歌曲和现场活动均在对应集合中以来源状态区分已核验与待复核资料。', link: '/events', linkLabel: '查看活动档案 →' },
+  { year: '2024', title: '春晚与音乐项目', accent: true, detail: '2024 年春晚节目资料及后续音乐项目已分别进入活动、舞台和作品集合；不以无来源的概括性荣誉替代条目核验。', link: '/events/2024-chun-wan', linkLabel: '查看春晚活动 →' },
+  { year: '2025', title: '持续更新的公开档案', accent: true, detail: '《歌手》等节目、录音作品、演出和奖项会在取得来源后分别维护；本时间线不替代逐条证据。', link: '/awards', linkLabel: '查看奖项档案 →' },
   { year: '2026', title: '新作品与巡演资料持续收录', accent: true, detail: '本站持续收录公开的音乐发行与演出信息；新闻页面会显示来源状态，待获得足够一手材料后再标记为已核验。' },
 ];
 ---
@@ -193,7 +193,7 @@ const timeline = [
             <span class="w-1 h-7 bg-primary-400 rounded-full inline-block" /> 基本信息
           </h2>
           <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
-            {[ ['中文名','单依纯'],['英文名','Shan Yichun'],['国籍','中国'],['出生','2001.12.23 · 东阳'],['职业','歌手'],['毕业院校','浙江音乐学院'],['经纪公司','自来卷音乐工作室'],['身高','168cm'],['粉丝名','纯牛奶'],['导师','李健'],['擅长风格','流行 / R&B'],['个人工作室','2025.12 成立'] ].map(([label, value]) => (
+            {[ ['中文名','单依纯'],['英文名','Shan Yichun'],['国籍','中国'],['出生','2001.12.23 · 东阳'],['职业','歌手'],['毕业院校','浙江音乐学院'],['职业起点','2020《中国好声音》'],['资料范围','公开可核职业信息'] ].map(([label, value]) => (
               <div class="backdrop-blur-xl bg-white/[0.06] rounded-xl border border-white/10 p-4 card-hover">
                 <p class="text-[11px] font-medium text-white/40 uppercase tracking-wider mb-1">{label}</p>
                 <p class="text-sm font-semibold text-white/85">{value}</p>
@@ -211,9 +211,9 @@ const timeline = [
             <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary-400/30 to-transparent" />
             <span class="text-5xl text-white/10 font-heading leading-none absolute top-4 left-6">"</span>
             <blockquote class="text-xl sm:text-2xl md:text-3xl font-heading text-white/80 italic leading-relaxed max-w-2xl mx-auto relative z-10 tracking-wide">
-              音乐是我最早的倾诉对象和表达方式。
+              让每一条公开资料，都能回到它的出处。
             </blockquote>
-            <p class="mt-4 text-sm text-white/40">—— 单依纯</p>
+            <p class="mt-4 text-sm text-white/40">—— 本站资料原则</p>
             <span class="text-5xl text-white/10 font-heading leading-none absolute bottom-4 right-6">"</span>
           </div>
         </section>
