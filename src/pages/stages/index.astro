@@ -24,6 +24,7 @@ const stageTypeCounts = {
   duet: allStages.filter((stage) => stage.data.type === 'duet').length,
   group: allStages.filter((stage) => stage.data.type === 'group').length,
 };
+const verifiedCount = allStages.filter((stage) => stage.data.verificationStatus === 'verified').length;
 
 // Group by show
 const grouped: Record<string, typeof allStages> = {};
@@ -44,13 +45,15 @@ for (const s of allStages) {
     <Container class="relative z-10 py-16 sm:py-20">
       <div class="text-center mb-10">
         <h1 class="text-4xl sm:text-5xl font-heading font-bold text-white mb-3">综艺舞台</h1>
-        <p class="text-white/50">出道以来在各大综艺中的精彩表演 · 共 {allStages.length} 个舞台</p>
+        <p class="text-white/50">出道以来在各大综艺中的公开演唱记录 · 共 {allStages.length} 个舞台</p>
         <div class="mx-auto mt-4 w-16 h-[2px] bg-gradient-to-r from-primary-400/60 to-accent-400/60 rounded-full" />
         <div class="mt-6 flex flex-wrap justify-center gap-2">
           <span class="rounded-full border border-primary-400/20 bg-primary-500/10 px-3 py-1 text-xs text-primary-200">独唱 {stageTypeCounts.solo}</span>
           <span class="rounded-full border border-accent-400/20 bg-accent-500/10 px-3 py-1 text-xs text-accent-200">合作 {stageTypeCounts.duet}</span>
           <span class="rounded-full border border-emerald-400/20 bg-emerald-500/10 px-3 py-1 text-xs text-emerald-200">群演 {stageTypeCounts.group}</span>
+          <span class="rounded-full border border-sky-400/20 bg-sky-500/10 px-3 py-1 text-xs text-sky-200">已核验 {verifiedCount}</span>
         </div>
+        <p class="mx-auto mt-4 max-w-2xl text-xs leading-5 text-white/35">“已核验”条目附节目官方或平台官方来源；其余为既有归档，正在逐条补充来源与期次，不以推测替代资料。</p>
       </div>
 
       <!-- 节目导航 -->

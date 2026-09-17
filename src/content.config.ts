@@ -144,6 +144,12 @@ const stages = defineCollection({
     songs: z.array(z.string()),
     originalArtist: z.string().optional(),
     partner: z.string().optional(),
+    episode: z.string().optional(),
+    sources: z.array(z.object({
+      name: z.string(),
+      url: z.string().url(),
+    })).default([]),
+    verificationStatus: z.enum(['verified', 'legacy', 'needs_review']).default('legacy'),
     featured: z.boolean().default(false),
     locale: z.enum(['zh', 'en']).default('zh'),
   }),
