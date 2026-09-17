@@ -43,6 +43,7 @@ const verificationColors: Record<string, string> = { verified: 'bg-sky-500/15 te
           </span>
           {data.featured && <span class="px-2.5 py-0.5 rounded-full text-xs font-medium backdrop-blur-xl bg-amber-500/20 text-amber-200 border border-amber-400/20">⭐ 精选</span>}
           <span class={`px-2.5 py-0.5 rounded-full text-xs font-medium backdrop-blur-xl border ${verificationColors[data.verificationStatus]}`}>{verificationLabels[data.verificationStatus]}</span>
+          {data.evidenceLevel && <span class="px-2.5 py-0.5 rounded-full text-xs font-medium backdrop-blur-xl border bg-white/5 text-white/50 border-white/10">{data.evidenceLevel} 级来源</span>}
         </div>
 
         <h1 class="text-3xl sm:text-4xl font-heading font-bold text-white mb-6">{data.title}</h1>

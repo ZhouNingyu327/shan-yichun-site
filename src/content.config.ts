@@ -150,6 +150,7 @@ const stages = defineCollection({
       url: z.string().url(),
     })).default([]),
     verificationStatus: z.enum(['verified', 'legacy', 'needs_review']).default('legacy'),
+    evidenceLevel: z.enum(['A', 'B']).optional(),
     featured: z.boolean().default(false),
     locale: z.enum(['zh', 'en']).default('zh'),
   }),
