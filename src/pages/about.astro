@@ -33,14 +33,9 @@ const featured = allMusic.filter((m) =>
 const achievements = [
   { emoji: '🏆', label: '好声音总冠军', year: '2020', color: 'primary' },
   { emoji: '🎤', label: '央视春晚', year: '2023', color: 'accent' },
-  { emoji: '🎪', label: '首次个唱', year: '2023', color: 'emerald' },
-  { emoji: '🏅', label: '最佳女歌手', year: '2025', color: 'amber' },
+  { emoji: '🎤', label: '央视春晚', year: '2024', color: 'emerald' },
   { emoji: '🌟', label: 'TMEA最佳女歌手', year: '2024', color: 'sky' },
-  { emoji: '📺', label: '歌手2025前三', year: '2025', color: 'indigo' },
-  { emoji: '🎬', label: '荧幕首秀', year: '2022', color: 'teal' },
-  { emoji: '🎵', label: '粤语单曲首秀', year: '2022', color: 'pink' },
-  { emoji: '🎼', label: '浪潮新人奖', year: '2023', color: 'violet' },
-  { emoji: '📰', label: '微博年度歌手', year: '2025', color: 'orange' },
+  { emoji: '🏅', label: '东方风云榜最佳女歌手', year: '2025', color: 'amber' },
 ];
 const achColors: Record<string, string> = {
   primary: 'bg-primary-100/90 text-primary-700 border-primary-200',
@@ -58,15 +53,13 @@ const achColors: Record<string, string> = {
 };
 
 const earlyLife = [
-  { emoji: '🎵', title: '🎤 音乐启蒙', text: '出生于浙江东阳普通家庭。母亲单梅芳喜欢越剧，受母亲影响从小热爱音乐。小学三年级开始学声乐，多次在东阳市童声大赛中获奖，六年级时演唱的《山里的阳光》被选为校歌。' },
-  { emoji: '⭐', title: '🌟 梦想萌芽', text: '初中开始在唱歌软件上发布作品积累粉丝。2018年通过"全民K歌"从150多万应征者中被选中，参加湖南卫视《我想和你唱》，与李健合唱《绒花》。这次经历让她坚定了走音乐道路的决心。' },
-  { emoji: '🎓', title: '🎶 艺考之路', text: '高二决定走音乐道路开始专业学习。高三参加艺考培训班。2020年以专业第一名的成绩考入浙江音乐学院流行音乐系（2024年7月毕业），师从音乐人王滔。学习音乐的费用靠父母贷款支持。' },
+  { emoji: '🎤', title: '公开职业资料', text: '公开艺人资料将其列为中国内地流行乐女歌手，出生于浙江东阳，毕业于浙江音乐学院。' },
+  { emoji: '🏆', title: '职业起点', text: '2020 年，她获得《中国好声音2020》年度总冠军，随后正式进入演艺行业。' },
+  { emoji: '🎓', title: '教育背景', text: '浙江音乐学院流行音乐系公开页面将单依纯列为该系培养的音乐人之一。' },
 ];
 const personal = [
-  { emoji: '💚', title: '家庭', text: '出身普通家庭，音乐费用靠父母贷款。母亲单梅芳喜欢越剧是其音乐启蒙。与恩师李健关系深厚。' },
-  { emoji: '🧠', title: '性格', text: '自曝有表达障碍，从小跟着爷爷奶奶生活，音乐是她最早的倾诉对象和表达方式。' },
-  { emoji: '💄', title: '爱好', text: '除了音乐，另一大爱好是美妆。喜欢看美妆视频，节目录制时坚持自己完成眼妆和高光。' },
-  { emoji: '🥛', title: '粉丝名', text: '粉丝名为"纯牛奶"。' },
+  { emoji: '🔎', title: '资料原则', text: '本站仅把能链接至公开来源的信息写作确认事实。' },
+  { emoji: '📝', title: '待核信息', text: '私人生活、健康和未提供稳定来源的传闻不在此页作事实性展开。' },
 ];
 
 const timeline = [
@@ -176,7 +169,7 @@ const timeline = [
         <!-- 数据仪表板 -->
         <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
           {[
-            { value: songCount, label: '原创歌曲' },
+            { value: songCount, label: '收录音乐作品' },
             { value: albumCount, label: '录音室专辑' },
             { value: totalWon, label: '获奖荣誉' },
             { value: careerYears, label: '出道年数' },
