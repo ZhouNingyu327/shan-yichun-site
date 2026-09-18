@@ -84,6 +84,14 @@ const events = defineCollection({
           })
         )
         .optional(),
+      sources: z
+        .array(
+          z.object({
+            name: z.string(),
+            url: z.string().url(),
+          })
+        )
+        .default([]),
       verificationStatus: z.enum(['verified', 'needs_review']).default('needs_review'),
       featured: z.boolean().default(false),
       locale: z.enum(['zh', 'en']).default('zh'),

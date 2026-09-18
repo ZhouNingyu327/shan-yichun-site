@@ -162,6 +162,17 @@ function tagClass(s: string): string {
           </div>
         )}
 
+        {data.sources.length > 0 && (
+          <div class="mt-8 backdrop-blur-xl bg-white/[0.06] rounded-xl border border-white/10 p-5">
+            <h3 class="text-sm font-semibold text-white/80 mb-3">核验来源</h3>
+            <ul class="space-y-2">
+              {data.sources.map((source) => (
+                <li><a href={source.url} target="_blank" rel="noopener noreferrer" class="text-sm text-primary-300 hover:text-primary-200 transition-colors">{source.name} →</a></li>
+              ))}
+            </ul>
+          </div>
+        )}
+
         <!-- 相关链接 -->
         {data.links && data.links.length > 0 && (
           <div class="mt-8 backdrop-blur-xl bg-white/[0.06] rounded-xl border border-white/10 p-5">
