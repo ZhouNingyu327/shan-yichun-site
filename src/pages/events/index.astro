@@ -99,7 +99,7 @@ const recordedSeats = concerts.reduce((sum, event) => sum + (event.data.capacity
                             <span class={event.data.verificationStatus === 'verified'
                               ? 'text-[9px] px-1.5 py-0.5 rounded-full border border-emerald-400/25 bg-emerald-500/10 text-emerald-200'
                               : 'text-[9px] px-1.5 py-0.5 rounded-full border border-amber-400/20 bg-amber-500/10 text-amber-200/80'}>
-                              {event.data.verificationStatus === 'verified' ? '已核验' : '来源待补'}
+                              {event.data.verificationStatus === 'verified' ? '已核验' : event.data.verificationStatus === 'needs_review' ? '待交叉核验' : '来源待补'}
                             </span>
                           </div>
                           <p class="text-xs text-white/45 mt-0.5">{event.data.location}{event.data.venue ? ` · ${event.data.venue}` : ''}</p>

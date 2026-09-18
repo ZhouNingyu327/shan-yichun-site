@@ -96,7 +96,7 @@ function tagClass(s: string): string {
           <span class:list={{
             'inline-flex px-3 py-1 rounded-full text-xs font-medium backdrop-blur-xl bg-emerald-500/15 text-emerald-200 border border-emerald-400/20': data.verificationStatus === 'verified',
             'inline-flex px-3 py-1 rounded-full text-xs font-medium backdrop-blur-xl bg-amber-500/15 text-amber-100 border border-amber-400/20': data.verificationStatus === 'needs_review',
-          }}>{data.verificationStatus === 'verified' ? '资料已核验' : '来源待补'}</span>
+          }}>{data.verificationStatus === 'verified' ? '资料已核验' : data.verificationStatus === 'needs_review' ? '待交叉核验' : '来源待补'}</span>
         </div>
 
         <h1 class="text-3xl sm:text-4xl font-heading font-bold text-white mb-6">{data.title}</h1>
