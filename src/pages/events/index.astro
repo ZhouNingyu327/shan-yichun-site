@@ -7,6 +7,7 @@ const allEvents = (await getCollection('events'))
   .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
 const concerts = allEvents.filter(e => e.data.type === 'concert').sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
 const nonConcerts = allEvents.filter(e => e.data.type !== 'concert');
+const verifiedEventCount = allEvents.filter((event) => event.data.verificationStatus === 'verified').length;
 
 const typeLabels: Record<string, string> = {
   concert: '演唱会', variety: '综艺', award: '颁奖礼',
@@ -55,7 +56,7 @@ const recordedSeats = concerts.reduce((sum, event) => sum + (event.data.capacity
       <!-- 页面头部 -->
       <div class="text-center mb-10">
         <h1 class="text-4xl sm:text-5xl font-heading font-bold text-white mb-3">演出经历</h1>
-        <p class="text-white/50">从好声音冠军到万人巡演 · 共 {allEvents.length} 场活动</p>
+        <p class="text-white/50">从好声音冠军到万人巡演 · 共 {allEvents.length} 场活动 · 已核验 {verifiedEventCount} 场</p>
         <div class="mx-auto mt-4 w-16 h-[2px] bg-gradient-to-r from-primary-400/60 to-accent-400/60 rounded-full" />
       </div>
 
@@ -95,6 +96,11 @@ const recordedSeats = concerts.reduce((sum, event) => sum + (event.data.capacity
                           <div class="flex items-center gap-1.5 flex-wrap">
                             <span>{typeEmoji[event.data.type]||'🎬'}</span>
                             <h3 class="text-sm font-semibold text-white/85 group-hover:text-primary-300 transition-colors line-clamp-1">{event.data.title}</h3>
+                            <span class={event.data.verificationStatus === 'verified'
+                              ? 'text-[9px] px-1.5 py-0.5 rounded-full border border-emerald-400/25 bg-emerald-500/10 text-emerald-200'
+                              : 'text-[9px] px-1.5 py-0.5 rounded-full border border-amber-400/20 bg-amber-500/10 text-amber-200/80'}>
+                              {event.data.verificationStatus === 'verified' ? '已核验' : '来源待补'}
+                            </span>
                           </div>
                           <p class="text-xs text-white/45 mt-0.5">{event.data.location}{event.data.venue ? ` · ${event.data.venue}` : ''}</p>
                         </div>
