@@ -111,6 +111,10 @@ if (data.duration) infoItems.push({ label: '时长', value: data.duration });
       <div>
         <div class="flex items-center gap-3 mb-4 flex-wrap">
           <Tag variant={data.type === 'album' ? 'primary' : 'accent'}>{typeLabels[data.type]}</Tag>
+          <span class:list={{
+            'px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700': data.verificationStatus === 'verified',
+            'px-2.5 py-1 rounded-full text-xs font-medium bg-amber-50 text-amber-700': data.verificationStatus === 'needs_review',
+          }}>{data.verificationStatus === 'verified' ? '发行信息已核验' : '发行信息待核'}</span>
           <span class="text-sm text-text-secondary">{new Date(data.releaseDate).toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
         </div>
 
@@ -185,6 +189,9 @@ if (data.duration) infoItems.push({ label: '时长', value: data.duration });
               ))}
             </div>
           </div>
+        )}
+        {data.verificationStatus === 'needs_review' && (
+          <p class="mt-5 text-xs text-text-secondary/70 leading-relaxed">本页的曲目资料仍在补充可访问的发行方或权利方来源；未附平台链接的制作、歌词与发行细节不应视为本站已确认事实。</p>
         )}
       </div>
     </div>

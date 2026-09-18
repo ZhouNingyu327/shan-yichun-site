@@ -93,6 +93,10 @@ function tagClass(s: string): string {
           {data.featured && (
             <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium backdrop-blur-xl bg-amber-500/20 text-amber-200 border border-amber-400/20">⭐ 精选活动</span>
           )}
+          <span class:list={{
+            'inline-flex px-3 py-1 rounded-full text-xs font-medium backdrop-blur-xl bg-emerald-500/15 text-emerald-200 border border-emerald-400/20': data.verificationStatus === 'verified',
+            'inline-flex px-3 py-1 rounded-full text-xs font-medium backdrop-blur-xl bg-amber-500/15 text-amber-100 border border-amber-400/20': data.verificationStatus === 'needs_review',
+          }}>{data.verificationStatus === 'verified' ? '资料已核验' : '来源待补'}</span>
         </div>
 
         <h1 class="text-3xl sm:text-4xl font-heading font-bold text-white mb-6">{data.title}</h1>
@@ -168,6 +172,9 @@ function tagClass(s: string): string {
               ))}
             </ul>
           </div>
+        )}
+        {data.verificationStatus === 'needs_review' && (
+          <p class="mt-5 text-xs text-white/35 leading-relaxed">本活动的日期、地点或节目细节仍在等待可访问的一手来源交叉核验；页面未将未经来源支持的细节作为确认事实。</p>
         )}
       </div>
     </Container>

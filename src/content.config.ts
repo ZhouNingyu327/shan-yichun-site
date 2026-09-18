@@ -55,6 +55,7 @@ const discography = defineCollection({
           })
         )
         .optional(),
+      verificationStatus: z.enum(['verified', 'needs_review']).default('needs_review'),
       tags: z.array(z.string()).optional(),
       locale: z.enum(['zh', 'en']).default('zh'),
     }),
@@ -83,6 +84,7 @@ const events = defineCollection({
           })
         )
         .optional(),
+      verificationStatus: z.enum(['verified', 'needs_review']).default('needs_review'),
       featured: z.boolean().default(false),
       locale: z.enum(['zh', 'en']).default('zh'),
     }),
